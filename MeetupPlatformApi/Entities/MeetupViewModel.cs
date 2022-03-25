@@ -1,9 +1,9 @@
-﻿using MeetupPlatformApi.Entities;
+﻿using MeetupPlatformApi.DTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace MeetupPlatformApi.DTO
+namespace MeetupPlatformApi.Entities
 {
-    public class MeetupDTO
+    public class MeetupViewModel
     {
         public int Id { get; set; }
 

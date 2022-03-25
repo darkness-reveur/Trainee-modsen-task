@@ -1,5 +1,7 @@
-﻿using MeetupPlatformApi.DataBase;
+﻿using AutoMapper;
+using MeetupPlatformApi.DataBase;
 using MeetupPlatformApi.DTO;
+using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,38 +12,17 @@ namespace MeetupPlatformApi.Controllers
     [ApiController]
     public class MeetupsController : ControllerBase
     {
-        private DbContextOptions<MeetupsPlatformContext> options { get; set; }
 
         private readonly MeetupsPlatformContext _meetupsPlatformContext;
 
-        public MeetupsController(MeetupsPlatformContext meetupsPlatformContext)
+        private readonly IMapper _mapper;
+
+        public MeetupsController(
+            MeetupsPlatformContext meetupsPlatformContext,
+            IMapper mapper)
         {
+            _mapper = mapper;
             _meetupsPlatformContext = meetupsPlatformContext;
-
-            options = new DbContextOptionsBuilder<MeetupsPlatformContext>()
-                            .UseInMemoryDatabase(databaseName: "Test")
-                            .Options;
-        }
-
-        [HttpPost("test")]
-        public async Task<IActionResult> AddTestMeetups()
-        {
-            MeetupDTO testMeetup = new MeetupDTO
-            {
-                Id = 0,
-                Name = "testc Meetup",
-                Description = "First testing meetup meetup",
-                CountOfVisitors = 1,
-                EndTime = DateTime.Today,
-                StartTime = DateTime.Today
-            };
-
-            await _meetupsPlatformContext.Meetups.AddAsync(testMeetup);
-
-            await _meetupsPlatformContext.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetMeetupById), new { id = testMeetup.Id }, testMeetup);
-
         }
 
         [HttpGet]
@@ -49,79 +30,71 @@ namespace MeetupPlatformApi.Controllers
         {
             var meetups = await _meetupsPlatformContext.Meetups.ToListAsync();
 
-            return Ok(meetups);
+            var meetupsView = _mapper.Map<List<MeetupViewModel>>(meetups);
+
+            return Ok(meetupsView);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMeetupById(int id)
         {
-            if (id > 0)
-            {
-                var meetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+            var meetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
 
-                return meetup is not null ? Ok(meetup) : NotFound();
-            }
-            return BadRequest("Incorrect index");
+            var meetupView = _mapper.Map<MeetupViewModel>(meetup);
+
+            return meetupView is not null ? Ok(meetupView) : NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMeetup([FromBody] MeetupDTO meetupDTO)
+        public async Task<IActionResult> AddMeetup([FromBody] MeetupViewModel meetupView)
         {
-            if (meetupDTO is not null)
-            {
-                await _meetupsPlatformContext.Meetups.AddAsync(meetupDTO);
+            var meetupDTO = _mapper.Map<MeetupDTO>(meetupView);
 
-                await _meetupsPlatformContext.SaveChangesAsync();
+            await _meetupsPlatformContext.Meetups.AddAsync(meetupDTO);
 
-                return CreatedAtAction(nameof(GetMeetupById), new { id = meetupDTO.Id }, meetupDTO);
-            }
+            await _meetupsPlatformContext.SaveChangesAsync();
 
-            return BadRequest("Empty entity");
+            return CreatedAtAction(nameof(GetMeetupById), new { id = meetupDTO.Id }, meetupView);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMeetup(int id, [FromBody] MeetupDTO meetupDTO)
+        public async Task<IActionResult> UpdateMeetup(int id, [FromBody] MeetupViewModel meetupView)
         {
-            if (meetupDTO is not null)
+            var exMeetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+
+            var meetupDTO = _mapper.Map<MeetupDTO>(meetupView);
+
+            if (exMeetup is not null)
             {
-                var exMeetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+                exMeetup.Name = meetupDTO.Name;
 
-                if (exMeetup is not null)
-                {
-                    exMeetup.Name = meetupDTO.Name;
+                exMeetup.Description = meetupDTO.Description;
 
-                    exMeetup.Description = meetupDTO.Description;
+                exMeetup.StartTime = meetupDTO.StartTime;
 
-                    exMeetup.StartTime = meetupDTO.StartTime;
+                exMeetup.EndTime = meetupDTO.EndTime;
 
-                    exMeetup.EndTime = meetupDTO.EndTime;
+                await _meetupsPlatformContext.SaveChangesAsync();
 
-                    exMeetup.CountOfVisitors = meetupDTO.CountOfVisitors;
-
-                    await _meetupsPlatformContext.SaveChangesAsync();
-
-                    return NoContent();
-                }
-                return NotFound();
+                return NoContent();
             }
-            return BadRequest("Empty entity");
+            return NotFound();
         }
 
-        [HttpDelete("id")]
-        public async Task<IActionResult> DeleteUserById(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserById([FromQuery] int id)
         {
-            if (id > 0)
-            {
-                var exMeetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+            var exMeetup = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
 
+            if (exMeetup is not null)
+            {
                 _meetupsPlatformContext.Meetups.Remove(exMeetup);
 
                 await _meetupsPlatformContext.SaveChangesAsync();
 
                 return NoContent();
             }
-
-            return BadRequest();
+            return NotFound();
         }
     }
 }
