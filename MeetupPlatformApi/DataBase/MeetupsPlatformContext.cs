@@ -1,4 +1,4 @@
-﻿using MeetupPlatformApi.DTO;
+﻿using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeetupPlatformApi.DataBase
@@ -9,6 +9,6 @@ namespace MeetupPlatformApi.DataBase
             : base(options)
         {}
         
-        public DbSet<MeetupDTO> Meetups { get; set; }
+        public DbSet<MeetupEntity> Meetups { get; set; }
     }
 }
