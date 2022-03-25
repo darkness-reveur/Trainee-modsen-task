@@ -11,7 +11,7 @@
 
 appsettings.*.json
 
-appsettings.json
+# appsettings.json
 
 # .NET Core build folders
 bin/
