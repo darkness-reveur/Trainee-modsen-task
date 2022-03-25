@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.DataBase.Entities;
 
 public class MeetupEntity
 {

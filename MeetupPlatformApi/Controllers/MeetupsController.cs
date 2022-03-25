@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MeetupPlatformApi.DataBase;
+using MeetupPlatformApi.DataBase.Entities;
 using MeetupPlatformApi.DataTransferObjects;
-using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,9 +69,7 @@ public class MeetupsController : ControllerBase
             return NotFound();
         }
 
-        exMeetupEntity = _mapper.Map<MeetupEntity>(meetupInputDto);
-
-        exMeetupEntity.Id = id;
+        _mapper.Map(meetupInputDto, exMeetupEntity);
 
         _meetupsPlatformContext.Meetups.Update(exMeetupEntity);
 
