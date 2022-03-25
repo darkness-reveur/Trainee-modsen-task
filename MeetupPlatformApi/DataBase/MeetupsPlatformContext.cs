@@ -1,14 +1,14 @@
 ﻿using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace MeetupPlatformApi.DataBase
+namespace MeetupPlatformApi.DataBase;
+
+public class MeetupsPlatformContext : DbContext
 {
-    public class MeetupsPlatformContext : DbContext
-    {
-        public MeetupsPlatformContext(DbContextOptions<MeetupsPlatformContext> options)
-            : base(options)
-        {}
-        
-        public DbSet<MeetupEntity> Meetups { get; set; }
-    }
+    public MeetupsPlatformContext(DbContextOptions<MeetupsPlatformContext> options)
+        : base(options)
+    { }
+
+    public DbSet<MeetupEntity> Meetups { get; set; }
 }
+

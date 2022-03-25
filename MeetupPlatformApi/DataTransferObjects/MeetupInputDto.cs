@@ -1,9 +1,7 @@
-﻿namespace MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.DataTransferObjects;
 
-public class MeetupEntity
+public class MeetupInputDto
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public DateTime StartTime { get; set; }

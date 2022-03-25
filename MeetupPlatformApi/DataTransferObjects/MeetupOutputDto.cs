@@ -1,6 +1,6 @@
-﻿namespace MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.DataTransferObjects;
 
-public class MeetupEntity
+public class MeetupOutputDto
 {
     public int Id { get; set; }
 
