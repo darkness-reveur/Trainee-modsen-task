@@ -2,14 +2,13 @@
 using MeetupPlatformApi.DataBase.Entities;
 using MeetupPlatformApi.DataTransferObjects;
 
-namespace MeetupPlatformApi.MeetupProfiles;
+namespace MeetupPlatformApi.MappingProfiles;
 
-public class MeetupProfile : Profile
+public class MeetupMappingProfile : Profile
 {
-    public MeetupProfile()
+    public MeetupMappingProfile()
     {
         CreateMap<MeetupEntity, MeetupOutputDto>();
-
         CreateMap<MeetupInputDto, MeetupEntity>();
     }
 }
