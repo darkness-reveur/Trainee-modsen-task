@@ -12,4 +12,3 @@ public class MeetupOutputDto
 
     public string Description { get; set; }
 }
-

@@ -12,4 +12,3 @@ public class MeetupEntity
 
     public string Description { get; set; }
 }
-

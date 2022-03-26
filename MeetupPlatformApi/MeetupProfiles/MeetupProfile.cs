@@ -13,4 +13,3 @@ public class MeetupProfile : Profile
         CreateMap<MeetupInputDto, MeetupEntity>();
     }
 }
-

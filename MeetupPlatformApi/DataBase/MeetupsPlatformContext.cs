@@ -11,4 +11,3 @@ public class MeetupsPlatformContext : DbContext
 
     public DbSet<MeetupEntity> Meetups { get; set; }
 }
-

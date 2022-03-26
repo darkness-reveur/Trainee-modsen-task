@@ -95,4 +95,3 @@ public class MeetupsController : ControllerBase
         return NoContent();
     }
 }
-
