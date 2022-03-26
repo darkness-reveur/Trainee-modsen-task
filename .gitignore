@@ -1,18 +1,10 @@
-# Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,aspnetcore,web,csharp
-# Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,aspnetcore,web,csharp
+# IDEs
+/.vs
+/.idea
 
-### ASPNETCore ###
+# Environment-specific configuration
+/**/appsettings.*.json
 
-# Visual Studio 2015 cache/options directory
-.vs/
-
-# DNX
-*.obj
-
-appsettings.*.json
-
-# appsettings.json
-
-# .NET Core build folders
-bin/
-obj/
+# Build artifacts
+/**/bin/
+/**/obj/
