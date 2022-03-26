@@ -11,22 +11,19 @@ namespace MeetupPlatformApi.Controllers;
 [ApiController]
 public class MeetupsController : ControllerBase
 {
-    private readonly MeetupsPlatformContext _meetupsPlatformContext;
-
+    private readonly ApplicationContext _context;
     private readonly IMapper _mapper;
 
-    public MeetupsController(
-        MeetupsPlatformContext meetupsPlatformContext,
-        IMapper mapper)
+    public MeetupsController(ApplicationContext context, IMapper mapper)
     {
+        _context = context;
         _mapper = mapper;
-        _meetupsPlatformContext = meetupsPlatformContext;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllMeetups()
     {
-        var meetupsEntity = await _meetupsPlatformContext.Meetups.ToListAsync();
+        var meetupsEntity = await _context.Meetups.ToListAsync();
 
         var meetupsOutputDto = _mapper.Map<List<MeetupOutputDto>>(meetupsEntity);
 
@@ -36,7 +33,7 @@ public class MeetupsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetMeetupById(int id)
     {
-        var meetupEntity = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+        var meetupEntity = await _context.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
 
         var meetupOutputDto = _mapper.Map<MeetupOutputDto>(meetupEntity);
 
@@ -48,9 +45,9 @@ public class MeetupsController : ControllerBase
     {
         var meetupEntity = _mapper.Map<MeetupEntity>(meetupInputDto);
 
-        await _meetupsPlatformContext.Meetups.AddAsync(meetupEntity);
+        await _context.Meetups.AddAsync(meetupEntity);
 
-        await _meetupsPlatformContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         var meetupOutputDto = _mapper.Map<MeetupOutputDto>(meetupEntity);
 
@@ -60,7 +57,7 @@ public class MeetupsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateMeetup(int id, [FromBody] MeetupInputDto meetupInputDto)
     {
-        var exMeetupEntity = await _meetupsPlatformContext.Meetups
+        var exMeetupEntity = await _context.Meetups
             .AsNoTracking()
             .FirstOrDefaultAsync(meetup => meetup.Id == id);
 
@@ -71,9 +68,9 @@ public class MeetupsController : ControllerBase
 
         _mapper.Map(meetupInputDto, exMeetupEntity);
 
-        _meetupsPlatformContext.Meetups.Update(exMeetupEntity);
+        _context.Meetups.Update(exMeetupEntity);
 
-        await _meetupsPlatformContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
@@ -81,16 +78,16 @@ public class MeetupsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUserById(int id)
     {
-        var exMeetupEntity = await _meetupsPlatformContext.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
+        var exMeetupEntity = await _context.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
 
         if (exMeetupEntity is null)
         {
             return NotFound();
         }
 
-        _meetupsPlatformContext.Meetups.Remove(exMeetupEntity);
+        _context.Meetups.Remove(exMeetupEntity);
 
-        await _meetupsPlatformContext.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
