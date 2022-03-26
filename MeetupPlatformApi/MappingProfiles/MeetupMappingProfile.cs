@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using MeetupPlatformApi.DataBase.Entities;
 using MeetupPlatformApi.DataTransferObjects;
+using MeetupPlatformApi.Entities;
 
 namespace MeetupPlatformApi.MappingProfiles;
 

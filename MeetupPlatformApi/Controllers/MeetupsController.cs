@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using MeetupPlatformApi.DataBase;
-using MeetupPlatformApi.DataBase.Entities;
 using MeetupPlatformApi.DataTransferObjects;
+using MeetupPlatformApi.Context;
+using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

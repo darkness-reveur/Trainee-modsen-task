@@ -1,4 +1,4 @@
-using MeetupPlatformApi.DataBase;
+using MeetupPlatformApi.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
