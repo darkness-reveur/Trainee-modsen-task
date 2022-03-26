@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeetupPlatformApi.Controllers;
 
-[Route("api/meetups/")]
+[Route("/api/meetups")]
 [ApiController]
 public class MeetupsController : ControllerBase
 {
@@ -23,72 +23,55 @@ public class MeetupsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllMeetups()
     {
-        var meetupsEntity = await _context.Meetups.ToListAsync();
-
-        var meetupsOutputDto = _mapper.Map<List<MeetupOutputDto>>(meetupsEntity);
-
-        return Ok(meetupsOutputDto);
+        var meetups = await _context.Meetups.ToListAsync();
+        var outputDtos = _mapper.Map<IEnumerable<MeetupOutputDto>>(meetups);
+        return Ok(outputDtos);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetMeetupById(int id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetMeetupById([FromRoute] int id)
     {
-        var meetupEntity = await _context.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
-
-        var meetupOutputDto = _mapper.Map<MeetupOutputDto>(meetupEntity);
-
-        return meetupOutputDto is not null ? Ok(meetupOutputDto) : NotFound();
+        var meetup = await _context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
+        var outputDto = _mapper.Map<MeetupOutputDto>(meetup);
+        return outputDto is not null ? Ok(outputDto) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddMeetup([FromBody] MeetupInputDto meetupInputDto)
+    public async Task<IActionResult> AddMeetup([FromBody] MeetupInputDto inputDto)
     {
-        var meetupEntity = _mapper.Map<MeetupEntity>(meetupInputDto);
-
-        await _context.Meetups.AddAsync(meetupEntity);
-
+        var meetup = _mapper.Map<MeetupEntity>(inputDto);
+        await _context.Meetups.AddAsync(meetup);
         await _context.SaveChangesAsync();
 
-        var meetupOutputDto = _mapper.Map<MeetupOutputDto>(meetupEntity);
-
-        return CreatedAtAction(nameof(GetMeetupById), new { id = meetupOutputDto.Id }, meetupOutputDto);
+        var outputDto = _mapper.Map<MeetupOutputDto>(meetup);
+        return CreatedAtAction(nameof(GetMeetupById), new { id = outputDto.Id }, outputDto);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateMeetup(int id, [FromBody] MeetupInputDto meetupInputDto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateMeetup([FromRoute] int id, [FromBody] MeetupInputDto inputDto)
     {
-        var exMeetupEntity = await _context.Meetups
-            .AsNoTracking()
-            .FirstOrDefaultAsync(meetup => meetup.Id == id);
-
-        if (exMeetupEntity is null)
+        var meetup = await _context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
+        if (meetup is null)
         {
             return NotFound();
         }
 
-        _mapper.Map(meetupInputDto, exMeetupEntity);
-
-        _context.Meetups.Update(exMeetupEntity);
-
+        _mapper.Map(inputDto, meetup);
         await _context.SaveChangesAsync();
-
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserById(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteUserById([FromRoute] int id)
     {
-        var exMeetupEntity = await _context.Meetups.FirstOrDefaultAsync(meetup => meetup.Id == id);
-
+        var exMeetupEntity = await _context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (exMeetupEntity is null)
         {
             return NotFound();
         }
 
         _context.Meetups.Remove(exMeetupEntity);
-
         await _context.SaveChangesAsync();
-
         return NoContent();
     }
 }
