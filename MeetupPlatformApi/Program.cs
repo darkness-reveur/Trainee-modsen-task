@@ -1,3 +1,4 @@
+using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +23,18 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
     {
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
 
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings").GetSection("SecretKey").Value))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings").GetSection("SecretKey").Value)),
+        ValidAudience = builder.Configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
+        ValidIssuer = builder.Configuration.GetSection("JwtSettings").GetSection("validIssuer").Value
     };
 });
+
+builder.Services.AddScoped<AuthentificationManager>();
 
 var app = builder.Build();
 
