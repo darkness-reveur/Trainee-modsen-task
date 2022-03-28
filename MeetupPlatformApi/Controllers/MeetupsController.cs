@@ -4,6 +4,7 @@ using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeetupPlatformApi.Controllers;
 
@@ -20,7 +21,7 @@ public class MeetupsController : ControllerBase
         this.mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet, Authorize]
     public async Task<IActionResult> GetAllMeetups()
     {
         var meetups = await context.Meetups.ToListAsync();
