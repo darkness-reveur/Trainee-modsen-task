@@ -5,7 +5,6 @@ namespace MeetupPlatformApi.DataTransferObjects;
 public class MeetupInputDto
 {
     [Required]
-    [MaxLength(200)]
     public string Name { get; set; }
 
     [Required]
@@ -15,6 +14,5 @@ public class MeetupInputDto
     public DateTime EndTime { get; set; }
 
     [Required]
-    [MaxLength(4000)]
     public string Description { get; set; }
 }
