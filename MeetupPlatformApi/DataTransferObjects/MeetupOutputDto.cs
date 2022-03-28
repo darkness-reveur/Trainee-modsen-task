@@ -8,7 +8,7 @@ public class MeetupOutputDto
     public int Id { get; set; }
 
     [Required]
-    [MaxLength(30)]
+    [MaxLength(200)]
     public string Name { get; set; }
 
     [Required]
@@ -18,6 +18,6 @@ public class MeetupOutputDto
     public DateTime EndTime { get; set; }
 
     [Required]
-    [MaxLength(300)]
+    [MaxLength(4000)]
     public string Description { get; set; }
 }

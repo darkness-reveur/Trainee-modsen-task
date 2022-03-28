@@ -2,7 +2,6 @@
 .vs/
 /.idea
 
-
 # Environment-specific configuration
 /**/appsettings.*.json
 
