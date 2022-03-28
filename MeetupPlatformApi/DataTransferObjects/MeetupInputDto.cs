@@ -6,6 +6,7 @@ public class MeetupInputDto
 {
     [Required]
     [MaxLength(30)]
+    [Display(Name = "Name of meetup")]
     public string Name { get; set; }
 
     [Required]
@@ -14,7 +15,8 @@ public class MeetupInputDto
     [Required]
     public DateTime EndTime { get; set; }
 
-    [Required]
     [MaxLength(300)]
+    [Display(Name = "Meetup description")]
     public string Description { get; set; }
 }
+
