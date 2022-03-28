@@ -10,4 +10,3 @@ public class MeetupInputDto
 
     public string Description { get; set; }
 }
-
