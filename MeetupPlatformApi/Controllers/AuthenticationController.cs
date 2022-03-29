@@ -5,6 +5,7 @@ using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace MeetupPlatformApi.Controllers
@@ -24,6 +25,15 @@ namespace MeetupPlatformApi.Controllers
             this.authentificationManager = authentificationManager;
         }
 
+        [HttpGet("{id}", Name = "UserById")]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var user = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
+            var userOutput = mapper.Map<UserOutputDto>(user);
+
+            return userOutput == null ? Ok(userOutput) : NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] UserForCreationDto userFromBody)
         {
@@ -32,7 +42,7 @@ namespace MeetupPlatformApi.Controllers
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
 
-            return StatusCode(201);
+            return CreatedAtRoute("UserById", new { id = user.Id }, user);
         }
 
         [HttpPost("login")]
