@@ -3,7 +3,9 @@ using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace MeetupPlatformApi.Controllers
 {
@@ -42,6 +44,15 @@ namespace MeetupPlatformApi.Controllers
             }
 
             return Ok(new { Token = authentificationManager.CreateToken() });
+        }
+
+        [HttpGet("user")]
+        [Authorize]
+        public IActionResult GetCurrentUserInfo()
+        {
+            var userName = User.FindFirst(ClaimTypes.Name).Value;
+
+            return Ok(new { Username = userName });
         }
     }
 }
