@@ -3,6 +3,7 @@ using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace MeetupPlatformApi.Controllers
             this.authentificationManager = authentificationManager;
         }
 
-        [HttpGet("{id}", Name = "UserById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
@@ -39,15 +40,21 @@ namespace MeetupPlatformApi.Controllers
         {
             var user = mapper.Map<UserEntity>(userFromBody);
 
+            user.Password = HashHandler.HashPassword(userFromBody.Password);
+
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
 
-            return CreatedAtRoute("UserById", new { id = user.Id }, user);
+            var userOutput = mapper.Map<UserOutputDto>(user);
+
+            return CreatedAtAction(nameof(GetUserById), new { id = userOutput.Id }, userOutput);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthentificationDto userForAuthentificationDto)
         {
+            userForAuthentificationDto.Password = HashHandler.HashPassword(userForAuthentificationDto.Password);
+
             if(!await authentificationManager.ValidateUser(userForAuthentificationDto))
             {
                 return Unauthorized();
