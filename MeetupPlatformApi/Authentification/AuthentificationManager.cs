@@ -26,7 +26,7 @@ namespace MeetupPlatformApi.Authentification
         {
             user = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuth.Username));
 
-            return (user != null && user.Password.Equals(userForAuth.Password));
+            return (user != null && BCrypt.Net.BCrypt.Verify(userForAuth.Password, user.Password));
         }
 
         public string CreateToken()

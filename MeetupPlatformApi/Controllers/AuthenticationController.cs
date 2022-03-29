@@ -3,7 +3,6 @@ using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
-using MeetupPlatformApi.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +39,7 @@ namespace MeetupPlatformApi.Controllers
         {
             var user = mapper.Map<UserEntity>(userFromBody);
 
-            user.Password = HashHandler.HashPassword(userFromBody.Password);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
@@ -53,8 +52,6 @@ namespace MeetupPlatformApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthentificationDto userForAuthentificationDto)
         {
-            userForAuthentificationDto.Password = HashHandler.HashPassword(userForAuthentificationDto.Password);
-
             if(!await authentificationManager.ValidateUser(userForAuthentificationDto))
             {
                 return Unauthorized();
