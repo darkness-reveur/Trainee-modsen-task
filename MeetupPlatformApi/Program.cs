@@ -9,7 +9,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseInMemoryDatabase(databaseName: "MeetupPlatform");
+    options.UseNpgsql(builder.Configuration
+            .GetSection("ConnectionStrings")
+                .GetValue<string>("DbConnectionString"));
 });
 
 var app = builder.Build();
