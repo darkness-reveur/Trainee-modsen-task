@@ -21,7 +21,7 @@ public class MeetupsController : ControllerBase
         this.mapper = mapper;
     }
 
-    [HttpGet, Authorize]
+    [HttpGet]
     public async Task<IActionResult> GetAllMeetups()
     {
         var meetups = await context.Meetups.ToListAsync();
