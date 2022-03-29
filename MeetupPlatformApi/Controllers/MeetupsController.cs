@@ -4,7 +4,6 @@ using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MeetupPlatformApi.Controllers;
 
