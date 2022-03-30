@@ -4,7 +4,7 @@
     {
         public static string GetSectionValueFromJwt(this IConfiguration configuration, string sectionName)
         {
-            return configuration.GetSection("Jwt").GetSection(sectionName).Value;
+            return configuration[$"Jwt:{sectionName}"];
         }
     }
 }
