@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Configuration.GetCo
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "MeetupPlatform");
