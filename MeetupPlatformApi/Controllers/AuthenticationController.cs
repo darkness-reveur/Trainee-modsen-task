@@ -60,12 +60,14 @@ public class AuthenticationController : ControllerBase
         return Ok($"Token: {authenticationManager.CreateToken(user)}");
     }
 
-    [HttpGet("user")]
+    [HttpGet("me")]
     [Authorize]
-    public IActionResult GetCurrentUserInfo()
+    public async Task<IActionResult> GetCurrentUserInfo()
     {
         var userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == Guid.Parse(userNameIdentifier));
 
-        return Ok(new { Id = userNameIdentifier });
+        return Ok($"Id: {userNameIdentifier}\n" +
+            $"Username: {user.Username}");
     }
 }
