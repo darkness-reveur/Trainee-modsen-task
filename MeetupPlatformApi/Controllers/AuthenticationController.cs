@@ -55,7 +55,7 @@ public class AuthenticationController : ControllerBase
     {
         var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuthentificationDto.Username));
 
-        if (userFromDb != null && BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
+        if (userFromDb == null || !BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
         {
             return Unauthorized();
         }
@@ -67,8 +67,8 @@ public class AuthenticationController : ControllerBase
     [Authorize]
     public IActionResult GetCurrentUserInfo()
     {
-        var userName = User.FindFirst(ClaimTypes.Name).Value;
+        var userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        return Ok(new { Username = userName });
+        return Ok(new { Id = userNameIdentifier });
     }
 }

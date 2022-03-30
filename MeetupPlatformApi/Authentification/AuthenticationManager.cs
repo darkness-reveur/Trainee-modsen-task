@@ -20,9 +20,9 @@ public class AuthenticationManager
     {
         var signingCredentials = GetSigningCredentials();
         var claims = GetClaims(user);
-        var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+        var token = CreateToken(signingCredentials, claims);
 
-        return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private SigningCredentials GetSigningCredentials()
@@ -33,23 +33,25 @@ public class AuthenticationManager
         return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
 
-    private List<Claim> GetClaims(UserEntity user)
+    private Dictionary<string, object> GetClaims(UserEntity user)
     {
-        var claims = new List<Claim>
+        var claims = new Dictionary<string, object>
             {
-                new Claim(ClaimTypes.Name, user.Username)
+            { ClaimTypes.NameIdentifier, user.Id }
             };
 
         return claims;
     }
 
-    private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
+    private SecurityToken CreateToken(SigningCredentials signingCredentials, Dictionary<string, object> claims)
     {
-        var tokenOptions = new JwtSecurityToken(
-            signingCredentials: signingCredentials,
-            expires: DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSectionValueFromJwt("Expire")))),
-            claims: claims);
+        var descriptor = new SecurityTokenDescriptor
+        {
+            SigningCredentials = signingCredentials,
+            Expires = DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSectionValueFromJwt("Expire")))),
+            Claims = claims
+        };
 
-        return tokenOptions;
+        return new JwtSecurityTokenHandler().CreateToken(descriptor);
     }
 }
