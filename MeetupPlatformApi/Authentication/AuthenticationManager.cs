@@ -17,7 +17,7 @@ public class AuthenticationManager
         this.configuration = configuration;
     }
 
-    public AccessTokenPayload GetCurrentUser(ClaimsPrincipal user)
+    public AccessTokenPayload GetAccessTokenPayload(ClaimsPrincipal user)
     {
         var userNameIdentifier = user.FindFirst(ClaimTypes.NameIdentifier).Value;
         var userId = Guid.Parse(userNameIdentifier);

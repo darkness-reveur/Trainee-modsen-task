@@ -8,7 +8,6 @@ using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 using BCrypt.Net;
 
 [Route("/api/users")]
@@ -44,9 +43,9 @@ public class AuthenticationController : ControllerBase
         await context.SaveChangesAsync();
 
         var token = authenticationManager.CreateToken(user);
-        var outputDto = mapper.Map<UserOutputDto>(user);
-        var registrationResultDto = new UserRegistrationResultDto { UserInfo = outputDto, AccessToken = token };
-        return CreatedAtAction(nameof(GetUserById), new { id = registrationResultDto.UserInfo.Id }, registrationResultDto);
+        var userInfoDto = mapper.Map<UserOutputDto>(user);
+        var outputDto = new UserRegistrationResultDto { UserInfo = userInfoDto, AccessToken = token };
+        return CreatedAtAction(nameof(GetUserById), new { id = outputDto.UserInfo.Id }, outputDto);
     }
 
     [HttpPost("authenticate")]
@@ -66,9 +65,12 @@ public class AuthenticationController : ControllerBase
 
     [HttpGet("me")]
     [Authorize]
-    public IActionResult GetCurrentUserInfo()
+    public async Task<IActionResult> GetCurrentUserInfo()
     {
-        var outputModel = authenticationManager.GetCurrentUser(User);
-        return Ok(outputModel);
+        var accessTokenInfo = authenticationManager.GetAccessTokenPayload(User);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == accessTokenInfo.UserId);
+
+        var outputDto = mapper.Map<UserOutputDto>(user);
+        return Ok(outputDto);
     }
 }
