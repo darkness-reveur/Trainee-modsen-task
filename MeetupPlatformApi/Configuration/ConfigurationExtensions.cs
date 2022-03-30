@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Extensions;
+﻿namespace MeetupPlatformApi.Configuration;
 
 public static class ConfigurationExtensions
 {
@@ -20,5 +20,13 @@ public static class ConfigurationExtensions
             var jsonFilePath = Path.Combine("Properties", jsonFileName);
             configuration.AddJsonFile(jsonFilePath, optional: true);
         }
+    }
+
+    public static string GetRequiredOption(this IConfiguration configuration, string path)
+    {
+        var value = configuration[path];
+        return string.IsNullOrWhiteSpace(value)
+            ? throw new InvalidConfigurationException($"Configuration parameter \"{path}\" is required.")
+            : value.Trim();
     }
 }

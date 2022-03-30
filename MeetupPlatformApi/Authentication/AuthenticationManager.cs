@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MeetupPlatformApi.Extensions;
+using MeetupPlatformApi.Configuration;
 using MeetupPlatformApi.Models;
 
 public class AuthenticationManager
