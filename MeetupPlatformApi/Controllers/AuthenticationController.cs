@@ -54,20 +54,24 @@ public class AuthenticationController : ControllerBase
 
         if (user is null || !BCrypt.Verify(userForAuthentificationDto.Password, user.Password))
         {
-            return Unauthorized();
+            return BadRequest("Username or password is incorrect.");
         }
 
-        return Ok($"Token: {authenticationManager.CreateToken(user)}");
+        var outputDto = new AuthenticationTokenOutputDto() { Token = authenticationManager.CreateToken(user) };
+
+        return Ok(outputDto);
     }
 
     [HttpGet("me")]
     [Authorize]
     public async Task<IActionResult> GetCurrentUserInfo()
     {
+        //TODO: check this comment on git hub
         var userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == Guid.Parse(userNameIdentifier));
+        var userId = Guid.Parse(userNameIdentifier);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == userId);
 
-        return Ok($"Id: {userNameIdentifier}\n" +
-            $"Username: {user.Username}");
+        var outputDto = mapper.Map<UserOutputDto>(user);
+        return Ok(outputDto);
     }
 }
