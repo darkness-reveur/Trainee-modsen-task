@@ -66,14 +66,9 @@ public class AuthenticationController : ControllerBase
 
     [HttpGet("me")]
     [Authorize]
-    public async Task<IActionResult> GetCurrentUserInfo()
+    public IActionResult GetCurrentUserInfo()
     {
-        //TODO: check this comment on git hub
-        var userNameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        var userId = Guid.Parse(userNameIdentifier);
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == userId);
-
-        var outputDto = mapper.Map<UserOutputDto>(user);
-        return Ok(outputDto);
+        var outputModel = authenticationManager.GetCurrentUser(User);
+        return Ok(outputModel);
     }
 }

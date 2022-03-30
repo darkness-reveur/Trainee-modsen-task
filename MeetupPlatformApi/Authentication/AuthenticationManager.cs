@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MeetupPlatformApi.Extensions;
+using MeetupPlatformApi.Models;
 
 public class AuthenticationManager
 {
@@ -14,6 +15,14 @@ public class AuthenticationManager
     public AuthenticationManager(IConfiguration configuration)
     {
         this.configuration = configuration;
+    }
+
+    public AccessTokenPayload GetCurrentUser(ClaimsPrincipal user)
+    {
+        var userNameIdentifier = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var userId = Guid.Parse(userNameIdentifier);
+
+        return new AccessTokenPayload { UserId = userId };
     }
 
     public string CreateToken(UserEntity user)
