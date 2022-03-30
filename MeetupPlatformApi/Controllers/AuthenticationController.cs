@@ -47,7 +47,7 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(GetUserById), new { id = outputDto.Id }, outputDto);
     }
 
-    [HttpPost("authentication/login")]
+    [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userForAuthentificationDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == userForAuthentificationDto.Username);
