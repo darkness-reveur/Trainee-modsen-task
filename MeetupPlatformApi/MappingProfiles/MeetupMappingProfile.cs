@@ -10,7 +10,5 @@ public class MeetupMappingProfile : Profile
     {
         CreateMap<MeetupEntity, MeetupOutputDto>();
         CreateMap<MeetupInputDto, MeetupEntity>();
-        CreateMap<UserForCreationDto, UserEntity>();
-        CreateMap<UserEntity, UserOutputDto>();
     }
 }
