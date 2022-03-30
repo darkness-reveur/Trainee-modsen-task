@@ -11,22 +11,22 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using BCrypt.Net;
 
-[Route("/api/meetups/authentication")]
+[Route("/api/users")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;
-    private readonly AuthenticationManager authentificationManager;
+    private readonly AuthenticationManager authenticationManager;
 
-    public AuthenticationController(ApplicationContext context, IMapper mapper, AuthenticationManager authentificationManager)
+    public AuthenticationController(ApplicationContext context, IMapper mapper, AuthenticationManager authenticationManager)
     {
         this.context = context;
         this.mapper = mapper;
-        this.authentificationManager = authentificationManager;
+        this.authenticationManager = authenticationManager;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
@@ -35,7 +35,7 @@ public class AuthenticationController : ControllerBase
         return userOutput == null ? Ok(userOutput) : NotFound();
     }
 
-    [HttpPost]
+    [HttpPost("authentication")]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userFromBody)
     {
         var user = mapper.Map<UserEntity>(userFromBody);
@@ -50,7 +50,7 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(GetUserById), new { id = userOutput.Id }, userOutput);
     }
 
-    [HttpPost("login")]
+    [HttpPost("authentication/login")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userForAuthentificationDto)
     {
         var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuthentificationDto.Username));
@@ -60,7 +60,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized();
         }
 
-        return Ok(new { Token = authentificationManager.CreateToken(userFromDb) });
+        return Ok(new { Token = authenticationManager.CreateToken(userFromDb) });
     }
 
     [HttpGet("user")]
