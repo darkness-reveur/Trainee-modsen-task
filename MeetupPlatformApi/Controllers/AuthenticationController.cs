@@ -29,10 +29,10 @@ public class AuthenticationController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
-        var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
-        var userOutput = mapper.Map<UserOutputDto>(userFromDb);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
+        var outputDto = mapper.Map<UserOutputDto>(user);
 
-        return userOutput == null ? Ok(userOutput) : NotFound();
+        return outputDto == null ? Ok(outputDto) : NotFound();
     }
 
     [HttpPost("authentication")]
@@ -45,22 +45,22 @@ public class AuthenticationController : ControllerBase
         await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
 
-        var userOutput = mapper.Map<UserOutputDto>(user);
+        var outputDto = mapper.Map<UserOutputDto>(user);
 
-        return CreatedAtAction(nameof(GetUserById), new { id = userOutput.Id }, userOutput);
+        return CreatedAtAction(nameof(GetUserById), new { id = outputDto.Id }, outputDto);
     }
 
     [HttpPost("authentication/login")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userForAuthentificationDto)
     {
-        var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuthentificationDto.Username));
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Username == userForAuthentificationDto.Username);
 
-        if (userFromDb == null || !BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
+        if (user == null || !BCrypt.Verify(userForAuthentificationDto.Password, user.Password))
         {
             return Unauthorized();
         }
 
-        return Ok(new { Token = authenticationManager.CreateToken(userFromDb) });
+        return Ok(new { Token = authenticationManager.CreateToken(user) });
     }
 
     [HttpGet("user")]
