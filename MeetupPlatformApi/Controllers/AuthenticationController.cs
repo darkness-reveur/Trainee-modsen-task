@@ -31,22 +31,19 @@ public class AuthenticationController : ControllerBase
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
         var outputDto = mapper.Map<UserOutputDto>(user);
-
-        return outputDto == null ? Ok(outputDto) : NotFound();
+        return outputDto is null ? Ok(outputDto) : NotFound();
     }
 
-    [HttpPost("authentication")]
+    [HttpPost]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userFromBody)
     {
         var user = mapper.Map<UserEntity>(userFromBody);
-
         user.Password = BCrypt.HashPassword(user.Password);
 
-        await context.Users.AddAsync(user);
+        context.Users.Add(user);
         await context.SaveChangesAsync();
 
         var outputDto = mapper.Map<UserOutputDto>(user);
-
         return CreatedAtAction(nameof(GetUserById), new { id = outputDto.Id }, outputDto);
     }
 
@@ -55,12 +52,12 @@ public class AuthenticationController : ControllerBase
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == userForAuthentificationDto.Username);
 
-        if (user == null || !BCrypt.Verify(userForAuthentificationDto.Password, user.Password))
+        if (user is null || !BCrypt.Verify(userForAuthentificationDto.Password, user.Password))
         {
             return Unauthorized();
         }
 
-        return Ok(new { Token = authenticationManager.CreateToken(user) });
+        return Ok($"Token: {authenticationManager.CreateToken(user)}");
     }
 
     [HttpGet("user")]
