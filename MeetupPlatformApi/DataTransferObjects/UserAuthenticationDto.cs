@@ -2,11 +2,11 @@
 
 namespace MeetupPlatformApi.DataTransferObjects;
 
-public class UserOutputDto
+public class UserAuthenticationDto
 {
     [Required]
-    public Guid Id { get; set; }
+    public string Username { get; set; }
 
     [Required]
-    public string Username { get; set; }
+    public string Password { get; set; }
 }
