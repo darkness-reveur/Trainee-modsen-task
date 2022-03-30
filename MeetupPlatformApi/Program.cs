@@ -1,5 +1,6 @@
 using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
+using MeetupPlatformApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,7 +29,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
 
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt").GetSection("SecretKey").Value)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSectionValueFromJwt("SecretKey"))),
         ClockSkew = TimeSpan.Zero
     };
 });
