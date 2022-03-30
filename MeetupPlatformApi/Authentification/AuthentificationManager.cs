@@ -40,7 +40,7 @@ namespace MeetupPlatformApi.Authentification
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings").GetSection("SecretKey").Value);
+            var key = Encoding.UTF8.GetBytes(configuration.GetSection("Jwt").GetSection("SecretKey").Value);
             var secret = new SymmetricSecurityKey(key);
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
@@ -60,7 +60,7 @@ namespace MeetupPlatformApi.Authentification
         {
             var tokenOptions = new JwtSecurityToken(
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSection("JwtSettings").GetSection("Expire").Value))),
+                expires: DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSection("Jwt").GetSection("Expire").Value))),
                 claims: claims);
 
             return tokenOptions;
