@@ -9,7 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnectionString"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 });
 
 var app = builder.Build();

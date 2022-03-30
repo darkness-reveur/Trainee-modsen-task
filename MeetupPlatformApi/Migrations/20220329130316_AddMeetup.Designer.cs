@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220329130316_Initial")]
-    partial class Initial
+    [Migration("20220329130316_AddMeetup")]
+    partial class AddMeetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
