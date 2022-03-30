@@ -1,4 +1,4 @@
-using MeetupPlatformApi.Authentification;
+using MeetupPlatformApi.Authentication;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

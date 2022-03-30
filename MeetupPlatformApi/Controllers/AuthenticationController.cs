@@ -1,7 +1,7 @@
 ﻿namespace MeetupPlatformApi.Controllers;
 
 using AutoMapper;
-using MeetupPlatformApi.Authentification;
+using MeetupPlatformApi.Authentication;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;

@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Authentification;
+﻿namespace MeetupPlatformApi.Authentication;
 
 using MeetupPlatformApi.Entities;
 using Microsoft.IdentityModel.Tokens;
