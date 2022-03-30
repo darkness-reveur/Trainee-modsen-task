@@ -16,23 +16,20 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "MeetupPlatform");
 });
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters()
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuerSigningKey = true,
-        ValidateLifetime = true,
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
 
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSectionValueFromJwt("SecretKey"))),
-        ClockSkew = TimeSpan.Zero
-    };
-});
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSectionValueFromJwt("SecretKey"))),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 builder.Services.AddScoped<AuthentificationManager>();
 
