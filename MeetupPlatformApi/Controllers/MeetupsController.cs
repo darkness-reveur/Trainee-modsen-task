@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿namespace MeetupPlatformApi.Controllers;
+
+using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-namespace MeetupPlatformApi.Controllers;
 
 [Route("/api/meetups")]
 [ApiController]

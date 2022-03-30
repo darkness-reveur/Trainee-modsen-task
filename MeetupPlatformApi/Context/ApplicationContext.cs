@@ -1,7 +1,7 @@
-﻿using MeetupPlatformApi.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿namespace MeetupPlatformApi.Context;
 
-namespace MeetupPlatformApi.Context;
+using MeetupPlatformApi.Entities;
+using Microsoft.EntityFrameworkCore;
 
 public class ApplicationContext : DbContext
 {

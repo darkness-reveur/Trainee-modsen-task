@@ -1,23 +1,18 @@
-﻿using MeetupPlatformApi.Context;
-using MeetupPlatformApi.DataTransferObjects;
+﻿namespace MeetupPlatformApi.Authentification;
+
 using MeetupPlatformApi.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MeetupPlatformApi.Extensions;
 
-namespace MeetupPlatformApi.Authentification;
-
 public class AuthenticationManager
 {
-    private readonly ApplicationContext context;
     private readonly IConfiguration configuration;
 
-    public AuthenticationManager(ApplicationContext context, IConfiguration configuration)
+    public AuthenticationManager(IConfiguration configuration)
     {
-        this.context = context;
         this.configuration = configuration;
     }
 

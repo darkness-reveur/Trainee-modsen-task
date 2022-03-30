@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace MeetupPlatformApi.DataTransferObjects;
 
-namespace MeetupPlatformApi.DataTransferObjects;
+using System.ComponentModel.DataAnnotations;
 
 public class UserRegistrationDto
 {

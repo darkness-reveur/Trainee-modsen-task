@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿namespace MeetupPlatformApi.Controllers;
+
+using AutoMapper;
 using MeetupPlatformApi.Authentification;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
@@ -7,8 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-
-namespace MeetupPlatformApi.Controllers;
+using BCrypt.Net;
 
 [Route("/api/meetups/authentication")]
 [ApiController]
@@ -39,7 +40,7 @@ public class AuthenticationController : ControllerBase
     {
         var user = mapper.Map<UserEntity>(userFromBody);
 
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        user.Password = BCrypt.HashPassword(user.Password);
 
         await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
@@ -54,7 +55,7 @@ public class AuthenticationController : ControllerBase
     {
         var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuthentificationDto.Username));
 
-        if (userFromDb != null && BCrypt.Net.BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
+        if (userFromDb != null && BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
         {
             return Unauthorized();
         }
