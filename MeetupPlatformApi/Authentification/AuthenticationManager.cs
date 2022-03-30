@@ -48,7 +48,7 @@ public class AuthenticationManager
         var descriptor = new SecurityTokenDescriptor
         {
             SigningCredentials = signingCredentials,
-            Expires = DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSectionValueFromJwt("Expire")))),
+            Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSectionValueFromJwt("Expire")))),
             Claims = claims
         };
 
