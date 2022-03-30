@@ -43,8 +43,10 @@ public class AuthenticationController : ControllerBase
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
+        var token = authenticationManager.CreateToken(user);
         var outputDto = mapper.Map<UserOutputDto>(user);
-        return CreatedAtAction(nameof(GetUserById), new { id = outputDto.Id }, outputDto);
+        var registrationResultDto = new UserRegistrationResultDto { UserInfo = outputDto, AccessToken = token };
+        return CreatedAtAction(nameof(GetUserById), new { id = registrationResultDto.UserInfo.Id }, registrationResultDto);
     }
 
     [HttpPost("authenticate")]
