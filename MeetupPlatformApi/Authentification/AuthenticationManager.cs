@@ -15,25 +15,16 @@ public class AuthenticationManager
     private readonly ApplicationContext context;
     private readonly IConfiguration configuration;
 
-    private UserEntity user;
-
     public AuthenticationManager(ApplicationContext context, IConfiguration configuration)
     {
         this.context = context;
         this.configuration = configuration;
     }
 
-    public async Task<bool> ValidateUser(UserAuthenticationDto userForAuth)
-    {
-        user = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuth.Username));
-
-        return (user != null && BCrypt.Net.BCrypt.Verify(userForAuth.Password, user.Password));
-    }
-
-    public string CreateToken()
+    public string CreateToken(UserEntity user)
     {
         var signingCredentials = GetSigningCredentials();
-        var claims = GetClaims();
+        var claims = GetClaims(user);
         var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
@@ -47,7 +38,7 @@ public class AuthenticationManager
         return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
 
-    private List<Claim> GetClaims()
+    private List<Claim> GetClaims(UserEntity user)
     {
         var claims = new List<Claim>
             {

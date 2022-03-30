@@ -28,8 +28,8 @@ public class AuthenticationController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
-        var user = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
-        var userOutput = mapper.Map<UserOutputDto>(user);
+        var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Id.Equals(id));
+        var userOutput = mapper.Map<UserOutputDto>(userFromDb);
 
         return userOutput == null ? Ok(userOutput) : NotFound();
     }
@@ -52,12 +52,14 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userForAuthentificationDto)
     {
-        if (!await authentificationManager.ValidateUser(userForAuthentificationDto))
+        var userFromDb = await context.Users.SingleOrDefaultAsync(u => u.Username.Equals(userForAuthentificationDto.Username));
+
+        if (userFromDb != null && BCrypt.Net.BCrypt.Verify(userForAuthentificationDto.Password, userFromDb.Password))
         {
             return Unauthorized();
         }
 
-        return Ok(new { Token = authentificationManager.CreateToken() });
+        return Ok(new { Token = authentificationManager.CreateToken(userFromDb) });
     }
 
     [HttpGet("user")]
