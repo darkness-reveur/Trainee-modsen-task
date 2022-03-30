@@ -11,7 +11,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Configuration.GetCo
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "MeetupPlatform");
@@ -26,12 +25,11 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
 
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings").GetSection("SecretKey").Value)),
-        ValidAudience = builder.Configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
-        ValidIssuer = builder.Configuration.GetSection("JwtSettings").GetSection("validIssuer").Value
+        ClockSkew = TimeSpan.Zero
     };
 });
 
