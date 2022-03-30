@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseInMemoryDatabase(databaseName: "MeetupPlatform");
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
