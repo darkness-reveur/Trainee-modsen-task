@@ -37,7 +37,7 @@ public class AuthenticationManager
     {
         var claims = new Dictionary<string, object>
             {
-            { ClaimTypes.NameIdentifier, user.Id }
+                { ClaimTypes.NameIdentifier, user.Id }
             };
 
         return claims;
@@ -48,7 +48,7 @@ public class AuthenticationManager
         var descriptor = new SecurityTokenDescriptor
         {
             SigningCredentials = signingCredentials,
-            Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSectionValueFromJwt("AccessTokenLifetimeInMinutes")))),
+            Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(Convert.ToInt32(configuration.GetSectionValueFromJwt("AccessTokenLifetimeInMinutes")))),
             Claims = claims
         };
 
