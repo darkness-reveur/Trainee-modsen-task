@@ -60,10 +60,8 @@ namespace MeetupPlatformApi.Authentification
         {
             var tokenOptions = new JwtSecurityToken(
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(5d),
-                claims: claims,
-                audience: configuration.GetSection("JwtSettings").GetSection("validAudience").Value,
-                issuer: configuration.GetSection("JwtSettings").GetSection("validIssuer").Value);
+                expires: DateTime.Now.Add(TimeSpan.FromMinutes(Convert.ToDouble(configuration.GetSection("JwtSettings").GetSection("Expire").Value))),
+                claims: claims);
 
             return tokenOptions;
         }
