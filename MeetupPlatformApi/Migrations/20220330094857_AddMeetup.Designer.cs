@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220329130316_AddMeetup")]
+    [Migration("20220330094857_AddMeetup")]
     partial class AddMeetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,14 @@ namespace MeetupPlatformApi.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("StartTime")
