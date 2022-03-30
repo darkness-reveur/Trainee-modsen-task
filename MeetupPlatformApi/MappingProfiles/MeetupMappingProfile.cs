@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿namespace MeetupPlatformApi.MappingProfiles;
+
+using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
-
-namespace MeetupPlatformApi.MappingProfiles;
 
 public class MeetupMappingProfile : Profile
 {
