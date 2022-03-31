@@ -42,7 +42,7 @@ public class AuthenticationController : ControllerBase
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
-        var token = authenticationManager.CreateToken(user);
+        var token = authenticationManager.CreateTokenPair(user);
         var userInfoDto = mapper.Map<UserOutputDto>(user);
         var outputDto = new UserRegistrationResultDto { UserInfo = userInfoDto, AccessToken = token };
         return CreatedAtAction(nameof(GetUserById), new { id = outputDto.UserInfo.Id }, outputDto);
@@ -58,7 +58,7 @@ public class AuthenticationController : ControllerBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var outputDto = new AuthenticationTokenOutputDto() { Token = authenticationManager.CreateToken(user) };
+        var outputDto = new AuthenticationTokenOutputDto() { Token = authenticationManager.CreateTokenPair(user) };
 
         return Ok(outputDto);
     }

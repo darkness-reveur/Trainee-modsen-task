@@ -25,13 +25,24 @@ public class AuthenticationManager
         return new AccessTokenPayload { UserId = userId };
     }
 
-    public string CreateToken(UserEntity user)
+    public string CreateTokenPair(UserEntity user)
+    {
+        var jwtToken = CreateJwtToken(user);
+        
+    }
+
+    private string CreateJwtToken(UserEntity user)
     {
         var signingCredentials = GetSigningCredentials();
         var claims = GetClaims(user);
         var token = CreateToken(signingCredentials, claims);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private RefreshTokenEntity CreateRefreshToken()
+    {
+
     }
 
     private SigningCredentials GetSigningCredentials()

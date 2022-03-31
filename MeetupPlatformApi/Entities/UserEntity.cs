@@ -13,4 +13,6 @@ public class UserEntity
 
     [Required]
     public string Password { get; set; }
+
+    public ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
 }
