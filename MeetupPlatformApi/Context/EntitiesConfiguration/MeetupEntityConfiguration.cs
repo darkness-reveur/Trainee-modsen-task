@@ -2,38 +2,42 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MeetupPlatformApi.Context.EntitiesConfiguration
+namespace MeetupPlatformApi.Context.EntitiesConfiguration;
+
+public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
 {
-    public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
+    public void Configure(EntityTypeBuilder<MeetupEntity> meetupEntity)
     {
-        public void Configure(EntityTypeBuilder<MeetupEntity> builder)
-        {
-            builder.ToTable("meetups");
+        meetupEntity.ToTable("meetups");
 
-            builder.HasKey(m => m.Id)
-                .HasName("pk_meetups");
+        meetupEntity
+            .HasKey(meetup => meetup.Id)
+            .HasName("pk_meetups");
 
-            builder.Property(m => m.Id)
-                .IsRequired()
-                .HasColumnName("pk_meetups");
+        meetupEntity
+            .Property(meetup => meetup.Id)
+            .IsRequired()
+            .HasColumnName("pk_meetups");
 
-            builder.Property(m => m.Name)
-                .IsRequired()
-                .HasMaxLength(200)
-                .HasColumnName("name");
+        meetupEntity
+            .Property(meetup => meetup.Name)
+            .IsRequired()
+            .HasColumnName("name");
 
-            builder.Property(m => m.Description)
-                .IsRequired()
-                .HasMaxLength(4000)
-                .HasColumnName("description");
+        meetupEntity
+            .Property(meetup => meetup.Description)
+            .IsRequired()
+            .HasColumnName("description");
 
-            builder.Property(m => m.StartTime)
-                .IsRequired()
-                .HasColumnName("start_time");
+        meetupEntity
+            .Property(meetup => meetup.StartTime)
+            .IsRequired()
+            .HasColumnName("start_time");
 
-            builder.Property(m => m.EndTime)
-                .IsRequired()
-                .HasColumnName("end_time");
-        }
+        meetupEntity
+            .Property(meetup => meetup.EndTime)
+            .IsRequired()
+            .HasColumnName("end_time");
     }
 }
+

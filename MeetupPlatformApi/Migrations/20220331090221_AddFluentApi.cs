@@ -25,14 +25,14 @@ namespace MeetupPlatformApi.Migrations
                 newName: "meetups");
 
             migrationBuilder.RenameColumn(
+                name: "Username",
+                table: "users",
+                newName: "username");
+
+            migrationBuilder.RenameColumn(
                 name: "Password",
                 table: "users",
                 newName: "password");
-
-            migrationBuilder.RenameColumn(
-                name: "Username",
-                table: "users",
-                newName: "ux_users_username");
 
             migrationBuilder.RenameColumn(
                 name: "Id",
@@ -64,24 +64,6 @@ namespace MeetupPlatformApi.Migrations
                 table: "meetups",
                 newName: "pk_meetups");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "name",
-                table: "meetups",
-                type: "character varying(200)",
-                maxLength: 200,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "description",
-                table: "meetups",
-                type: "character varying(4000)",
-                maxLength: 4000,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
-
             migrationBuilder.AddPrimaryKey(
                 name: "pk_users",
                 table: "users",
@@ -95,7 +77,7 @@ namespace MeetupPlatformApi.Migrations
             migrationBuilder.CreateIndex(
                 name: "ux_users_username",
                 table: "users",
-                column: "ux_users_username",
+                column: "username",
                 unique: true);
         }
 
@@ -122,14 +104,14 @@ namespace MeetupPlatformApi.Migrations
                 newName: "Meetups");
 
             migrationBuilder.RenameColumn(
+                name: "username",
+                table: "Users",
+                newName: "Username");
+
+            migrationBuilder.RenameColumn(
                 name: "password",
                 table: "Users",
                 newName: "Password");
-
-            migrationBuilder.RenameColumn(
-                name: "ux_users_username",
-                table: "Users",
-                newName: "Username");
 
             migrationBuilder.RenameColumn(
                 name: "pk_users",
@@ -160,24 +142,6 @@ namespace MeetupPlatformApi.Migrations
                 name: "pk_meetups",
                 table: "Meetups",
                 newName: "Id");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Meetups",
-                type: "text",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "character varying(200)",
-                oldMaxLength: 200);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Meetups",
-                type: "text",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "character varying(4000)",
-                oldMaxLength: 4000);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",

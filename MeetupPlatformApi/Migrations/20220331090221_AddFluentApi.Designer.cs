@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220330200638_AddFluentApi")]
+    [Migration("20220331090221_AddFluentApi")]
     partial class AddFluentApi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,8 +35,7 @@ namespace MeetupPlatformApi.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("character varying(4000)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<DateTime>("EndTime")
@@ -45,8 +44,7 @@ namespace MeetupPlatformApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<DateTime>("StartTime")
@@ -74,7 +72,7 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("ux_users_username");
+                        .HasColumnName("username");
 
                     b.HasKey("Id")
                         .HasName("pk_users");

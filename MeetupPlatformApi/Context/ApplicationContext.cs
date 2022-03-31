@@ -3,6 +3,7 @@
 using MeetupPlatformApi.Context.EntitiesConfiguration;
 using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 public class ApplicationContext : DbContext
 {
@@ -16,8 +17,6 @@ public class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MeetupEntityConfiguration).Assembly);
-
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserEntityConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

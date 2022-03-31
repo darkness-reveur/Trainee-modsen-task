@@ -2,32 +2,37 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MeetupPlatformApi.Context.EntitiesConfiguration
+namespace MeetupPlatformApi.Context.EntitiesConfiguration;
+
+public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {
-    public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
+    public void Configure(EntityTypeBuilder<UserEntity> userEntity)
     {
-        public void Configure(EntityTypeBuilder<UserEntity> builder)
-        {
-            builder.ToTable("users");
+        userEntity.ToTable("users");
 
-            builder.HasKey(u => u.Id)
-                .HasName("pk_users");
+        userEntity
+            .HasKey(user => user.Id)
+            .HasName("pk_users");
 
-            builder.Property(u => u.Id)
-                .IsRequired()
-                .HasColumnName("pk_users");
+        userEntity
+            .Property(user => user.Id)
+            .IsRequired()
+            .HasColumnName("pk_users");
 
-            builder.HasIndex(u => u.Username)
-                .HasName("ux_users_username")
-                .IsUnique();
+        userEntity
+            .HasIndex(user => user.Username)
+            .HasName("ux_users_username")
+            .IsUnique();
 
-            builder.Property(u => u.Username)
-                .IsRequired()
-                .HasColumnName("ux_users_username");
+        userEntity
+            .Property(user => user.Username)
+            .IsRequired()
+            .HasColumnName("username");
 
-            builder.Property(u => u.Password)
-                .HasColumnName("password")
-                .IsRequired();
-        }
+        userEntity
+            .Property(user => user.Password)
+            .HasColumnName("password")
+            .IsRequired();
     }
 }
+
