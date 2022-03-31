@@ -37,7 +37,7 @@ namespace MeetupPlatformApi.Migrations
             migrationBuilder.RenameColumn(
                 name: "Id",
                 table: "users",
-                newName: "pk_users");
+                newName: "id");
 
             migrationBuilder.RenameColumn(
                 name: "Name",
@@ -50,6 +50,11 @@ namespace MeetupPlatformApi.Migrations
                 newName: "description");
 
             migrationBuilder.RenameColumn(
+                name: "Id",
+                table: "meetups",
+                newName: "id");
+
+            migrationBuilder.RenameColumn(
                 name: "StartTime",
                 table: "meetups",
                 newName: "start_time");
@@ -59,20 +64,15 @@ namespace MeetupPlatformApi.Migrations
                 table: "meetups",
                 newName: "end_time");
 
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "meetups",
-                newName: "pk_meetups");
-
             migrationBuilder.AddPrimaryKey(
                 name: "pk_users",
                 table: "users",
-                column: "pk_users");
+                column: "id");
 
             migrationBuilder.AddPrimaryKey(
                 name: "pk_meetups",
                 table: "meetups",
-                column: "pk_meetups");
+                column: "id");
 
             migrationBuilder.CreateIndex(
                 name: "ux_users_username",
@@ -114,7 +114,7 @@ namespace MeetupPlatformApi.Migrations
                 newName: "Password");
 
             migrationBuilder.RenameColumn(
-                name: "pk_users",
+                name: "id",
                 table: "Users",
                 newName: "Id");
 
@@ -129,6 +129,11 @@ namespace MeetupPlatformApi.Migrations
                 newName: "Description");
 
             migrationBuilder.RenameColumn(
+                name: "id",
+                table: "Meetups",
+                newName: "Id");
+
+            migrationBuilder.RenameColumn(
                 name: "start_time",
                 table: "Meetups",
                 newName: "StartTime");
@@ -137,11 +142,6 @@ namespace MeetupPlatformApi.Migrations
                 name: "end_time",
                 table: "Meetups",
                 newName: "EndTime");
-
-            migrationBuilder.RenameColumn(
-                name: "pk_meetups",
-                table: "Meetups",
-                newName: "Id");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",

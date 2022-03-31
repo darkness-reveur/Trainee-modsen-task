@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220331090221_AddFluentApi")]
+    [Migration("20220331155516_AddFluentApi")]
     partial class AddFluentApi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("pk_meetups");
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -62,7 +62,7 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("pk_users");
+                        .HasColumnName("id");
 
                     b.Property<string>("Password")
                         .IsRequired()

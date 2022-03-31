@@ -34,13 +34,13 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userFromBody)
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
-        var user = mapper.Map<UserEntity>(userFromBody);
+        var user = mapper.Map<UserEntity>(registrationDto);
 
-        var existingUser = await context.Users.FirstOrDefaultAsync(exUser => exUser.Username == user.Username);
+        var existingUser = await context.Users.AnyAsync(exUser => exUser.Username == user.Username);
 
-        if (existingUser is not null)
+        if (existingUser is true)
         {
             return BadRequest("Provided username is already taken");
         }

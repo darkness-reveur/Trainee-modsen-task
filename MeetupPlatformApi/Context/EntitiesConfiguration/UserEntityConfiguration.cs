@@ -1,8 +1,8 @@
-﻿using MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.Context.EntitiesConfiguration;
+
+using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MeetupPlatformApi.Context.EntitiesConfiguration;
 
 public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {
@@ -17,7 +17,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         userEntity
             .Property(user => user.Id)
             .IsRequired()
-            .HasColumnName("pk_users");
+            .HasColumnName("id");
 
         userEntity
             .HasIndex(user => user.Username)

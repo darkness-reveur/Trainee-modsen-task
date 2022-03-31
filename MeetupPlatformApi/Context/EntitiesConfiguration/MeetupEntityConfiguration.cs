@@ -1,8 +1,8 @@
-﻿using MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.Context.EntitiesConfiguration;
+
+using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MeetupPlatformApi.Context.EntitiesConfiguration;
 
 public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
 {
@@ -17,7 +17,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
         meetupEntity
             .Property(meetup => meetup.Id)
             .IsRequired()
-            .HasColumnName("pk_meetups");
+            .HasColumnName("id");
 
         meetupEntity
             .Property(meetup => meetup.Name)
