@@ -36,14 +36,14 @@ public class AuthenticationController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
-        var user = mapper.Map<UserEntity>(registrationDto);
+        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == user.Username);
 
-        var existingUser = await context.Users.AnyAsync(exUser => exUser.Username == user.Username);
-
-        if (existingUser is true)
+        if (usernameAlreadyTaken)
         {
             return BadRequest("Provided username is already taken");
         }
+
+        var user = mapper.Map<UserEntity>(registrationDto);
 
         user.Password = BCrypt.HashPassword(user.Password);
 
