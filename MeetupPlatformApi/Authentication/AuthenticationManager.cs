@@ -4,63 +4,44 @@ using MeetupPlatformApi.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using MeetupPlatformApi.Extensions;
-using MeetupPlatformApi.Models;
 
 public class AuthenticationManager
 {
-    private readonly IConfiguration configuration;
+    private readonly AuthenticationConfiguration configuration;
+    private readonly JwtSecurityTokenHandler tokenHandler;
 
-    public AuthenticationManager(IConfiguration configuration)
+    public AuthenticationManager(AuthenticationConfiguration configuration)
     {
         this.configuration = configuration;
+        tokenHandler = new JwtSecurityTokenHandler();
     }
 
-    public AccessTokenPayload GetAccessTokenPayload(ClaimsPrincipal user)
+    public CurrentUserInfo GetCurrentUserInfo(ClaimsPrincipal user)
     {
-        var userNameIdentifier = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-        var userId = Guid.Parse(userNameIdentifier);
+        var idClaim = user.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
+        var id = Guid.Parse(idClaim.Value);
 
-        return new AccessTokenPayload { UserId = userId };
+        return new() {UserId = id};
     }
 
-    public string CreateToken(UserEntity user)
-    {
-        var signingCredentials = GetSigningCredentials();
-        var claims = GetClaims(user);
-        var token = CreateToken(signingCredentials, claims);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private SigningCredentials GetSigningCredentials()
-    {
-        var key = Encoding.UTF8.GetBytes(configuration.GetSectionValueFromJwt("SecretKey"));
-        var secret = new SymmetricSecurityKey(key);
-
-        return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-    }
-
-    private Dictionary<string, object> GetClaims(UserEntity user)
-    {
-        var claims = new Dictionary<string, object>
+    public string IssueAccessToken(UserEntity user) =>
+        IssueToken(
+            payload: new Dictionary<string, object>
             {
-                { ClaimTypes.NameIdentifier, user.Id }
-            };
+                {ClaimTypes.NameIdentifier, user.Id}
+            },
+            lifetime: configuration.AccessTokenLifetime);
 
-        return claims;
-    }
-
-    private SecurityToken CreateToken(SigningCredentials signingCredentials, Dictionary<string, object> claims)
+    private string IssueToken(IDictionary<string, object> payload, TimeSpan lifetime)
     {
-        var descriptor = new SecurityTokenDescriptor
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            SigningCredentials = signingCredentials,
-            Expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(Convert.ToInt32(configuration.GetSectionValueFromJwt("AccessTokenLifetimeInMinutes")))),
-            Claims = claims
+            Claims = payload,
+            Expires = DateTime.UtcNow.Add(lifetime),
+            SigningCredentials = configuration.SigningCredentials
         };
 
-        return new JwtSecurityTokenHandler().CreateToken(descriptor);
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
