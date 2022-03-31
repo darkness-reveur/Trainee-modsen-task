@@ -3,7 +3,7 @@
 /.idea
 
 # Environment-specific configuration
-/**/appsettings.*.json
+/**/appSettings.*.json
 
 # Build artifacts
 /**/bin/

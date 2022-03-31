@@ -5,6 +5,6 @@ namespace MeetupPlatformApi.DataTransferObjects
     public class AuthenticationTokenOutputDto
     {
         [Required]
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
     }
 }

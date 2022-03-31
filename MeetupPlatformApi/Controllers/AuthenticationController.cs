@@ -42,24 +42,27 @@ public class AuthenticationController : ControllerBase
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
-        var token = authenticationManager.CreateToken(user);
+        var accessToken = authenticationManager.IssueAccessToken(user);
         var userInfoDto = mapper.Map<UserOutputDto>(user);
-        var outputDto = new UserRegistrationResultDto { UserInfo = userInfoDto, AccessToken = token };
-        return CreatedAtAction(nameof(GetUserById), new { id = outputDto.UserInfo.Id }, outputDto);
+        var outputDto = new UserRegistrationResultDto
+        {
+            UserInfo = userInfoDto,
+            AccessToken = accessToken
+        };
+        return CreatedAtAction(nameof(GetUserById), new {id = outputDto.UserInfo.Id}, outputDto);
     }
 
     [HttpPost("authenticate")]
-    public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto userForAuthentificationDto)
+    public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto authenticationDto)
     {
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Username == userForAuthentificationDto.Username);
-
-        if (user is null || !BCrypt.Verify(userForAuthentificationDto.Password, user.Password))
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Username == authenticationDto.Username);
+        if (user is null || !BCrypt.Verify(authenticationDto.Password, user.Password))
         {
             return BadRequest("Username or password is incorrect.");
         }
 
-        var outputDto = new AuthenticationTokenOutputDto() { Token = authenticationManager.CreateToken(user) };
-
+        var accessToken = authenticationManager.IssueAccessToken(user);
+        var outputDto = new AuthenticationTokenOutputDto { AccessToken = accessToken };
         return Ok(outputDto);
     }
 
@@ -67,8 +70,8 @@ public class AuthenticationController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetCurrentUserInfo()
     {
-        var accessTokenInfo = authenticationManager.GetAccessTokenPayload(User);
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == accessTokenInfo.UserId);
+        var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
 
         var outputDto = mapper.Map<UserOutputDto>(user);
         return Ok(outputDto);
