@@ -2,11 +2,6 @@
 
 public static class ConfigurationExtensions
 {
-    public static string GetSectionValueFromJwt(this IConfiguration configuration, string sectionName)
-    {
-        return configuration[$"Jwt:{sectionName}"];
-    }
-
     public static void AddJsonFiles(this IConfigurationBuilder configuration, IHostEnvironment environment)
     {
         var jsonFileNames = new[]
