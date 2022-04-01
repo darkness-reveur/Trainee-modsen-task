@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace MeetupPlatformApi.Entities;
 
-namespace MeetupPlatformApi.Entities;
+using System.ComponentModel.DataAnnotations;
 
 public class MeetupEntity
 {
