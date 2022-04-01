@@ -9,6 +9,8 @@ public class AuthenticationConfiguration
     public SigningCredentials SigningCredentials { get; }
     
     public TimeSpan AccessTokenLifetime { get; }
+
+    public TimeSpan RefreshTokenLifetime { get; set; }
     
     public TokenValidationParameters ValidationParameters { get; }
 
@@ -23,6 +25,9 @@ public class AuthenticationConfiguration
         
         var accessTokenLifetimeInMinutes = applicationConfiguration.GetInt($"{authSectionName}:AccessTokenLifetimeInMinutes");
         AccessTokenLifetime = TimeSpan.FromMinutes(accessTokenLifetimeInMinutes);
+
+        var refreshTokenLifetimeInDays = applicationConfiguration.GetInt($"{authSectionName}:RefreshTokenLifetimeInDays");
+        RefreshTokenLifetime = TimeSpan.FromDays(refreshTokenLifetimeInDays);
 
         ValidationParameters = new TokenValidationParameters
         {

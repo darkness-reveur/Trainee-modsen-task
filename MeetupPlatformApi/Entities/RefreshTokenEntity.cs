@@ -16,6 +16,5 @@ public class RefreshTokenEntity
     [Required]
     public Guid UserId { get; set; }
     
-    [Required]
     public UserEntity User { get; set; }
 }

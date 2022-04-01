@@ -21,20 +21,24 @@ public class AuthenticationManager
         var idClaim = user.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
         var id = Guid.Parse(idClaim.Value);
 
-        return new() {UserId = id};
+        return new() { UserId = id };
     }
 
-    public TokenPair IssueAccessToken(UserEntity user) =>
-        IssueTokenPair(
+    public TokenPair IssueTokenPair(UserEntity user)
+    {
+        var accessToken = IssueAccessToken(
             payload: new Dictionary<string, object>
-            {
-                {ClaimTypes.NameIdentifier, user.Id}
-            },
-            accessTokenLifetime: configuration.AccessTokenLifetime,
-            refreshTokenLifetime: configuration.RefreshTokenLifetime,
-            userId: user.Id);
+                {
+                    {ClaimTypes.NameIdentifier, user.Id}
+                },
+                accessTokenLifetime: configuration.AccessTokenLifetime);
 
-    private TokenPair IssueTokenPair(IDictionary<string, object> payload, TimeSpan accessTokenLifetime, TimeSpan refreshTokenLifetime, Guid userId)
+        var refreshToken = IssueRefreshToken(configuration.RefreshTokenLifetime, user.Id);
+
+        return new() { AccessToken = accessToken, RefreshToken = refreshToken };
+    }
+
+    private string IssueAccessToken(IDictionary<string, object> payload, TimeSpan accessTokenLifetime)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -44,15 +48,16 @@ public class AuthenticationManager
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        string accessToken = tokenHandler.WriteToken(token);
+        return tokenHandler.WriteToken(token);
+    }
 
-        var refreshToken = new RefreshTokenEntity
+    private RefreshTokenEntity IssueRefreshToken(TimeSpan refreshTokenLifetime, Guid userId)
+    {
+        return new RefreshTokenEntity
         {
             Id = Guid.NewGuid(),
             Expires = DateTime.UtcNow.Add(refreshTokenLifetime),
             UserId = userId
         };
-
-        return new() { AccessToken = accessToken, RefreshToken = refreshToken };
     }
 }

@@ -30,26 +30,76 @@ public class AuthenticationController : ControllerBase
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
         var outputDto = mapper.Map<UserOutputDto>(user);
-        return outputDto is null ? Ok(outputDto) : NotFound();
+        return outputDto is not null ? Ok(outputDto) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userFromBody)
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
-        var user = mapper.Map<UserEntity>(userFromBody);
+        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
+
+        if (usernameAlreadyTaken)
+        {
+            return BadRequest("Provided username is already taken");
+        }
+
+        var user = mapper.Map<UserEntity>(registrationDto);
+
         user.Password = BCrypt.HashPassword(user.Password);
 
-        context.Users.Add(user);
+        await context.Users.AddAsync(user);
+
+        var tokenPair = authenticationManager.IssueTokenPair(user);
+
+        await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
         await context.SaveChangesAsync();
 
-        var accessToken = authenticationManager.IssueAccessToken(user);
         var userInfoDto = mapper.Map<UserOutputDto>(user);
         var outputDto = new UserRegistrationResultDto
         {
             UserInfo = userInfoDto,
-            AccessToken = accessToken
+            TokenPair = new() { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id }
         };
         return CreatedAtAction(nameof(GetUserById), new {id = outputDto.UserInfo.Id}, outputDto);
+    }
+
+    [HttpPost("refresh/{id:guid}")]
+    public async Task<IActionResult> TokenRefresh(Guid id)
+    {
+        var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
+
+        if(refreshToken is null)
+        {
+            return BadRequest($"Token with id: {id} doesn't exist.");
+        }
+
+        var user = await context.Users.Where(user => user.Id == refreshToken.UserId).SingleOrDefaultAsync();
+
+        var tokenPair = authenticationManager.IssueTokenPair(user);
+
+        context.RefreshTokens.Remove(refreshToken);
+        await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
+        await context.SaveChangesAsync();
+
+        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
+        return Ok(outputDto);
+    }
+
+    [HttpPost("revokeAll/{id:guid}")]
+    public async Task<IActionResult> RevokeAllRefreshTokens(Guid id)
+    {
+        var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
+
+        if (refreshToken is null)
+        {
+            return BadRequest($"Token with id: {id} doesn't exist.");
+        }
+
+        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == refreshToken.UserId).ToListAsync();
+
+        context.RefreshTokens.RemoveRange(userRefreshTokens);
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 
     [HttpPost("authenticate")]
@@ -61,8 +111,12 @@ public class AuthenticationController : ControllerBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var accessToken = authenticationManager.IssueAccessToken(user);
-        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = accessToken };
+        var tokenPair = authenticationManager.IssueTokenPair(user);
+
+        await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
+        await context.SaveChangesAsync();
+
+        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
         return Ok(outputDto);
     }
 
