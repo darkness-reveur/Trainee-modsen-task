@@ -1,11 +1,10 @@
-﻿using MeetupPlatformApi.Entities;
+﻿namespace MeetupPlatformApi.Authentication;
 
-namespace MeetupPlatformApi.Authentication
+using MeetupPlatformApi.Entities;
+
+public class TokenPair
 {
-    public class TokenPair
-    {
-        public string AccessToken { get; set; }
+    public string AccessToken { get; set; }
 
-        public Guid RefreshTokenId { get; set; }
-}
+    public RefreshTokenEntity RefreshToken { get; set; }
 }

@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace MeetupPlatformApi.DataTransferObjects;
 
-namespace MeetupPlatformApi.DataTransferObjects
+using System.ComponentModel.DataAnnotations;
+
+public class UserRegistrationResultDto
 {
-    public class UserRegistrationResultDto
-    {
-        [Required]
-        public UserOutputDto UserInfo { get; set; }
+    [Required]
+    public UserOutputDto UserInfo { get; set; }
 
-        [Required]
-        public AuthenticationTokenPairOutputDto TokenPair { get; set; }
-    }
+    [Required]
+    public AuthenticationTokenPairOutputDto TokenPair { get; set; }
 }

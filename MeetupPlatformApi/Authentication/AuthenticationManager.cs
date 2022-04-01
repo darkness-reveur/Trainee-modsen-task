@@ -30,7 +30,9 @@ public class AuthenticationManager
             {
                 {ClaimTypes.NameIdentifier, user.Id}
             },
-            accessTokenLifetime: configuration.AccessTokenLifetime);
+            accessTokenLifetime: configuration.AccessTokenLifetime,
+            refreshTokenLifetime: configuration.RefreshTokenLifetime,
+            userId: user.Id);
 
     private TokenPair IssueTokenPair(IDictionary<string, object> payload, TimeSpan accessTokenLifetime, TimeSpan refreshTokenLifetime, Guid userId)
     {
@@ -51,6 +53,6 @@ public class AuthenticationManager
             UserId = userId
         };
 
-        return new() { AccessToken = accessToken, RefreshTokenId = refreshToken.Id };
+        return new() { AccessToken = accessToken, RefreshToken = refreshToken };
     }
 }
