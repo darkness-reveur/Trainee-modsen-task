@@ -10,23 +10,23 @@ namespace MeetupPlatformApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Meetups",
-                table: "Meetups");
+                name: "pk_meetups",
+                table: "meetups");
 
             migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Meetups");
+                name: "id",
+                table: "meetups");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "Id", 
-                table: "Meetups",
+                name: "id", 
+                table: "meetups",
                 nullable: false,
                 defaultValue: Guid.Empty);
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Meetups",
-                table: "Meetups",
-                column: "Id");
+                name: "pk_meetups",
+                table: "meetups",
+                column: "id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
