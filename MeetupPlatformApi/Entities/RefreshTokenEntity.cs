@@ -5,15 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class RefreshTokenEntity
 {
-    [Required]
-    [Key]
     public Guid Id { get; set; }
 
-    [Required]
     public DateTime Expires { get; set; }
 
-    [ForeignKey(nameof(UserEntity))]
-    [Required]
     public Guid UserId { get; set; }
     
     public UserEntity User { get; set; }
