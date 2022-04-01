@@ -30,13 +30,21 @@ public class AuthenticationController : ControllerBase
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
         var outputDto = mapper.Map<UserOutputDto>(user);
-        return outputDto is null ? Ok(outputDto) : NotFound();
+        return outputDto is not null ? Ok(outputDto) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto userFromBody)
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
-        var user = mapper.Map<UserEntity>(userFromBody);
+        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
+
+        if (usernameAlreadyTaken)
+        {
+            return BadRequest("Provided username is already taken");
+        }
+
+        var user = mapper.Map<UserEntity>(registrationDto);
+
         user.Password = BCrypt.HashPassword(user.Password);
 
         context.Users.Add(user);
