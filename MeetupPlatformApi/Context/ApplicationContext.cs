@@ -1,7 +1,9 @@
 ﻿namespace MeetupPlatformApi.Context;
 
+using MeetupPlatformApi.Context.EntitiesConfiguration;
 using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 public class ApplicationContext : DbContext
 {
@@ -14,4 +16,9 @@ public class ApplicationContext : DbContext
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 }
