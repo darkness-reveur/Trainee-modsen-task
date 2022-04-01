@@ -29,7 +29,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
             .WithMany(user => user.RefreshTokens)
             .OnDelete(DeleteBehavior.Cascade)
             .HasForeignKey(refreshToken => refreshToken.UserId)
-            .HasConstraintName("fk_users_refresh_tokens");
+            .HasConstraintName("fk_users_refresh_tokens_user_id");
 
         refreshTokenEntity
             .Property(refreshToken => refreshToken.UserId)
