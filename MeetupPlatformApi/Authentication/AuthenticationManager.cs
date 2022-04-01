@@ -28,7 +28,9 @@ public class AuthenticationManager
     public string CreateTokenPair(UserEntity user)
     {
         var jwtToken = CreateJwtToken(user);
-        
+        var refreshToken = CreateRefreshToken(user);
+
+        return null;
     }
 
     private string CreateJwtToken(UserEntity user)
@@ -40,9 +42,13 @@ public class AuthenticationManager
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private RefreshTokenEntity CreateRefreshToken()
+    private RefreshTokenEntity CreateRefreshToken(UserEntity user)
     {
-
+        return new RefreshTokenEntity
+        {
+            Expires = DateTime.UtcNow.AddMonths(Convert.ToInt32(configuration.GetSectionValueFromJwt("RefreshTokenLifetimeInMonths"))),
+            UserId = user.Id
+        };
     }
 
     private SigningCredentials GetSigningCredentials()
