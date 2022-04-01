@@ -8,6 +8,6 @@ namespace MeetupPlatformApi.DataTransferObjects
         public UserOutputDto UserInfo { get; set; }
 
         [Required]
-        public string AccessToken { get; set; }
+        public AuthenticationTokenPairOutputDto TokenPair { get; set; }
     }
 }

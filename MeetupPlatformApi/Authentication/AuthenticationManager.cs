@@ -24,24 +24,33 @@ public class AuthenticationManager
         return new() {UserId = id};
     }
 
-    public string IssueAccessToken(UserEntity user) =>
-        IssueToken(
+    public TokenPair IssueAccessToken(UserEntity user) =>
+        IssueTokenPair(
             payload: new Dictionary<string, object>
             {
                 {ClaimTypes.NameIdentifier, user.Id}
             },
-            lifetime: configuration.AccessTokenLifetime);
+            accessTokenLifetime: configuration.AccessTokenLifetime);
 
-    private string IssueToken(IDictionary<string, object> payload, TimeSpan lifetime)
+    private TokenPair IssueTokenPair(IDictionary<string, object> payload, TimeSpan accessTokenLifetime, TimeSpan refreshTokenLifetime, Guid userId)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Claims = payload,
-            Expires = DateTime.UtcNow.Add(lifetime),
+            Expires = DateTime.UtcNow.Add(accessTokenLifetime),
             SigningCredentials = configuration.SigningCredentials
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        string accessToken = tokenHandler.WriteToken(token);
+
+        var refreshToken = new RefreshTokenEntity
+        {
+            Id = Guid.NewGuid(),
+            Expires = DateTime.UtcNow.Add(refreshTokenLifetime),
+            UserId = userId
+        };
+
+        return new() { AccessToken = accessToken, RefreshTokenId = refreshToken.Id };
     }
 }

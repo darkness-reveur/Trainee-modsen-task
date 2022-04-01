@@ -62,7 +62,7 @@ public class AuthenticationController : ControllerBase
         }
 
         var accessToken = authenticationManager.IssueAccessToken(user);
-        var outputDto = new AuthenticationTokenOutputDto { AccessToken = accessToken };
+        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = accessToken };
         return Ok(outputDto);
     }
 
