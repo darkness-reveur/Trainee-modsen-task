@@ -2,7 +2,7 @@
 
 namespace MeetupPlatformApi.DataTransferObjects
 {
-    public class UserChangeCredentialsDto
+    public class UserCredentialsChangeDto
     {
         [Required]
         public string Username { get; set; }

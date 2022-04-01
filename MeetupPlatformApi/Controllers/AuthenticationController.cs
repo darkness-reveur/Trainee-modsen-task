@@ -46,7 +46,6 @@ public class AuthenticationController : ControllerBase
         var user = mapper.Map<UserEntity>(registrationDto);
 
         user.Password = BCrypt.HashPassword(user.Password);
-
         await context.Users.AddAsync(user);
 
         var tokenPair = authenticationManager.IssueTokenPair(user);
@@ -106,6 +105,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto authenticationDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == authenticationDto.Username);
+
         if (user is null || !BCrypt.Verify(authenticationDto.Password, user.Password))
         {
             return BadRequest("Username or password is incorrect.");
@@ -118,6 +118,25 @@ public class AuthenticationController : ControllerBase
 
         var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
         return Ok(outputDto);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
+    {
+        var user = await context.Users.Where(user => user.Username == credentialsChangeDto.Username).SingleOrDefaultAsync();
+
+        if(user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password))
+        {
+            return BadRequest($"User with username: {credentialsChangeDto.Username} doesn't exist");
+        }
+
+        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == user.Id).ToListAsync();
+
+        user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
+
+        context.RefreshTokens.RemoveRange(userRefreshTokens);
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 
     [HttpGet("me")]
