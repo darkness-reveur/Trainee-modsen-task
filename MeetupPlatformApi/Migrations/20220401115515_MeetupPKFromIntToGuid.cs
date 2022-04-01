@@ -20,8 +20,7 @@ namespace MeetupPlatformApi.Migrations
             migrationBuilder.AddColumn<Guid>(
                 name: "id", 
                 table: "meetups",
-                nullable: false,
-                defaultValue: Guid.Empty);
+                nullable: false);
 
             migrationBuilder.AddPrimaryKey(
                 name: "pk_meetups",
@@ -31,14 +30,24 @@ namespace MeetupPlatformApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "Meetups",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uuid")
+            migrationBuilder.DropPrimaryKey(
+                name: "pk_meetups",
+                table: "meetups");
+
+            migrationBuilder.DropColumn(
+                name: "id",
+                table: "meetups");
+
+            migrationBuilder.AddColumn<int>(
+                name: "id",
+                table: "meetups",
+                nullable: false)
                 .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "pk_meetups",
+                table: "meetups",
+                column: "id");
         }
     }
 }
