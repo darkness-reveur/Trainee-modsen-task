@@ -63,7 +63,7 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(GetUserById), new {id = outputDto.UserInfo.Id}, outputDto);
     }
 
-    [HttpPost("refresh/{id:guid}")]
+    [HttpPost("refreshTokens/{id:guid}")]
     public async Task<IActionResult> TokenRefresh(Guid id)
     {
         var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
@@ -85,17 +85,17 @@ public class AuthenticationController : ControllerBase
         return Ok(outputDto);
     }
 
-    [HttpPost("revokeAll/{id:guid}")]
-    public async Task<IActionResult> RevokeAllRefreshTokens(Guid id)
+    [HttpDelete("{userId:guid}/refreshTokens")]
+    public async Task<IActionResult> RevokeAllRefreshTokens(Guid userId)
     {
-        var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
+        var user = await context.Users.Where(user => user.Id == userId).SingleOrDefaultAsync();
 
-        if (refreshToken is null)
+        if (user is null)
         {
-            return BadRequest($"Token with id: {id} doesn't exist.");
+            return BadRequest($"User with id: {userId} doesn't exist.");
         }
 
-        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == refreshToken.UserId).ToListAsync();
+        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == userId).ToListAsync();
 
         context.RefreshTokens.RemoveRange(userRefreshTokens);
         await context.SaveChangesAsync();
