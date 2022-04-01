@@ -13,8 +13,6 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-builder.Services.AddScoped<AuthenticationManager>();
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
