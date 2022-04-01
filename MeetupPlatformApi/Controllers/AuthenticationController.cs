@@ -36,7 +36,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
-        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == user.Username);
+        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
 
         if (usernameAlreadyTaken)
         {
