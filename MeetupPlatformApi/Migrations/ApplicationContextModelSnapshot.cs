@@ -26,100 +26,46 @@ namespace MeetupPlatformApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("end_time");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("start_time");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id")
-                        .HasName("pk_meetups");
+                    b.HasKey("Id");
 
-                    b.ToTable("meetups", (string)null);
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Entities.RefreshTokenEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expires");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_refreshTokens");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("refreshTokens", (string)null);
+                    b.ToTable("Meetups", (string)null);
                 });
 
             modelBuilder.Entity("MeetupPlatformApi.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("password");
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("username");
+                        .HasColumnType("text");
 
-                    b.HasKey("Id")
-                        .HasName("pk_users");
+                    b.HasKey("Id");
 
-                    b.HasIndex("Username")
-                        .IsUnique()
-                        .HasDatabaseName("ux_users_username");
-
-                    b.ToTable("users", (string)null);
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Entities.RefreshTokenEntity", b =>
-                {
-                    b.HasOne("MeetupPlatformApi.Entities.UserEntity", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_refreshTokens");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Entities.UserEntity", b =>
-                {
-                    b.Navigation("RefreshTokens");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }
