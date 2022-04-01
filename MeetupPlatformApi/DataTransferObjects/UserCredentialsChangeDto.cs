@@ -11,6 +11,7 @@ namespace MeetupPlatformApi.DataTransferObjects
         public string OldPassword { get; set; }
 
         [Required]
+        [MaxLength(30)]
         public string NewPassword { get; set; }
     }
 }
