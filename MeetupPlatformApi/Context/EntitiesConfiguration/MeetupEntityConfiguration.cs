@@ -38,6 +38,12 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
             .Property(meetup => meetup.EndTime)
             .IsRequired()
             .HasColumnName("end_time");
+
+        meetupEntity
+            .Property(meetup => meetup.Location)
+            .IsRequired()
+            .HasColumnName("location");
+            
     }
 }
 

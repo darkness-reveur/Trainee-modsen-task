@@ -17,4 +17,7 @@ public class MeetupInputDto
     [Required]
     [MaxLength(4000)]
     public string Description { get; set; }
+
+    [Required]
+    public string Location { get; set; }
 }

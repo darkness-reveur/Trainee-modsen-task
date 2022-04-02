@@ -19,4 +19,6 @@ public class MeetupEntity
 
     [Required]
     public string Description { get; set; }
+
+    public string Location { get; set; }
 }

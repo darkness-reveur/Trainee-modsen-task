@@ -18,4 +18,6 @@ public class MeetupOutputDto
 
     [Required]
     public string Description { get; set; }
+    
+    public string Location { get; set; }
 }
