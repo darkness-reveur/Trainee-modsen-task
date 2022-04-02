@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220401115515_MeetupPKFromIntToGuid")]
+    [Migration("20220402130954_MeetupPKFromIntToGuid")]
     partial class MeetupPKFromIntToGuid
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,50 +22,65 @@ namespace MeetupPlatformApi.Migrations
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("MeetupPlatformApi.Entities.MeetupEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_time");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_time");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_meetups");
 
-                    b.ToTable("Meetups");
+                    b.ToTable("meetups", (string)null);
                 });
 
             modelBuilder.Entity("MeetupPlatformApi.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("username");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
-                    b.ToTable("Users");
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("ux_users_username");
+
+                    b.ToTable("users", (string)null);
                 });
 #pragma warning restore 612, 618
         }

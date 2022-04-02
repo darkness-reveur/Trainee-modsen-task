@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -18,9 +19,10 @@ namespace MeetupPlatformApi.Migrations
                 table: "meetups");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "id", 
+                name: "id",
                 table: "meetups",
-                nullable: false);
+                nullable: false,
+                defaultValueSql: "gen_random_uuid()");
 
             migrationBuilder.AddPrimaryKey(
                 name: "pk_meetups",
