@@ -28,8 +28,8 @@ public class MeetupsController : ControllerBase
         return Ok(outputDtos);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetMeetupById([FromRoute] int id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetMeetupById([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
         var outputDto = mapper.Map<MeetupOutputDto>(meetup);
@@ -47,8 +47,8 @@ public class MeetupsController : ControllerBase
         return CreatedAtAction(nameof(GetMeetupById), new { id = outputDto.Id }, outputDto);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> UpdateMeetup([FromRoute] int id, [FromBody] MeetupInputDto inputDto)
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateMeetup([FromRoute] Guid id, [FromBody] MeetupInputDto inputDto)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (meetup is null)
@@ -61,8 +61,8 @@ public class MeetupsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteUserById([FromRoute] int id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteUserById([FromRoute] Guid id)
     {
         var exMeetupEntity = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (exMeetupEntity is null)
