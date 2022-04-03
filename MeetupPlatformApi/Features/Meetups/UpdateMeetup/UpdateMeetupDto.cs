@@ -6,7 +6,7 @@ public class UpdateMeetupDto
 {
     [Required]
     [MaxLength(200)]
-    public string Name { get; set; }
+    public string Title { get; set; }
 
     [Required]
     public DateTime StartTime { get; set; }

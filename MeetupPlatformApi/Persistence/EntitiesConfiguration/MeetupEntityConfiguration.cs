@@ -20,9 +20,9 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             .HasColumnName("id");
 
         meetupEntity
-            .Property(meetup => meetup.Name)
+            .Property(meetup => meetup.Title)
             .IsRequired()
-            .HasColumnName("name");
+            .HasColumnName("title");
 
         meetupEntity
             .Property(meetup => meetup.Description)
