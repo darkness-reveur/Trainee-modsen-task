@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFiles(builder.Environment);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.CustomSchemaIds(modelType => modelType.FullName);
