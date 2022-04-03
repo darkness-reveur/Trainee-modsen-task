@@ -18,7 +18,7 @@ public class GetUserFeature : FeatureBase
         this.mapper = mapper;
     }
     
-    [HttpGet("/api/users/{id:guid}", Name = "GetUser")]
+    [HttpGet("/api/users/{id:guid}")]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);

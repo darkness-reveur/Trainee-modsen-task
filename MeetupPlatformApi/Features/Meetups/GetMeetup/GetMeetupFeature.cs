@@ -18,7 +18,7 @@ public class GetMeetupFeature : FeatureBase
         this.mapper = mapper;
     }
     
-    [HttpGet("/api/meetups/{id:guid}", Name = "GetMeetup")]
+    [HttpGet("/api/meetups/{id:guid}")]
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

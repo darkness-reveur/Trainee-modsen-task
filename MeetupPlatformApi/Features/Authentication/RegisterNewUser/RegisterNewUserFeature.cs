@@ -42,6 +42,6 @@ public class RegisterNewUserFeature : FeatureBase
             UserInfo = mapper.Map<RegistrationResultDto.UserInfoDto>(user),
             AccessToken = authenticationManager.IssueAccessToken(user)
         };
-        return CreatedAtRoute("GetUser", new {id = registrationResultDto.UserInfo.Id}, registrationResultDto);
+        return Created(registrationResultDto);
     }
 }

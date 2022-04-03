@@ -26,6 +26,6 @@ public class RegisterNewMeetupFeature : FeatureBase
         await context.SaveChangesAsync();
 
         var registeredMeetupDto = mapper.Map<RegisteredMeetupDto>(meetup);
-        return CreatedAtRoute("GetMeetup", new { id = registeredMeetupDto.Id }, registeredMeetupDto);
+        return Created(registeredMeetupDto);
     }
 }
