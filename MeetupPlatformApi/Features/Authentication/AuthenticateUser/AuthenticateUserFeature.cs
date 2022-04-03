@@ -3,12 +3,12 @@
 using BCrypt.Net;
 using MeetupPlatformApi.Authentication.Manager;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Authentication")]
-public class AuthenticateUserFeature : ControllerBase
+[ApiSection(ApiSections.Authentication)]
+public class AuthenticateUserFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly AuthenticationManager authenticationManager;

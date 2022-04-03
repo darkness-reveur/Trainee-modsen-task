@@ -2,12 +2,12 @@
 
 using AutoMapper;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Authentication")]
-public class GetUserFeature : ControllerBase
+[ApiSection(ApiSections.Authentication)]
+public class GetUserFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;

@@ -3,13 +3,13 @@
 using AutoMapper;
 using MeetupPlatformApi.Authentication.Manager;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Authentication")]
-public class GetCurrentUserInfoFeature : ControllerBase
+[ApiSection(ApiSections.Authentication)]
+public class GetCurrentUserInfoFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;

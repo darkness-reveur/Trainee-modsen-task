@@ -3,11 +3,11 @@
 using AutoMapper;
 using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Tags("Meetups")]
-public class RegisterNewMeetupFeature : ControllerBase
+[ApiSection(ApiSections.Meetups)]
+public class RegisterNewMeetupFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;

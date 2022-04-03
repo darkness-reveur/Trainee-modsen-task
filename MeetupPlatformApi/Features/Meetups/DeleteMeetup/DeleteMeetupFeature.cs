@@ -1,12 +1,12 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.DeleteMeetup;
 
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Meetups")]
-public class DeleteMeetupFeature : ControllerBase
+[ApiSection(ApiSections.Meetups)]
+public class DeleteMeetupFeature : FeatureBase
 {
     private readonly ApplicationContext context;
 

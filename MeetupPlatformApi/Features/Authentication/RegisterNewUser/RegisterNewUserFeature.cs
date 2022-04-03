@@ -5,12 +5,12 @@ using BCrypt.Net;
 using MeetupPlatformApi.Authentication.Manager;
 using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Authentication")]
-public class RegisterNewUserFeature : ControllerBase
+[ApiSection(ApiSections.Authentication)]
+public class RegisterNewUserFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;

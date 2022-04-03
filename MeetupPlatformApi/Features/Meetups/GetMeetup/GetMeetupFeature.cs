@@ -2,12 +2,12 @@
 
 using AutoMapper;
 using MeetupPlatformApi.Persistence.Context;
+using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[ApiController]
-[Tags("Meetups")]
-public class GetMeetupFeature : ControllerBase
+[ApiSection(ApiSections.Meetups)]
+public class GetMeetupFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;
