@@ -1,8 +1,8 @@
-﻿namespace MeetupPlatformApi.DataTransferObjects;
+﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetups;
 
 using System.ComponentModel.DataAnnotations;
 
-public class MeetupOutputDto
+public class MeetupInfoDto
 {
     [Required]
     public Guid Id { get; set; }

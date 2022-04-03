@@ -1,11 +1,13 @@
-﻿namespace MeetupPlatformApi.DataTransferObjects;
+﻿namespace MeetupPlatformApi.Features.Meetups.RegisterNewMeetup;
 
 using System.ComponentModel.DataAnnotations;
 
-public class MeetupInputDto
+public class RegisteredMeetupDto
 {
     [Required]
-    [MaxLength(200)]
+    public Guid Id { get; set; }
+
+    [Required]
     public string Name { get; set; }
 
     [Required]
@@ -15,6 +17,5 @@ public class MeetupInputDto
     public DateTime EndTime { get; set; }
 
     [Required]
-    [MaxLength(4000)]
     public string Description { get; set; }
 }

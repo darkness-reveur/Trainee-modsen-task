@@ -1,8 +1,8 @@
-﻿namespace MeetupPlatformApi.DataTransferObjects;
+﻿namespace MeetupPlatformApi.Features.Authentication.GetCurrentUserInfo;
 
 using System.ComponentModel.DataAnnotations;
 
-public class UserOutputDto
+public class UserInfoDto
 {
     [Required]
     public Guid Id { get; set; }
