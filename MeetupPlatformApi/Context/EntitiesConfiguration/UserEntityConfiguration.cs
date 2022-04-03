@@ -35,4 +35,3 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             .HasColumnName("password");
     }
 }
-

@@ -40,4 +40,3 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<MeetupEntity>
             .HasColumnName("end_time");
     }
 }
-
