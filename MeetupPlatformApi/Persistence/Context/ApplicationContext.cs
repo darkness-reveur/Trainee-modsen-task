@@ -1,8 +1,8 @@
-﻿namespace MeetupPlatformApi.Context;
+﻿namespace MeetupPlatformApi.Persistence.Context;
 
+using System.Reflection;
 using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 public class ApplicationContext : DbContext
 {

@@ -2,8 +2,8 @@
 
 using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
-using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Persistence.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

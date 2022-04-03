@@ -1,5 +1,7 @@
-﻿namespace MeetupPlatformApi.Context;
+﻿namespace MeetupPlatformApi.Persistence.DependencyInjection;
 
+using MeetupPlatformApi.Persistence.Configuration;
+using MeetupPlatformApi.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
 public static class InjectionExtensions

@@ -1,9 +1,10 @@
-﻿namespace MeetupPlatformApi.Authentication;
+﻿namespace MeetupPlatformApi.Authentication.Manager;
 
-using MeetupPlatformApi.Entities;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using MeetupPlatformApi.Authentication.Configuration;
+using MeetupPlatformApi.Entities;
+using Microsoft.IdentityModel.Tokens;
 
 public class AuthenticationManager
 {

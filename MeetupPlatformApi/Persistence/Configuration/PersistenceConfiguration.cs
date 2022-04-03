@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Context;
+﻿namespace MeetupPlatformApi.Persistence.Configuration;
 
 using MeetupPlatformApi.Configuration;
 

@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Context.EntitiesConfiguration;
+﻿namespace MeetupPlatformApi.Persistence.EntitiesConfiguration;
 
 using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;

@@ -1,14 +1,14 @@
 ﻿namespace MeetupPlatformApi.Controllers;
 
 using AutoMapper;
-using MeetupPlatformApi.Authentication;
-using MeetupPlatformApi.Context;
 using MeetupPlatformApi.DataTransferObjects;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
+using MeetupPlatformApi.Authentication.Manager;
+using MeetupPlatformApi.Persistence.Context;
 
 [Route("/api/users")]
 [ApiController]

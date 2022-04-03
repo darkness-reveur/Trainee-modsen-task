@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Authentication;
+﻿namespace MeetupPlatformApi.Authentication.Configuration;
 
 using System.Text;
 using MeetupPlatformApi.Configuration;

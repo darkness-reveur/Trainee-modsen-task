@@ -1,5 +1,7 @@
-﻿namespace MeetupPlatformApi.Authentication;
+﻿namespace MeetupPlatformApi.Authentication.DependencyInjection;
 
+using MeetupPlatformApi.Authentication.Configuration;
+using MeetupPlatformApi.Authentication.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 public static class InjectionExtensions
