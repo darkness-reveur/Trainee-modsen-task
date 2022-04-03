@@ -1,7 +1,7 @@
 ﻿namespace MeetupPlatformApi.Authentication.Configuration;
 
 using System.Text;
-using MeetupPlatformApi.Configuration;
+using MeetupPlatformApi.Seedwork.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 public class AuthenticationConfiguration

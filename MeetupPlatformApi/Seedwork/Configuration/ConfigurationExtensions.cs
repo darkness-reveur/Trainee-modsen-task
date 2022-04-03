@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Configuration;
+﻿namespace MeetupPlatformApi.Seedwork.Configuration;
 
 public static class ConfigurationExtensions
 {

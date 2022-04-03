@@ -1,6 +1,6 @@
 ﻿namespace MeetupPlatformApi.Persistence.Configuration;
 
-using MeetupPlatformApi.Configuration;
+using MeetupPlatformApi.Seedwork.Configuration;
 
 public class PersistenceConfiguration
 {

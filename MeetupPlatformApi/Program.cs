@@ -1,6 +1,6 @@
 using MeetupPlatformApi.Authentication.DependencyInjection;
-using MeetupPlatformApi.Configuration;
 using MeetupPlatformApi.Persistence.DependencyInjection;
+using MeetupPlatformApi.Seedwork.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
