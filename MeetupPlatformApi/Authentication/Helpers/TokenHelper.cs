@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Authentication.Manager;
+﻿namespace MeetupPlatformApi.Authentication.Helpers;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,23 +6,15 @@ using MeetupPlatformApi.Authentication.Configuration;
 using MeetupPlatformApi.Domain;
 using Microsoft.IdentityModel.Tokens;
 
-public class AuthenticationManager
+public class TokenHelper
 {
     private readonly AuthenticationConfiguration configuration;
     private readonly JwtSecurityTokenHandler tokenHandler;
 
-    public AuthenticationManager(AuthenticationConfiguration configuration)
+    public TokenHelper(AuthenticationConfiguration configuration)
     {
         this.configuration = configuration;
         tokenHandler = new JwtSecurityTokenHandler();
-    }
-
-    public CurrentUserInfo GetCurrentUserInfo(ClaimsPrincipal user)
-    {
-        var idClaim = user.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(idClaim.Value);
-
-        return new() {UserId = id};
     }
 
     public string IssueAccessToken(User user) =>

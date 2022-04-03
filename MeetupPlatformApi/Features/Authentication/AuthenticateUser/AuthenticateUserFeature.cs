@@ -1,7 +1,7 @@
 ﻿namespace MeetupPlatformApi.Features.Authentication.AuthenticateUser;
 
 using BCrypt.Net;
-using MeetupPlatformApi.Authentication.Manager;
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 public class AuthenticateUserFeature : FeatureBase
 {
     private readonly ApplicationContext context;
-    private readonly AuthenticationManager authenticationManager;
+    private readonly TokenHelper tokenHelper;
 
-    public AuthenticateUserFeature(ApplicationContext context, AuthenticationManager authenticationManager)
+    public AuthenticateUserFeature(ApplicationContext context, TokenHelper tokenHelper)
     {
         this.context = context;
-        this.authenticationManager = authenticationManager;
+        this.tokenHelper = tokenHelper;
     }
 
     [HttpPost("/api/users/authenticate")]
@@ -28,7 +28,7 @@ public class AuthenticateUserFeature : FeatureBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var accessToken = authenticationManager.IssueAccessToken(user);
+        var accessToken = tokenHelper.IssueAccessToken(user);
         var tokenDto = new TokenDto { AccessToken = accessToken };
         return Ok(tokenDto);
     }

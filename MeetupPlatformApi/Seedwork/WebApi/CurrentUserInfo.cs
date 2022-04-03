@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Authentication.Manager;
+﻿namespace MeetupPlatformApi.Seedwork.WebApi;
 
 public class CurrentUserInfo
 {

@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using BCrypt.Net;
-using MeetupPlatformApi.Authentication.Manager;
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
@@ -14,13 +14,13 @@ public class RegisterNewUserFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;
-    private readonly AuthenticationManager authenticationManager;
+    private readonly TokenHelper tokenHelper;
 
-    public RegisterNewUserFeature(ApplicationContext context, IMapper mapper, AuthenticationManager authenticationManager)
+    public RegisterNewUserFeature(ApplicationContext context, IMapper mapper, TokenHelper tokenHelper)
     {
         this.context = context;
         this.mapper = mapper;
-        this.authenticationManager = authenticationManager;
+        this.tokenHelper = tokenHelper;
     }
 
     [HttpPost("/api/users")]
@@ -40,7 +40,7 @@ public class RegisterNewUserFeature : FeatureBase
         var registrationResultDto = new RegistrationResultDto
         {
             UserInfo = mapper.Map<RegistrationResultDto.UserInfoDto>(user),
-            AccessToken = authenticationManager.IssueAccessToken(user)
+            AccessToken = tokenHelper.IssueAccessToken(user)
         };
         return Created(registrationResultDto);
     }
