@@ -21,8 +21,8 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         userEntity
             .HasIndex(user => user.Username)
-            .HasName("ux_users_username")
-            .IsUnique();
+            .IsUnique()
+            .HasDatabaseName("ux_users_username");
 
         userEntity
             .Property(user => user.Username)
@@ -31,8 +31,8 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         userEntity
             .Property(user => user.Password)
-            .HasColumnName("password")
-            .IsRequired();
+            .IsRequired()
+            .HasColumnName("password");
     }
 }
 
