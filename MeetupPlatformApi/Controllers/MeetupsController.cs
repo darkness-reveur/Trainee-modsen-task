@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
-using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,7 @@ public class MeetupsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddMeetup([FromBody] MeetupInputDto inputDto)
     {
-        var meetup = mapper.Map<MeetupEntity>(inputDto);
+        var meetup = mapper.Map<Meetup>(inputDto);
         await context.Meetups.AddAsync(meetup);
         await context.SaveChangesAsync();
 

@@ -2,12 +2,12 @@
 
 using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
-using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 using MeetupPlatformApi.Authentication.Manager;
+using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 
 [Route("/api/users")]
@@ -43,7 +43,7 @@ public class AuthenticationController : ControllerBase
             return BadRequest("Provided username is already taken");
         }
 
-        var user = mapper.Map<UserEntity>(registrationDto);
+        var user = mapper.Map<User>(registrationDto);
 
         user.Password = BCrypt.HashPassword(user.Password);
 

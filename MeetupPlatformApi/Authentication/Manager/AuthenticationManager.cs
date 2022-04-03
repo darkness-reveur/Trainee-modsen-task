@@ -3,7 +3,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MeetupPlatformApi.Authentication.Configuration;
-using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Domain;
 using Microsoft.IdentityModel.Tokens;
 
 public class AuthenticationManager
@@ -25,7 +25,7 @@ public class AuthenticationManager
         return new() {UserId = id};
     }
 
-    public string IssueAccessToken(UserEntity user) =>
+    public string IssueAccessToken(User user) =>
         IssueToken(
             payload: new Dictionary<string, object>
             {

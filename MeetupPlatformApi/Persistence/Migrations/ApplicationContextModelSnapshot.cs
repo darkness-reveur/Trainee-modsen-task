@@ -23,7 +23,7 @@ namespace MeetupPlatformApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MeetupPlatformApi.Entities.MeetupEntity", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Meetup", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace MeetupPlatformApi.Migrations
                     b.ToTable("meetups", (string)null);
                 });
 
-            modelBuilder.Entity("MeetupPlatformApi.Entities.UserEntity", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

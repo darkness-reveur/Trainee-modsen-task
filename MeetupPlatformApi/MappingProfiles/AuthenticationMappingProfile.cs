@@ -2,13 +2,13 @@
 
 using AutoMapper;
 using MeetupPlatformApi.DataTransferObjects;
-using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Domain;
 
 public class AuthenticationMappingProfile : Profile
 {
     public AuthenticationMappingProfile()
     {
-        CreateMap<UserRegistrationDto, UserEntity>();
-        CreateMap<UserEntity, UserOutputDto>();
+        CreateMap<UserRegistrationDto, User>();
+        CreateMap<User, UserOutputDto>();
     }
 }

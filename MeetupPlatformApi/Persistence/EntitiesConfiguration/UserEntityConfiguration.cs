@@ -1,12 +1,12 @@
 ﻿namespace MeetupPlatformApi.Persistence.EntitiesConfiguration;
 
-using MeetupPlatformApi.Entities;
+using MeetupPlatformApi.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
+public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<UserEntity> userEntity)
+    public void Configure(EntityTypeBuilder<User> userEntity)
     {
         userEntity.ToTable("users");
 
