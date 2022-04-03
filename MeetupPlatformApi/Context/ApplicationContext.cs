@@ -1,6 +1,5 @@
 ﻿namespace MeetupPlatformApi.Context;
 
-using MeetupPlatformApi.Context.EntitiesConfiguration;
 using MeetupPlatformApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
