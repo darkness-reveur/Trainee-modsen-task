@@ -22,7 +22,7 @@ public class RegisterNewMeetupFeature : ControllerBase
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);
-        await context.Meetups.AddAsync(meetup);
+        context.Meetups.Add(meetup);
         await context.SaveChangesAsync();
 
         var registeredMeetupDto = mapper.Map<RegisteredMeetupDto>(meetup);
