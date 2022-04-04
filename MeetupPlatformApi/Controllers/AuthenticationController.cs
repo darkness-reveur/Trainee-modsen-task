@@ -51,7 +51,7 @@ public class AuthenticationController : ControllerBase
         var refreshToken = new RefreshTokenEntity()
         {
             Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = tokenPair.RefreshTokenExpires,
+            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
             UserId = user.Id
         };
         await context.RefreshTokens.AddAsync(refreshToken);
@@ -87,7 +87,7 @@ public class AuthenticationController : ControllerBase
         var newRefreshToken = new RefreshTokenEntity()
         {
             Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = tokenPair.RefreshTokenExpires,
+            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
             UserId = user.Id
         };
         context.RefreshTokens.Remove(refreshTokenInfo);
@@ -130,7 +130,7 @@ public class AuthenticationController : ControllerBase
         var refreshToken = new RefreshTokenEntity()
         {
             Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = tokenPair.RefreshTokenExpires,
+            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
             UserId = user.Id
         };
         await context.RefreshTokens.AddAsync(refreshToken);
