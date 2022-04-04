@@ -27,7 +27,7 @@ public class AuthenticationManager
     public Guid GetNameIdentifier(string refreshToken)
     {
         var token = tokenHandler.ReadJwtToken(refreshToken);
-        return Guid.Parse(token.Id);
+        return Guid.Parse(token.Claims.Single(claim => claim.Type == "nameid").Value);
     }
 
     public TokenPair IssueTokenPair(UserEntity user)

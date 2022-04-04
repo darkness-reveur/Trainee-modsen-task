@@ -48,7 +48,6 @@ public class AuthenticationController : ControllerBase
         await context.Users.AddAsync(user);
 
         var tokenPair = authenticationManager.IssueTokenPair(user);
-
         var refreshToken = new RefreshTokenEntity()
         {
             Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
@@ -72,27 +71,32 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("refresh-tokens")]
-    //public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenDto refreshToken)
-    //{
-    //    var refreshTokenInfo = await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Id == id);
+    public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenDto refreshToken)
+    {
+        var refreshTokenId = authenticationManager.GetNameIdentifier(refreshToken.RefreshToken);
+        var refreshTokenInfo = await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Id == refreshTokenId);
 
-    //    if(refreshTokenInfo is null)
-    //    {
-    //        return NotFound($"Token with id: {id} doesn't exist.");
-    //    }
+        if (refreshTokenInfo is null)
+        {
+            return NotFound($"Token with id: {refreshTokenId} doesn't exist.");
+        }
 
-    //    var user = await context.Users.Where(user => user.Id == refreshTokenInfo.UserId).SingleOrDefaultAsync();
+        var user = await context.Users.Where(user => user.Id == refreshTokenInfo.UserId).SingleOrDefaultAsync();
 
-    //    var tokenPair = authenticationManager.IssueTokenPair(user);
+        var tokenPair = authenticationManager.IssueTokenPair(user);
+        var newRefreshToken = new RefreshTokenEntity()
+        {
+            Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
+            Expires = tokenPair.RefreshTokenExpires,
+            UserId = user.Id
+        };
+        context.RefreshTokens.Remove(refreshTokenInfo);
+        await context.RefreshTokens.AddAsync(newRefreshToken);
+        await context.SaveChangesAsync();
 
-
-    //    context.RefreshTokens.Remove(refreshTokenInfo);
-    //    await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
-    //    await context.SaveChangesAsync();
-
-    //    var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken.Id };
-    //    return Ok(outputDto);
-    //}
+        var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken };
+        return Ok(outputDto);
+    }
 
     [HttpDelete("{userId:guid}/refresh-tokens")]
     [Authorize]
@@ -113,23 +117,28 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("authenticate")]
-    //public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto authenticationDto)
-    //{
-    //    var user = await context.Users.SingleOrDefaultAsync(user => user.Username == authenticationDto.Username);
+    public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto authenticationDto)
+    {
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Username == authenticationDto.Username);
 
-    //    if (user is null || !BCrypt.Verify(authenticationDto.Password, user.Password))
-    //    {
-    //        return BadRequest("Username or password is incorrect.");
-    //    }
+        if (user is null || !BCrypt.Verify(authenticationDto.Password, user.Password))
+        {
+            return BadRequest("Username or password is incorrect.");
+        }
 
-    //    var tokenPair = authenticationManager.IssueTokenPair(user);
+        var tokenPair = authenticationManager.IssueTokenPair(user);
+        var refreshToken = new RefreshTokenEntity()
+        {
+            Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
+            Expires = tokenPair.RefreshTokenExpires,
+            UserId = user.Id
+        };
+        await context.RefreshTokens.AddAsync(refreshToken);
+        await context.SaveChangesAsync();
 
-    //    await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
-    //    await context.SaveChangesAsync();
-
-    //    var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken.Id };
-    //    return Ok(outputDto);
-    //}
+        var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken };
+        return Ok(outputDto);
+    }
 
     [HttpGet("me")]
     [Authorize]
