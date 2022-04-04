@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public class AuthenticationTokenPairOutputDto
+public class TokenPairDto
 {
     [Required]
     public string AccessToken { get; set; }

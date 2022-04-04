@@ -8,5 +8,5 @@ public class UserRegistrationResultDto
     public UserOutputDto UserInfo { get; set; }
 
     [Required]
-    public AuthenticationTokenPairOutputDto TokenPair { get; set; }
+    public TokenPairDto TokenPair { get; set; }
 }

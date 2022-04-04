@@ -80,7 +80,7 @@ public class AuthenticationController : ControllerBase
         await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
         await context.SaveChangesAsync();
 
-        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
+        var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
         return Ok(outputDto);
     }
 
@@ -116,7 +116,7 @@ public class AuthenticationController : ControllerBase
         await context.RefreshTokens.AddAsync(tokenPair.RefreshToken);
         await context.SaveChangesAsync();
 
-        var outputDto = new AuthenticationTokenPairOutputDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
+        var outputDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshTokenId = tokenPair.RefreshToken.Id };
         return Ok(outputDto);
     }
 
