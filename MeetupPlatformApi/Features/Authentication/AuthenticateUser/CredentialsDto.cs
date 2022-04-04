@@ -2,6 +2,9 @@
 
 using System.ComponentModel.DataAnnotations;
 
+/// <summary>
+/// Hello Hello Hello
+/// </summary>
 public class CredentialsDto
 {
     [Required]

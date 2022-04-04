@@ -17,7 +17,13 @@ public class GetMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Get meetup by id.
+    /// </summary>
+    /// <response code="200">Returns meetup item.</response>
+    /// <response code="404">If needed meetup is null.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/meetups/{id:guid}")]
     [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

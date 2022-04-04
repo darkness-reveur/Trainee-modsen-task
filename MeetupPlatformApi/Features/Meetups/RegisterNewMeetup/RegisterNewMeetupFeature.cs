@@ -17,7 +17,12 @@ public class RegisterNewMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Register new meetup.
+    /// </summary>
+    /// <response code="201">Returns the newly created item.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpPost("/api/meetups")]
     [ProducesResponseType(typeof(RegisteredMeetupDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

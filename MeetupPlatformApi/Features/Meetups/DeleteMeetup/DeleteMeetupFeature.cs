@@ -12,7 +12,13 @@ public class DeleteMeetupFeature : FeatureBase
 
     public DeleteMeetupFeature(ApplicationContext context) =>
         this.context = context;
-    
+
+    /// <summary>
+    /// Delete meetup by id.
+    /// </summary>
+    /// <response code="204">If deleting was successful.</response>
+    /// <response code="404">If needed meetup is null.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpDelete("/api/meetups/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

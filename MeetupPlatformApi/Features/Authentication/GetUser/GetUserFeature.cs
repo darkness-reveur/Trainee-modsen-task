@@ -17,7 +17,13 @@ public class GetUserFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Get user info by id.
+    /// </summary>
+    /// <response code="200">Returns user info.</response>
+    /// <response code="404">If the the user not found.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/users/{id:guid}")]
     [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

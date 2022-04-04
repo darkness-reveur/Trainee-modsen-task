@@ -17,7 +17,13 @@ public class UpdateMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Update meetup sample by his id.
+    /// </summary>
+    /// <response code="204">If updating was successful.</response>
+    /// <response code="404">If needed meetup is null.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpPut("/api/meetups/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

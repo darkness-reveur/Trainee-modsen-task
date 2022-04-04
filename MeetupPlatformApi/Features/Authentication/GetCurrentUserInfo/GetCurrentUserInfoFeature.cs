@@ -19,6 +19,12 @@ public class GetCurrentUserInfoFeature : FeatureBase
         this.mapper = mapper;
     }
 
+    /// <summary>
+    /// Get current user info.
+    /// </summary>
+    /// <response code="200">Returns current user info.</response>
+    /// <response code="401">If the the user unauthorized.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/users/me")]
     [Authorize]
     [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
