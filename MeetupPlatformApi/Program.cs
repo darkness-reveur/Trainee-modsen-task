@@ -8,13 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFiles(builder.Environment);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-builder.Services.AddSwaggerSwashbuckleConfigured();
+builder.Services.AddSwaggerSwashbuckleConfiguration();
 
 var app = builder.Build();
 

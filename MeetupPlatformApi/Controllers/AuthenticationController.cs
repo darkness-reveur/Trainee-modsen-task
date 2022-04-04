@@ -26,6 +26,9 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(UserOutputDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
@@ -34,6 +37,9 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDto registrationDto)
     {
         var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
@@ -61,6 +67,9 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("authenticate")]
+    [ProducesResponseType(typeof(AuthenticationTokenOutputDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Authenticate([FromBody] UserAuthenticationDto authenticationDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == authenticationDto.Username);
@@ -76,6 +85,8 @@ public class AuthenticationController : ControllerBase
 
     [HttpGet("me")]
     [Authorize]
+    [ProducesResponseType(typeof(UserOutputDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCurrentUserInfo()
     {
         var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);

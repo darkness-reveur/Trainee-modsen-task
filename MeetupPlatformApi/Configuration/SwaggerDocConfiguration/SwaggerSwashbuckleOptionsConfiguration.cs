@@ -11,8 +11,8 @@ public class SwaggerSwashbuckleOptionsConfiguration : IConfigureOptions<SwaggerG
         options.SwaggerDoc("v1", new OpenApiInfo
         {
             Version = "v1",
-            Title = "ToDo API",
-            Description = "An ASP.NET Core Web API for managing ToDo items",
+            Title = "MeetupApi API",
+            Description = "An ASP.NET Core Web API for managing meetup items",
             TermsOfService = new Uri("https://example.com/terms"),
             Contact = new OpenApiContact
             {
