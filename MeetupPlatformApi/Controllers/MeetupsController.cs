@@ -6,6 +6,8 @@ using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MeetupPlatformApi.Filter.ConfigurationQuery;
+using MeetupPlatformApi.Filter.FilterSettings;
 
 [Route("/api/meetups")]
 [ApiController]
@@ -19,12 +21,18 @@ public class MeetupsController : ControllerBase
         this.context = context;
         this.mapper = mapper;
     }
-
+    #region crud API
     [HttpGet]
-    public async Task<IActionResult> GetAllMeetups()
+    public async Task<IActionResult> GetFilteredMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
-        var meetups = await context.Meetups.ToListAsync();
-        var outputDtos = mapper.Map<IEnumerable<MeetupOutputDto>>(meetups);
+        MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
+
+        var meetupsQuery = context.Meetups.AsQueryable();
+
+        var meetupsList = await meetupsFilterService.GetMeetupsFilteredByFilterSettingsAsync(meetupsQuery, filterSettings);
+
+        var outputDtos = mapper.Map<IEnumerable<MeetupOutputDto>>(meetupsList);
+
         return Ok(outputDtos);
     }
 
@@ -73,5 +81,19 @@ public class MeetupsController : ControllerBase
         context.Meetups.Remove(exMeetupEntity);
         await context.SaveChangesAsync();
         return NoContent();
+    }
+    #endregion
+
+    [HttpGet("count")]
+    public async Task<IActionResult> GetFilteredMeetupsCount([FromQuery] MeetupsFilterSettings filterSettings)
+    {
+
+        MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
+       
+        var meetupsQuery = context.Meetups.AsQueryable();
+
+        var meetupsCount = await meetupsFilterService.GetCountOfFilteredMeetupsAsync(meetupsQuery, filterSettings);
+
+        return Ok(meetupsCount);
     }
 }
