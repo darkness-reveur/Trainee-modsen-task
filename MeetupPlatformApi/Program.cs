@@ -1,6 +1,7 @@
 using MeetupPlatformApi.Authentication;
 using MeetupPlatformApi.Context;
 using MeetupPlatformApi.Configuration;
+using MeetupPlatformApi.Configuration.SwaggerDocConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext();
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddSwaggerSwashbuckleConfigured();
 
 var app = builder.Build();
 
