@@ -19,6 +19,8 @@ public class RegisterNewMeetupFeature : FeatureBase
     }
     
     [HttpPost("/api/meetups")]
+    [ProducesResponseType(typeof(RegisteredMeetupDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);

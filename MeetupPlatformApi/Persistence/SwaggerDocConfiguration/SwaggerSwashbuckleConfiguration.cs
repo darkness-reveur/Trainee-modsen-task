@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Configuration.SwaggerDocConfiguration;
+﻿namespace MeetupPlatformApi.Persistence.SwaggerDocConfiguration;
 
 using System.Reflection;
 using Microsoft.Extensions.Options;
@@ -8,14 +8,14 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 public static class SwaggerSwashbuckleConfiguration
 {
-    public static void AddSwaggerSwashbuckleConfigured(this IServiceCollection services)
+    public static void AddSwaggerSwashbuckleConfiguration(this IServiceCollection services)
     {
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerSwashbuckleOptionsConfiguration>();
 
-        services.AddEndpointsApiExplorer();
-
         services.AddSwaggerGen(options =>
         {
+            options.CustomSchemaIds(modelType => modelType.FullName);
+
             string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             options.IncludeXmlComments(xmlPath);

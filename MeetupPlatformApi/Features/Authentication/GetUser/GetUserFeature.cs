@@ -19,6 +19,9 @@ public class GetUserFeature : FeatureBase
     }
     
     [HttpGet("/api/users/{id:guid}")]
+    [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);

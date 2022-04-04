@@ -24,6 +24,9 @@ public class RegisterNewUserFeature : FeatureBase
     }
 
     [HttpPost("/api/users")]
+    [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterNewUser([FromBody] RegistrationDto registrationDto)
     {
         var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);

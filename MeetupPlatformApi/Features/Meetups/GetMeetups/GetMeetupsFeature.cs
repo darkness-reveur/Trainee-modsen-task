@@ -19,6 +19,8 @@ public class GetMeetupsFeature : FeatureBase
     }
 
     [HttpGet("/api/meetups")]
+    [ProducesResponseType(typeof(IEnumerable<MeetupInfoDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetMeetups()
     {
         var meetups = await context.Meetups.ToListAsync();
