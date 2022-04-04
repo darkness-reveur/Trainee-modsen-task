@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 public class UserCredentialsChangeDto
 {
-    [Required]
+    [MaxLength(45)]
     public string Username { get; set; }
 
     [Required]

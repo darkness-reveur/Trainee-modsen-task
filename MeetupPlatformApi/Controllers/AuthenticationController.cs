@@ -64,7 +64,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("refresh-tokens/{id:guid}")]
     public async Task<IActionResult> RefreshTokenPair(Guid id)
     {
-        var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
+        var refreshToken = await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Id == id);
 
         if(refreshToken is null)
         {
@@ -85,9 +85,9 @@ public class AuthenticationController : ControllerBase
 
     [HttpDelete("{userId:guid}/refresh-tokens")]
     [Authorize]
-    public async Task<IActionResult> RevokeAllRefreshTokens(Guid userId)
+    public async Task<IActionResult> RevokeUserRefreshTokens(Guid userId)
     {
-        var user = await context.Users.Where(user => user.Id == userId).SingleOrDefaultAsync();
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == userId);
 
         if (user is null)
         {
@@ -120,25 +120,6 @@ public class AuthenticationController : ControllerBase
         return Ok(outputDto);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
-    {
-        var user = await context.Users.Where(user => user.Username == credentialsChangeDto.Username).SingleOrDefaultAsync();
-
-        if(user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password))
-        {
-            return BadRequest($"User with username: {credentialsChangeDto.Username} doesn't exist");
-        }
-
-        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == user.Id).ToListAsync();
-
-        user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
-
-        context.RefreshTokens.RemoveRange(userRefreshTokens);
-        await context.SaveChangesAsync();
-        return NoContent();
-    }
-
     [HttpGet("me")]
     [Authorize]
     public async Task<IActionResult> GetCurrentUserInfo()
@@ -148,5 +129,27 @@ public class AuthenticationController : ControllerBase
 
         var outputDto = mapper.Map<UserOutputDto>(user);
         return Ok(outputDto);
+    }
+
+    [HttpPut("me/credentials")]
+    [Authorize]
+    public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
+    {
+        var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
+        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
+
+        if (user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || usernameAlreadyTaken)
+        {
+            return BadRequest($"User with username: {credentialsChangeDto.Username} doesn't exist or password is incorrect.");
+        }
+
+        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == user.Id).ToListAsync();
+
+        user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
+        user.Username = credentialsChangeDto.Username;
+        context.RefreshTokens.RemoveRange(userRefreshTokens);
+        await context.SaveChangesAsync();
+        return NoContent();
     }
 }
