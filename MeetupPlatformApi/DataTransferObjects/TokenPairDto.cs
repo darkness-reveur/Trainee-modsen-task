@@ -8,5 +8,5 @@ public class TokenPairDto
     public string AccessToken { get; set; }
 
     [Required]
-    public Guid RefreshTokenId { get; set; }
+    public string RefreshToken { get; set; }
 }

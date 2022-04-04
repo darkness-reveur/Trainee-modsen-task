@@ -24,44 +24,46 @@ public class AuthenticationManager
         return new() { UserId = id };
     }
 
+    public Guid GetNameIdentifier(string refreshToken)
+    {
+        var token = tokenHandler.ReadJwtToken(refreshToken);
+        return Guid.Parse(token.Id);
+    }
+
     public TokenPair IssueTokenPair(UserEntity user)
     {
-        var accessToken = IssueAccessToken(
+        var accessToken = IssueToken(
             payload: new Dictionary<string, object>
             {
                     {ClaimTypes.NameIdentifier, user.Id}
             },
-            accessTokenLifetime: configuration.AccessTokenLifetime);
+            tokenLifetime: configuration.AccessTokenLifetime);
 
-        var refreshToken = IssueRefreshToken(configuration.RefreshTokenLifetime, user.Id);
+        var refreshToken = IssueToken(
+            payload: new Dictionary<string, object>
+            {
+                {ClaimTypes.NameIdentifier, Guid.NewGuid() }
+            },
+            tokenLifetime: configuration.RefreshTokenLifetime);
 
         return new TokenPair
         {
             AccessToken = accessToken,
-            RefreshToken = refreshToken
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = DateTime.UtcNow.Add(configuration.RefreshTokenLifetime)
         };
     }
 
-    private string IssueAccessToken(IDictionary<string, object> payload, TimeSpan accessTokenLifetime)
+    private string IssueToken(IDictionary<string, object> payload, TimeSpan tokenLifetime)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Claims = payload,
-            Expires = DateTime.UtcNow.Add(accessTokenLifetime),
+            Expires = DateTime.UtcNow.Add(tokenLifetime),
             SigningCredentials = configuration.SigningCredentials
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
-    }
-
-    private RefreshTokenEntity IssueRefreshToken(TimeSpan refreshTokenLifetime, Guid userId)
-    {
-        return new RefreshTokenEntity
-        {
-            Id = Guid.NewGuid(),
-            Expires = DateTime.UtcNow.Add(refreshTokenLifetime),
-            UserId = userId
-        };
     }
 }
