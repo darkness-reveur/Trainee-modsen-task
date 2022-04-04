@@ -41,7 +41,7 @@ public class AuthenticationManager
         var accessToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                    {ClaimTypes.NameIdentifier, user.Id}
+                {ClaimTypes.NameIdentifier, user.Id}
             },
             tokenLifetime: configuration.AccessTokenLifetime);
 
