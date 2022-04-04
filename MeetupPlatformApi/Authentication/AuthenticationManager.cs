@@ -28,14 +28,18 @@ public class AuthenticationManager
     {
         var accessToken = IssueAccessToken(
             payload: new Dictionary<string, object>
-                {
+            {
                     {ClaimTypes.NameIdentifier, user.Id}
-                },
-                accessTokenLifetime: configuration.AccessTokenLifetime);
+            },
+            accessTokenLifetime: configuration.AccessTokenLifetime);
 
         var refreshToken = IssueRefreshToken(configuration.RefreshTokenLifetime, user.Id);
 
-        return new() { AccessToken = accessToken, RefreshToken = refreshToken };
+        return new TokenPair
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 
     private string IssueAccessToken(IDictionary<string, object> payload, TimeSpan accessTokenLifetime)

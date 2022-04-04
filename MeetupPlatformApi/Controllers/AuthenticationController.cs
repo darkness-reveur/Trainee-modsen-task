@@ -44,7 +44,6 @@ public class AuthenticationController : ControllerBase
         }
 
         var user = mapper.Map<UserEntity>(registrationDto);
-
         user.Password = BCrypt.HashPassword(user.Password);
         await context.Users.AddAsync(user);
 
@@ -62,14 +61,14 @@ public class AuthenticationController : ControllerBase
         return CreatedAtAction(nameof(GetUserById), new {id = outputDto.UserInfo.Id}, outputDto);
     }
 
-    [HttpPost("refreshTokens/{id:guid}")]
-    public async Task<IActionResult> TokenRefresh(Guid id)
+    [HttpPost("refresh-tokens/{id:guid}")]
+    public async Task<IActionResult> RefreshTokenPair(Guid id)
     {
         var refreshToken = await context.RefreshTokens.Where(refreshToken => refreshToken.Id == id).SingleOrDefaultAsync();
 
         if(refreshToken is null)
         {
-            return BadRequest($"Token with id: {id} doesn't exist.");
+            return NotFound($"Token with id: {id} doesn't exist.");
         }
 
         var user = await context.Users.Where(user => user.Id == refreshToken.UserId).SingleOrDefaultAsync();
@@ -84,14 +83,15 @@ public class AuthenticationController : ControllerBase
         return Ok(outputDto);
     }
 
-    [HttpDelete("{userId:guid}/refreshTokens")]
+    [HttpDelete("{userId:guid}/refresh-tokens")]
+    [Authorize]
     public async Task<IActionResult> RevokeAllRefreshTokens(Guid userId)
     {
         var user = await context.Users.Where(user => user.Id == userId).SingleOrDefaultAsync();
 
         if (user is null)
         {
-            return BadRequest($"User with id: {userId} doesn't exist.");
+            return NotFound($"User with id: {userId} doesn't exist.");
         }
 
         var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == userId).ToListAsync();
