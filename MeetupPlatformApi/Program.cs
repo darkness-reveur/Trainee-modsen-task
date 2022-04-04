@@ -1,14 +1,16 @@
-using MeetupPlatformApi.Authentication;
-using MeetupPlatformApi.Context;
-using MeetupPlatformApi.Configuration;
-using MeetupPlatformApi.Configuration.SwaggerDocConfiguration;
+using MeetupPlatformApi.Authentication.DependencyInjection;
+using MeetupPlatformApi.Persistence.DependencyInjection;
+using MeetupPlatformApi.Seedwork.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFiles(builder.Environment);
 
 builder.Services.AddControllers();
-
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(modelType => modelType.FullName);
+});
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext();
 builder.Services.AddJwtAuthentication(builder.Configuration);
