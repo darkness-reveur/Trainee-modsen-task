@@ -12,13 +12,13 @@ public class ApplicationContext : DbContext
     public DbSet<UserEntity> Users { get; set; }
 
     public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
-    
+
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
