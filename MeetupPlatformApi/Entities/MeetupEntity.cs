@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace MeetupPlatformApi.Entities;
 
-namespace MeetupPlatformApi.Entities;
+using System.ComponentModel.DataAnnotations;
 
 public class MeetupEntity
 {
-    public int Id { get; set; }
+    [Required]
+    [Key]
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
