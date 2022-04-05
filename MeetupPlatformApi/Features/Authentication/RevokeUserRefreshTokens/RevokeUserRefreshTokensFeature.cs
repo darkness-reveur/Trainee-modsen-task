@@ -25,10 +25,10 @@ public class RevokeUserRefreshTokensFeature : FeatureBase
             .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if (user is null)
         {
-            return NotFound($"Provided user is either fake or already was used");
+            return NotFound();
         }
 
-        context.RefreshTokens.RemoveRange(user.RefreshTokens);
+        user.RefreshTokens.Clear();
         await context.SaveChangesAsync();
         return NoContent();
     }

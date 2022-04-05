@@ -38,7 +38,7 @@ public class ChangeUserCredentialsFeature : FeatureBase
 
         user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
         user.Username = credentialsChangeDto.Username;
-        context.RefreshTokens.RemoveRange(user.RefreshTokens);
+        user.RefreshTokens.Clear();
         await context.SaveChangesAsync();
         return NoContent();
     }
