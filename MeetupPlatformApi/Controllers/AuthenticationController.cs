@@ -45,7 +45,7 @@ public class AuthenticationController : ControllerBase
 
         var user = mapper.Map<UserEntity>(registrationDto);
         user.Password = BCrypt.HashPassword(user.Password);
-        await context.Users.AddAsync(user);
+        context.Users.Add(user);
 
         var refreshTokenId = Guid.NewGuid();
         var tokenPair = authenticationManager.IssueTokenPair(user, refreshTokenId);
@@ -162,9 +162,10 @@ public class AuthenticationController : ControllerBase
     {
         var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
-        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
+        var unallowedUsername = credentialsChangeDto.Username == user.Username ? false 
+            : await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
 
-        if (user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || usernameAlreadyTaken)
+        if (user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || unallowedUsername)
         {
             return BadRequest($"User with username: {credentialsChangeDto.Username} is either fake or password is incorrect.");
         }
