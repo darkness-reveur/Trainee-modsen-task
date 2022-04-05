@@ -25,6 +25,10 @@ public class MeetupsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetFilteredMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
+        if (filterSettings is null)
+        {
+            return BadRequest();
+        }
         MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
 
         var meetupsQuery = context.Meetups.AsQueryable();
@@ -32,7 +36,10 @@ public class MeetupsController : ControllerBase
         var meetupsList = await meetupsFilterService.GetMeetupsFilteredByFilterSettingsAsync(meetupsQuery, filterSettings);
 
         var outputDtos = mapper.Map<IEnumerable<MeetupOutputDto>>(meetupsList);
-
+        if (outputDtos is null)
+        {
+            return NotFound();
+        }
         return Ok(outputDtos);
     }
 
@@ -87,7 +94,10 @@ public class MeetupsController : ControllerBase
     [HttpGet("count")]
     public async Task<IActionResult> GetFilteredMeetupsCount([FromQuery] MeetupsFilterSettings filterSettings)
     {
-
+        if (filterSettings is null)
+        {
+            return BadRequest();
+        }
         MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
        
         var meetupsQuery = context.Meetups.AsQueryable();

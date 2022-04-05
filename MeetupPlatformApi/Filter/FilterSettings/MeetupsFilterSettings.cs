@@ -11,7 +11,7 @@ public class MeetupsFilterSettings
     public int PageSize { get; set; }
 
     [Required]
-    public bool IsDescendingSort { get; set; } 
+    public bool IsDescendingDateSort { get; set; } 
 
     public string SearchString { get; set; } 
 

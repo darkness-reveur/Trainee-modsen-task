@@ -28,12 +28,19 @@ public class MeetupsFilterService
 
         var skipedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 
-        var meetupsList = await meetupsQuery
-            .Skip(skipedMeetups)
-            .Take(meetupFilterSettings.PageSize)
-            .ToListAsync();
+        if (meetupFilterSettings.IsDescendingDateSort)
+        {
+            meetupsQuery = meetupsQuery.OrderByDescending(meetups => meetups.StartTime);
+        }
+        else
+        {
+            meetupsQuery = meetupsQuery.OrderBy(meetup => meetup.StartTime);
+        }
 
-        return meetupsList;
+        return await meetupsQuery
+                .Skip(skipedMeetups)
+                .Take(meetupFilterSettings.PageSize)
+                .ToListAsync(); ;
     }
 
     public IQueryable<MeetupEntity> FilterQueryMeetups(
