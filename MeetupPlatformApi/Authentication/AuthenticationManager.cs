@@ -30,6 +30,12 @@ public class AuthenticationManager
         return Guid.Parse(token.Claims.Single(claim => claim.Type == "nameid").Value);
     }
 
+    public DateTime GetExpires(string refreshToken)
+    {
+        var token = tokenHandler.ReadJwtToken(refreshToken);
+        return token.ValidTo;
+    }
+
     public TokenPair IssueTokenPair(UserEntity user, Guid refreshTokenId)
     {
         var accessToken = IssueToken(
@@ -37,14 +43,14 @@ public class AuthenticationManager
             {
                 {ClaimTypes.NameIdentifier, user.Id}
             },
-            tokenLifetime: configuration.AccessTokenLifetime);
+            lifetime: configuration.AccessTokenLifetime);
 
         var refreshToken = IssueToken(
             payload: new Dictionary<string, object>
             {
                 {ClaimTypes.NameIdentifier, refreshTokenId }
             },
-            tokenLifetime: configuration.RefreshTokenLifetime);
+            lifetime: configuration.RefreshTokenLifetime);
 
         return new TokenPair
         {
@@ -53,12 +59,12 @@ public class AuthenticationManager
         };
     }
 
-    private string IssueToken(IDictionary<string, object> payload, TimeSpan tokenLifetime)
+    private string IssueToken(IDictionary<string, object> payload, TimeSpan lifetime)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Claims = payload,
-            Expires = DateTime.UtcNow.Add(tokenLifetime),
+            Expires = DateTime.UtcNow.Add(lifetime),
             SigningCredentials = configuration.SigningCredentials
         };
 

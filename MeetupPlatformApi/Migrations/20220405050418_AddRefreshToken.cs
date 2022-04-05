@@ -9,15 +9,12 @@ namespace MeetupPlatformApi.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .OldAnnotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
-
             migrationBuilder.CreateTable(
                 name: "refresh_tokens",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()")
                 },
                 constraints: table =>
                 {

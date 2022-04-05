@@ -103,16 +103,14 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> RevokeUserRefreshTokens()
     {
         var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
+        var user = await context.Users.Include(user => user.RefreshTokens).SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
 
         if (user is null)
         {
             return NotFound($"Provided user is either fake or already was used");
         }
-
-        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == currentUserInfo.UserId).ToListAsync();
-
-        context.RefreshTokens.RemoveRange(userRefreshTokens);
+        
+        context.RefreshTokens.RemoveRange(user.RefreshTokens);
         await context.SaveChangesAsync();
         return NoContent();
     }
