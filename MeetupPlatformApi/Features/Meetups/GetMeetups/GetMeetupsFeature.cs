@@ -1,10 +1,11 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetups;
 
 using AutoMapper;
+using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
+using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
 public class GetMeetupsFeature : FeatureBase
@@ -19,10 +20,26 @@ public class GetMeetupsFeature : FeatureBase
     }
 
     [HttpGet("/api/meetups")]
-    public async Task<IActionResult> GetMeetups()
+    public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
-        var meetups = await context.Meetups.ToListAsync();
-        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
+        if (filterSettings is null)
+        {
+            return BadRequest();
+        }
+        
+        MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
+
+        var meetupsQuery = context.Meetups.AsQueryable();
+
+        var meetupsList = await meetupsFilterService.GetMeetupsFilteredByFilterSettingsAsync(meetupsQuery, filterSettings);
+
+        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetupsList);
+
+        if (meetupInfoDtos is null)
+        {
+            return NotFound();
+        }
+
         return Ok(meetupInfoDtos);
     }
 }

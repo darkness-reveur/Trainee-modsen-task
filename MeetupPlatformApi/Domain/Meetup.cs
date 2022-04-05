@@ -11,4 +11,6 @@ public class Meetup
     public DateTime EndTime { get; set; }
 
     public string Description { get; set; }
+
+    public string Location { get; set; }
 }
