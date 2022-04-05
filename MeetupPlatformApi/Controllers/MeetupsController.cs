@@ -62,7 +62,7 @@ public class MeetupsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteUserById([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteMeetupById([FromRoute] Guid id)
     {
         var exMeetupEntity = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (exMeetupEntity is null)
