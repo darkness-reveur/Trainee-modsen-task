@@ -61,11 +61,7 @@ public class AuthenticationController : ControllerBase
         var outputDto = new UserRegistrationResultDto
         {
             UserInfo = userInfoDto,
-            TokenPair = new TokenPairDto
-            {
-                AccessToken = tokenPair.AccessToken,
-                RefreshToken = tokenPair.RefreshToken
-            }
+            TokenPair = mapper.Map<TokenPairDto>(tokenPair)
         };
         return CreatedAtAction(nameof(GetUserById), new {id = outputDto.UserInfo.Id}, outputDto);
     }
@@ -78,7 +74,7 @@ public class AuthenticationController : ControllerBase
 
         if (refreshTokenInfo is null)
         {
-            return NotFound($"Token with id: {refreshTokenId} doesn't exist.");
+            return NotFound("Provided token is either fake or already was used.");
         }
 
         var user = await context.Users.Where(user => user.Id == refreshTokenInfo.UserId).SingleOrDefaultAsync();
@@ -106,7 +102,7 @@ public class AuthenticationController : ControllerBase
 
         if (user is null)
         {
-            return NotFound($"User with id: {userId} doesn't exist.");
+            return NotFound($"Provided user is either fake or already was used");
         }
 
         var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == userId).ToListAsync();
@@ -161,7 +157,7 @@ public class AuthenticationController : ControllerBase
 
         if (user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || usernameAlreadyTaken)
         {
-            return BadRequest($"User with username: {credentialsChangeDto.Username} doesn't exist or password is incorrect.");
+            return BadRequest($"User with username: {credentialsChangeDto.Username} is either fake or password is incorrect.");
         }
 
         var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == user.Id).ToListAsync();
