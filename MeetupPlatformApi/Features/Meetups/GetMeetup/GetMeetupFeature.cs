@@ -28,6 +28,8 @@ public class GetMeetupFeature : FeatureBase
     [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

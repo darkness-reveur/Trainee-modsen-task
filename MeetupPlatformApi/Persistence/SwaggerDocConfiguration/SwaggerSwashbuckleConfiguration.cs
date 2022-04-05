@@ -14,7 +14,7 @@ public static class SwaggerSwashbuckleConfiguration
 
         services.AddSwaggerGen(options =>
         {
-            options.CustomSchemaIds(modelType => modelType.FullName);
+            options.CustomSchemaIds(modelType => modelType.FullName.Replace("+", "."));
 
             string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -23,7 +23,7 @@ public static class SwaggerSwashbuckleConfiguration
             options.OperationFilter<SecurityRequirementsOperationFilter>(true, "Bearer");
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "Standard Authorization header using the Bearer scheme (JWT). Example: \"bearer {token}\"",
+                Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
@@ -31,7 +31,6 @@ public static class SwaggerSwashbuckleConfiguration
             });
             options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
         });
-        services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
     }
 }
 

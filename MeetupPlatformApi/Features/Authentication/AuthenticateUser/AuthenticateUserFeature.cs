@@ -29,6 +29,8 @@ public class AuthenticateUserFeature : FeatureBase
     [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> AuthenticateUser([FromBody] CredentialsDto credentialsDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == credentialsDto.Username);

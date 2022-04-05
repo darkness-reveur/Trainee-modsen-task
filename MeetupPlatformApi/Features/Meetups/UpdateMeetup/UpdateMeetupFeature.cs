@@ -28,6 +28,8 @@ public class UpdateMeetupFeature : FeatureBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> UpdateMeetup([FromRoute] Guid id, [FromBody] UpdateMeetupDto updateDto)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

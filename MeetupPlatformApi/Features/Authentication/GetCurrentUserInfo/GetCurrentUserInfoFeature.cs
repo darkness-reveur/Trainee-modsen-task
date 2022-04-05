@@ -30,6 +30,8 @@ public class GetCurrentUserInfoFeature : FeatureBase
     [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> GetCurrentUserInfo()
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
