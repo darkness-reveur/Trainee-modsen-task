@@ -19,5 +19,6 @@ public class UpdateMeetupDto
     public string Description { get; set; }
 
     [Required]
+    [MaxLength(400)]
     public string Location { get; set; }
 }

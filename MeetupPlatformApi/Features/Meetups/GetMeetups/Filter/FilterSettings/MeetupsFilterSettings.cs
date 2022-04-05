@@ -1,9 +1,8 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
 
-using MeetupPlatformApi.Features.Meetups.MainFilter.FilterSettings;
 using System.ComponentModel.DataAnnotations;
 
-public class MeetupsFilterSettings : BaseFilterSettings
+public class MeetupsFilterSettings
 {
     [Required]
     public int PageNumber { get; set; }
@@ -12,7 +11,12 @@ public class MeetupsFilterSettings : BaseFilterSettings
     public int PageSize { get; set; }
 
     [Required]
-    public bool IsDescendingDateSort { get; set; } 
+    public bool IsDescendingDateSort { get; set; }
 
+    public string SearchString { get; set; }
+
+    public DateTime? StartTime { get; set; }
+
+    public string Location { get; set; }
 }
 

@@ -17,4 +17,7 @@ public class RegistrationDto
     [Required]
     [MaxLength(4000)]
     public string Description { get; set; }
+
+    [MaxLength(400)]
+    public string Location { get; set; }
 }
