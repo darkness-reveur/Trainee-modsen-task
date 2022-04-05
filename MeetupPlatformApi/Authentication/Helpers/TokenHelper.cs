@@ -16,6 +16,7 @@ public class TokenHelper
         this.configuration = configuration;
         tokenHandler = new JwtSecurityTokenHandler();
     }
+
     public Guid GetNameIdentifier(string refreshToken)
     {
         var token = tokenHandler.ReadJwtToken(refreshToken);
