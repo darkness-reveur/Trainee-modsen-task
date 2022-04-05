@@ -67,15 +67,15 @@ public class AuthenticationController : ControllerBase
     }
 
     [HttpPost("refresh-tokens")]
-    public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenDto refreshToken)
+    public async Task<IActionResult> RefreshTokenPair([FromBody] string refreshToken)
     {
-        var refreshTokenExpires = authenticationManager.GetExpires(refreshToken.RefreshToken);
+        var refreshTokenExpires = authenticationManager.GetExpires(refreshToken);
         if(DateTime.UtcNow > refreshTokenExpires)
         {
             return BadRequest("Refresh token is expired.");
         }
 
-        var refreshTokenId = authenticationManager.GetNameIdentifier(refreshToken.RefreshToken);
+        var refreshTokenId = authenticationManager.GetNameIdentifier(refreshToken);
         var refreshTokenInfo = await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Id == refreshTokenId);
 
         if (refreshTokenInfo is null)
