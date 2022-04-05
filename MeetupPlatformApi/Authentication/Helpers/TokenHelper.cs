@@ -29,6 +29,19 @@ public class TokenHelper
         return token.ValidTo;
     }
 
+    public bool IsExpired(string refreshToken)
+    {
+        try
+        {
+            tokenHandler.ValidateToken(refreshToken, configuration.ValidationParameters, out var token);
+            return false;
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
     public TokenPair IssueTokenPair(User user, Guid refreshTokenId)
     {
         var accessToken = IssueToken(

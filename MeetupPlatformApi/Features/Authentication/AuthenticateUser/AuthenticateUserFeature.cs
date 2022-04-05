@@ -29,16 +29,15 @@ public class AuthenticateUserFeature : FeatureBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var refreshTokenId = Guid.NewGuid();
-        var tokenPair = tokenHelper.IssueTokenPair(user, refreshTokenId);
         var refreshToken = new RefreshToken()
         {
-            Id = refreshTokenId,
+            Id = Guid.NewGuid(),
             UserId = user.Id
         };
-        await context.RefreshTokens.AddAsync(refreshToken);
+        context.RefreshTokens.Add(refreshToken);
         await context.SaveChangesAsync();
 
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
         var tokenPairDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken };
         return Ok(tokenPairDto);
     }

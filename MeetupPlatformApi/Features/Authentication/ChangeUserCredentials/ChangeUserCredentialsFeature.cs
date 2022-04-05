@@ -21,20 +21,24 @@ public class ChangeUserCredentialsFeature : FeatureBase
     [Authorize]
     public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
     {
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
-        var unallowedUsername = credentialsChangeDto.Username == user.Username ? false
-            : await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
-
-        if (user is null || !BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || unallowedUsername)
+        var user = await context.Users
+            .Include(user => user.RefreshTokens)
+            .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
+        if(user is null)
         {
-            return BadRequest($"User with username: {credentialsChangeDto.Username} is either fake or password is incorrect.");
+            return NotFound("User doesn't exist.");
         }
 
-        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == user.Id).ToListAsync();
+        var allowedUsername = credentialsChangeDto.Username == user.Username ? true
+            : !await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
+        if (!BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || !allowedUsername)
+        {
+            return BadRequest();
+        }
 
         user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
         user.Username = credentialsChangeDto.Username;
-        context.RefreshTokens.RemoveRange(userRefreshTokens);
+        context.RefreshTokens.RemoveRange(user.RefreshTokens);
         await context.SaveChangesAsync();
         return NoContent();
     }

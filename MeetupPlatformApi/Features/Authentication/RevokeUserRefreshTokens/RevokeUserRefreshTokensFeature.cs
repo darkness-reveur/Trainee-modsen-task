@@ -20,8 +20,9 @@ public class RevokeUserRefreshTokensFeature : FeatureBase
     [Authorize]
     public async Task<IActionResult> RevokeUserRefreshTokens()
     {
-        var user = await context.Users.Include(user => user.RefreshTokens).SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
-
+        var user = await context.Users
+            .Include(user => user.RefreshTokens)
+            .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if (user is null)
         {
             return NotFound($"Provided user is either fake or already was used");

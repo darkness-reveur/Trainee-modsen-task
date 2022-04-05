@@ -20,7 +20,7 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
             .HasColumnName("id");
 
         refreshTokenEntity
-            .HasOne(refreshToken => refreshToken.User)
+            .HasOne<User>()
             .WithMany(user => user.RefreshTokens)
             .OnDelete(DeleteBehavior.Cascade)
             .HasForeignKey(refreshToken => refreshToken.UserId)

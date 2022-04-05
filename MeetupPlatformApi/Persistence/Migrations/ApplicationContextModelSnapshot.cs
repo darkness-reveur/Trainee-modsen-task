@@ -101,14 +101,12 @@ namespace MeetupPlatformApi.Migrations
 
             modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
                 {
-                    b.HasOne("MeetupPlatformApi.Domain.User", "User")
+                    b.HasOne("MeetupPlatformApi.Domain.User", null)
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_users_refresh_tokens_user_id");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>

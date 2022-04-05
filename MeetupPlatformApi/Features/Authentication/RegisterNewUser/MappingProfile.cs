@@ -1,7 +1,7 @@
 ﻿namespace MeetupPlatformApi.Features.Authentication.RegisterNewUser;
 
 using AutoMapper;
-using MeetupPlatformApi.Authentication;
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Domain;
 
 public class MappingProfile : Profile

@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Authentication;
+﻿namespace MeetupPlatformApi.Authentication.Helpers;
 
 public class TokenPair
 {

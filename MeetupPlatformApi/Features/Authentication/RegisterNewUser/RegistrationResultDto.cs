@@ -8,7 +8,7 @@ public class RegistrationResultDto
     public UserInfoDto UserInfo { get; set; }
 
     [Required]
-    public TokenPairDto TokenPairInfo { get; set; }
+    public TokenPairDto TokenPair { get; set; }
     
     public class UserInfoDto
     {

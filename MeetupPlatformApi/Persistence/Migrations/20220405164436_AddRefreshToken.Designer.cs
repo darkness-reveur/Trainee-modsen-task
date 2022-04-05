@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220405110448_AddRefreshToken")]
+    [Migration("20220405164436_AddRefreshToken")]
     partial class AddRefreshToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,14 +103,12 @@ namespace MeetupPlatformApi.Migrations
 
             modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
                 {
-                    b.HasOne("MeetupPlatformApi.Domain.User", "User")
+                    b.HasOne("MeetupPlatformApi.Domain.User", null)
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_users_refresh_tokens_user_id");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>

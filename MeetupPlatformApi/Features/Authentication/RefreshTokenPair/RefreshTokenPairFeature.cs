@@ -5,6 +5,7 @@ using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,41 +23,40 @@ public class RefreshTokenPairFeature : FeatureBase
         this.tokenHelper = tokenHelper;
     }
 
-    [HttpPost("/api/users/refresh-tokens")]
+    [HttpPost("/api/users/me/refresh-tokens")]
+    [Authorize]
     public async Task<IActionResult> RefreshTokenPair([FromBody] string refreshToken)
     {
         var refreshTokenExpires = tokenHelper.GetExpires(refreshToken);
-        if (DateTime.UtcNow > refreshTokenExpires)
+        if (tokenHelper.IsExpired(refreshToken))
         {
-            return BadRequest("Refresh token is expired.");
+            return BadRequest();
         }
 
         var refreshTokenId = tokenHelper.GetNameIdentifier(refreshToken);
         var refreshTokenInfo = await context.RefreshTokens.SingleOrDefaultAsync(refreshToken => refreshToken.Id == refreshTokenId);
-
         if (refreshTokenInfo is null)
         {
-            return NotFound("Provided token is either fake or already was used.");
+            return BadRequest();
         }
 
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == refreshTokenInfo.UserId);
         if (user is null)
         {
-            return BadRequest("Token's user id is fake.");
+            return BadRequest();
         }
 
-        var newRefreshTokenId = Guid.NewGuid();
-        var tokenPair = tokenHelper.IssueTokenPair(user, newRefreshTokenId);
         var newRefreshToken = new RefreshToken()
         {
-            Id = tokenHelper.GetNameIdentifier(tokenPair.RefreshToken),
+            Id = Guid.NewGuid(),
             UserId = user.Id
         };
         context.RefreshTokens.Remove(refreshTokenInfo);
-        await context.RefreshTokens.AddAsync(newRefreshToken);
+        context.RefreshTokens.Add(newRefreshToken);
         await context.SaveChangesAsync();
 
-        var outputDto = mapper.Map<TokenPairDto>(tokenPair);
-        return Ok(outputDto);
+        var tokenPair = tokenHelper.IssueTokenPair(user, newRefreshToken.Id);
+        var refreshTokenDto = mapper.Map<TokenPairDto>(tokenPair);
+        return Ok(refreshTokenDto);
     }
 }
