@@ -77,7 +77,11 @@ public class AuthenticationController : ControllerBase
             return NotFound("Provided token is either fake or already was used.");
         }
 
-        var user = await context.Users.Where(user => user.Id == refreshTokenInfo.UserId).SingleOrDefaultAsync();
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == refreshTokenInfo.UserId);
+        if(user is null)
+        {
+            return BadRequest("Token's user id is fake.");
+        }
 
         var newRefreshTokenId = Guid.NewGuid();
         var tokenPair = authenticationManager.IssueTokenPair(user, newRefreshTokenId);
@@ -94,18 +98,19 @@ public class AuthenticationController : ControllerBase
         return Ok(outputDto);
     }
 
-    [HttpDelete("{userId:guid}/refresh-tokens")]
+    [HttpDelete("me/refresh-tokens")]
     [Authorize]
-    public async Task<IActionResult> RevokeUserRefreshTokens(Guid userId)
+    public async Task<IActionResult> RevokeUserRefreshTokens()
     {
-        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == userId);
+        var currentUserInfo = authenticationManager.GetCurrentUserInfo(User);
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == currentUserInfo.UserId);
 
         if (user is null)
         {
             return NotFound($"Provided user is either fake or already was used");
         }
 
-        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == userId).ToListAsync();
+        var userRefreshTokens = await context.RefreshTokens.Where(token => token.UserId == currentUserInfo.UserId).ToListAsync();
 
         context.RefreshTokens.RemoveRange(userRefreshTokens);
         await context.SaveChangesAsync();
