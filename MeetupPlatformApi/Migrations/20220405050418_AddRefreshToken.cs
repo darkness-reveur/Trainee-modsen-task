@@ -17,7 +17,6 @@ namespace MeetupPlatformApi.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    expires = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

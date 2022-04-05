@@ -30,13 +30,7 @@ public class AuthenticationManager
         return Guid.Parse(token.Claims.Single(claim => claim.Type == "nameid").Value);
     }
 
-    public DateTime GetExpires(string refreshToken)
-    {
-        var token = tokenHandler.ReadJwtToken(refreshToken);
-        return token.ValidTo;
-    }
-
-    public TokenPair IssueTokenPair(UserEntity user)
+    public TokenPair IssueTokenPair(UserEntity user, Guid refreshTokenId)
     {
         var accessToken = IssueToken(
             payload: new Dictionary<string, object>
@@ -48,7 +42,7 @@ public class AuthenticationManager
         var refreshToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                {ClaimTypes.NameIdentifier, Guid.NewGuid() }
+                {ClaimTypes.NameIdentifier, refreshTokenId }
             },
             tokenLifetime: configuration.RefreshTokenLifetime);
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220404143758_AddRefreshToken")]
+    [Migration("20220405050418_AddRefreshToken")]
     partial class AddRefreshToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,10 +61,6 @@ namespace MeetupPlatformApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expires");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")

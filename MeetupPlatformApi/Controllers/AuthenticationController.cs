@@ -47,11 +47,11 @@ public class AuthenticationController : ControllerBase
         user.Password = BCrypt.HashPassword(user.Password);
         await context.Users.AddAsync(user);
 
-        var tokenPair = authenticationManager.IssueTokenPair(user);
+        var refreshTokenId = Guid.NewGuid();
+        var tokenPair = authenticationManager.IssueTokenPair(user, refreshTokenId);
         var refreshToken = new RefreshTokenEntity()
         {
-            Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
+            Id = refreshTokenId,
             UserId = user.Id
         };
         await context.RefreshTokens.AddAsync(refreshToken);
@@ -83,11 +83,11 @@ public class AuthenticationController : ControllerBase
 
         var user = await context.Users.Where(user => user.Id == refreshTokenInfo.UserId).SingleOrDefaultAsync();
 
-        var tokenPair = authenticationManager.IssueTokenPair(user);
+        var newRefreshTokenId = Guid.NewGuid();
+        var tokenPair = authenticationManager.IssueTokenPair(user, newRefreshTokenId);
         var newRefreshToken = new RefreshTokenEntity()
         {
             Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
             UserId = user.Id
         };
         context.RefreshTokens.Remove(refreshTokenInfo);
@@ -126,11 +126,11 @@ public class AuthenticationController : ControllerBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var tokenPair = authenticationManager.IssueTokenPair(user);
+        var refreshTokenId = Guid.NewGuid();
+        var tokenPair = authenticationManager.IssueTokenPair(user, refreshTokenId);
         var refreshToken = new RefreshTokenEntity()
         {
-            Id = authenticationManager.GetNameIdentifier(tokenPair.RefreshToken),
-            Expires = authenticationManager.GetExpires(tokenPair.RefreshToken),
+            Id = refreshTokenId,
             UserId = user.Id
         };
         await context.RefreshTokens.AddAsync(refreshToken);

@@ -20,11 +20,6 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
             .HasColumnName("id");
 
         refreshTokenEntity
-            .Property(refreshToken => refreshToken.Expires)
-            .IsRequired()
-            .HasColumnName("expires");
-
-        refreshTokenEntity
             .HasOne(refreshToken => refreshToken.User)
             .WithMany(user => user.RefreshTokens)
             .OnDelete(DeleteBehavior.Cascade)
