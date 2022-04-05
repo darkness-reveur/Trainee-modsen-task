@@ -17,28 +17,26 @@ public class TokenHelper
         tokenHandler = new JwtSecurityTokenHandler();
     }
 
-    public Guid GetNameIdentifier(string refreshToken)
-    {
-        var token = tokenHandler.ReadJwtToken(refreshToken);
-        return Guid.Parse(token.Claims.Single(claim => claim.Type == "nameid").Value);
-    }
-
-    public DateTime GetExpires(string refreshToken)
-    {
-        var token = tokenHandler.ReadJwtToken(refreshToken);
-        return token.ValidTo;
-    }
-
-    public bool IsExpired(string refreshToken)
+    /// <summary>Parses provided encoded refresh token.</summary>
+    /// <param name="encodedRefreshToken">Encoded refresh token to parse.</param>
+    /// <returns>Returns <see cref="RefreshTokenPayload"/> if token is valid, <c>null</c> otherwise.</returns>
+    public RefreshTokenPayload ParseRefreshToken(string encodedRefreshToken)
     {
         try
         {
-            tokenHandler.ValidateToken(refreshToken, configuration.ValidationParameters, out var token);
-            return false;
+            var refreshToken = tokenHandler.ValidateToken(encodedRefreshToken, configuration.ValidationParameters, out _);
+            
+            var tokenIdClaim = refreshToken.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
+            var tokenId = Guid.Parse(tokenIdClaim.Value);
+
+            return new RefreshTokenPayload
+            {
+                TokenId = tokenId
+            };
         }
         catch
         {
-            return true;
+            return null;
         }
     }
 
