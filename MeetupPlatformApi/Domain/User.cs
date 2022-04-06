@@ -11,4 +11,6 @@ public class User
     public string Role { get; set; }
 
     public List<RefreshToken> RefreshTokens { get; set; }
+
+    public List<Meetup> Meetups { get; set; }
 }
