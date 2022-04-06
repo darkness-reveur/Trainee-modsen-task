@@ -16,18 +16,19 @@ public static class SwaggerSwashbuckleConfiguration
         {
             options.CustomSchemaIds(modelType => modelType.FullName.Replace("+", "."));
 
-            string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            options.IncludeXmlComments(xmlPath);
+            var xmlCommentsFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlCommentsFilePath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFileName);
+            options.IncludeXmlComments(xmlCommentsFilePath);
 
             options.OperationFilter<SecurityRequirementsOperationFilter>(true, "Bearer");
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
             });
             options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
         });
