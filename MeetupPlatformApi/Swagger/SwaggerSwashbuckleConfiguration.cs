@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Swagger.SwaggerDocConfiguration;
+﻿namespace MeetupPlatformApi.Swagger;
 
 using System.Reflection;
 using Microsoft.Extensions.Options;
@@ -23,7 +23,7 @@ public static class SwaggerSwashbuckleConfiguration
             options.OperationFilter<SecurityRequirementsOperationFilter>(true, "Bearer");
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "Standard Authorization header using the Bearer scheme. Example: \"bearer {token}\"",
+                Description = "Standard Authorization header using the Bearer scheme. Enter token here.",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
@@ -34,4 +34,3 @@ public static class SwaggerSwashbuckleConfiguration
         });
     }
 }
-

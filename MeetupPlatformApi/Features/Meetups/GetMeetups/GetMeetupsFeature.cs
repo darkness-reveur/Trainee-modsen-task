@@ -22,10 +22,8 @@ public class GetMeetupsFeature : FeatureBase
     /// Get all meetups.
     /// </summary>
     /// <response code="200">Returns meetup items colection.</response>
-    /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/meetups")]
     [ProducesResponseType(typeof(IEnumerable<MeetupInfoDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetMeetups()
     {
         var meetups = await context.Meetups.ToListAsync();
