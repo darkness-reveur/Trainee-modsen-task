@@ -28,8 +28,6 @@ public class GetUserFeature : FeatureBase
     [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);

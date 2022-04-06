@@ -28,8 +28,6 @@ public class ChangeUserCredentialsFeature : FeatureBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
     {
         var user = await context.Users

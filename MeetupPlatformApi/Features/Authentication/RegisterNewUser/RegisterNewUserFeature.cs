@@ -33,8 +33,6 @@ public class RegisterNewUserFeature : FeatureBase
     [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<IActionResult> RegisterNewUser([FromBody] RegistrationDto registrationDto)
     {
         var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);

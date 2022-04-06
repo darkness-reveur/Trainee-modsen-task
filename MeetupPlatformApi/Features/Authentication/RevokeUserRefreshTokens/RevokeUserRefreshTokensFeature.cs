@@ -23,11 +23,8 @@ public class RevokeUserRefreshTokensFeature : FeatureBase
     /// <response code="404">If the user is null.</response>
     [HttpDelete("/api/users/me/refresh-tokens")]
     [Authorize]
-    [HttpPost("/api/users/authenticate")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<IActionResult> RevokeUserRefreshTokens()
     {
         var user = await context.Users

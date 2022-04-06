@@ -28,8 +28,6 @@ public class AuthenticateUserFeature : FeatureBase
     [HttpPost("/api/users/authenticate")]
     [ProducesResponseType(typeof(TokenPairDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<IActionResult> AuthenticateUser([FromBody] CredentialsDto credentialsDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == credentialsDto.Username);

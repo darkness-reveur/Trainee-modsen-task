@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Persistence.SwaggerDocConfiguration;
+﻿namespace MeetupPlatformApi.Swagger.SwaggerDocConfiguration;
 
 using System.Reflection;
 using Microsoft.Extensions.Options;
