@@ -46,12 +46,20 @@ public class RegisterNewUserFeature : FeatureBase
         var user = mapper.Map<User>(registrationDto);
         user.Password = BCrypt.HashPassword(user.Password);
         context.Users.Add(user);
+
+        var refreshToken = new RefreshToken()
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id    
+        };
+        context.RefreshTokens.Add(refreshToken);
         await context.SaveChangesAsync();
 
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
         var registrationResultDto = new RegistrationResultDto
         {
             UserInfo = mapper.Map<RegistrationResultDto.UserInfoDto>(user),
-            AccessToken = tokenHelper.IssueAccessToken(user)
+            TokenPair = mapper.Map<TokenPairDto>(tokenPair)
         };
         return Created(registrationResultDto);
     }

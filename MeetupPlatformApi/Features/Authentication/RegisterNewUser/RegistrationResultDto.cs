@@ -15,7 +15,7 @@ public class RegistrationResultDto
     /// </summary>
     /// <example>*JWT string*</example>
     [Required]
-    public string AccessToken { get; set; }
+    public TokenPairDto TokenPair { get; set; }
     
     public class UserInfoDto
     {

@@ -2,6 +2,7 @@
 
 using BCrypt.Net;
 using MeetupPlatformApi.Authentication.Helpers;
+using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,16 @@ public class AuthenticateUserFeature : FeatureBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var accessToken = tokenHelper.IssueAccessToken(user);
-        var tokenDto = new TokenDto { AccessToken = accessToken };
-        return Ok(tokenDto);
+        var refreshToken = new RefreshToken()
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id
+        };
+        context.RefreshTokens.Add(refreshToken);
+        await context.SaveChangesAsync();
+
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
+        var tokenPairDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken };
+        return Ok(tokenPairDto);
     }
 }
