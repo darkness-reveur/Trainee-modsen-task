@@ -1,8 +1,10 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.UpdateMeetup;
 
 using AutoMapper;
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +21,7 @@ public class UpdateMeetupFeature : FeatureBase
     }
     
     [HttpPut("/api/meetups/{id:guid}")]
+    [Authorize(Roles = Roles.Organizer)]
     public async Task<IActionResult> UpdateMeetup([FromRoute] Guid id, [FromBody] UpdateMeetupDto updateDto)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
