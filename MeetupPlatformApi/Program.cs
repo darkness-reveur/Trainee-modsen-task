@@ -20,6 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
+        //Hides Schemas section from Swagger UI.
         options.DefaultModelsExpandDepth(-1);
     });
 }

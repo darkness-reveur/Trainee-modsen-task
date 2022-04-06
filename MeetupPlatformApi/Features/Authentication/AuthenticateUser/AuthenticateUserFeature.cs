@@ -25,11 +25,9 @@ public class AuthenticateUserFeature : FeatureBase
     /// </summary>
     /// <response code="200">Returns the newly created item.</response>
     /// <response code="400">If the user is null or password not valid.</response>
-    /// <response code="500">If there are database interaction errors.</response>
     [HttpPost("/api/users/authenticate")]
-    [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenPairDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Consumes("application/json")]
     [Produces("application/json")]
     public async Task<IActionResult> AuthenticateUser([FromBody] CredentialsDto credentialsDto)

@@ -24,11 +24,11 @@ public class GetCurrentUserInfoFeature : FeatureBase
     /// </summary>
     /// <response code="200">Returns current user info.</response>
     /// <response code="401">If the the user unauthorized.</response>
+    /// <response code="403">If the the user don't have a permission.</response>
     /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/users/me")]
     [Authorize]
     [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [Consumes("application/json")]
     [Produces("application/json")]

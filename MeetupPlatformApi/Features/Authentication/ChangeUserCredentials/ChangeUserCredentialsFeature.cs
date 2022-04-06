@@ -17,8 +17,19 @@ public class ChangeUserCredentialsFeature : FeatureBase
         this.context = context;
     }
 
+    /// <summary>
+    /// Change user credentials.
+    /// </summary>
+    /// <response code="204">If the user credentials change was successful.</response>
+    /// <response code="400">If the user is null.</response>
+    /// <response code="404">If the username or password not valid.</response>
     [HttpPut("/api/users/me/credentials")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
     {
         var user = await context.Users
