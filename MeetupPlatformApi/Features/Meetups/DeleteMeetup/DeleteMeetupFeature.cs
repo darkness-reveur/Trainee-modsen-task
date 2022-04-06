@@ -25,6 +25,11 @@ public class DeleteMeetupFeature : FeatureBase
             return NotFound();
         }
 
+        if (meetup.UserId != CurrentUser.UserId)
+        {
+            return BadRequest($"You aren't organizer of the meetup.");
+        }
+
         context.Meetups.Remove(meetup);
         await context.SaveChangesAsync();
         return NoContent();

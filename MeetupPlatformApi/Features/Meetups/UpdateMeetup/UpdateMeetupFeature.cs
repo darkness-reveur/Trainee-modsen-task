@@ -30,6 +30,11 @@ public class UpdateMeetupFeature : FeatureBase
             return NotFound();
         }
 
+        if (meetup.UserId != CurrentUser.UserId)
+        {
+            return BadRequest($"You aren't organizer of the meetup.");
+        }
+
         mapper.Map(updateDto, meetup);
         await context.SaveChangesAsync();
         return NoContent();
