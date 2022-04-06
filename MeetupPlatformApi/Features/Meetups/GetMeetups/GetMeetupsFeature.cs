@@ -6,6 +6,7 @@ using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
 public class GetMeetupsFeature : FeatureBase
@@ -26,19 +27,10 @@ public class GetMeetupsFeature : FeatureBase
         {
             return BadRequest();
         }
-        
-        MeetupsFilterService meetupsFilterService = new MeetupsFilterService();
 
-        var meetupsQuery = context.Meetups.AsQueryable();
+        var meetupsQuery = MeetupsFilterHelper.GetMeetupsFilteredByFilterSettings(context.Meetups.AsQueryable(), filterSettings);
 
-        var meetupsList = await meetupsFilterService.GetMeetupsFilteredByFilterSettingsAsync(meetupsQuery, filterSettings);
-
-        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetupsList);
-
-        if (meetupInfoDtos is null)
-        {
-            return NotFound();
-        }
+        var meetupInfoDtos = await mapper.ProjectTo<MeetupInfoDto>(meetupsQuery).ToListAsync();
 
         return Ok(meetupInfoDtos);
     }
