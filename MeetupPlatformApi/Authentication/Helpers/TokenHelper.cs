@@ -45,7 +45,8 @@ public class TokenHelper
         var accessToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                {ClaimTypes.NameIdentifier, user.Id}
+                {ClaimTypes.NameIdentifier, user.Id},
+                {ClaimTypes.Role, user.Role }
             },
             lifetime: configuration.AccessTokenLifetime);
 
