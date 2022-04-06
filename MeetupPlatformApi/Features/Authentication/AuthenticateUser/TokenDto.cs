@@ -11,6 +11,10 @@ public class TokenPairDto
     [Required]
     public string AccessToken { get; set; }
 
+    /// <summary>
+    /// Refresh token JWT string
+    /// </summary>
+    /// <example>*JWT string*</example>
     [Required]
     public string RefreshToken { get; set; }
 }
