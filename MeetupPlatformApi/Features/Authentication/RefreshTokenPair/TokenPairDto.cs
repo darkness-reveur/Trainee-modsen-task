@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Features.Authentication.AuthenticateUser;
+﻿namespace MeetupPlatformApi.Features.Authentication.RefreshTokenPair;
 
 using System.ComponentModel.DataAnnotations;
 
