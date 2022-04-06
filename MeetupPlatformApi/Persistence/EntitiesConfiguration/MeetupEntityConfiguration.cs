@@ -38,5 +38,17 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             .Property(meetup => meetup.EndTime)
             .IsRequired()
             .HasColumnName("end_time");
+
+        meetupEntity
+            .HasOne<User>()
+            .WithMany(user => user.Meetups)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasForeignKey(meetup => meetup.UserId)
+            .HasConstraintName("fk_users_meetups_user_id");
+
+        meetupEntity
+            .Property(meetup => meetup.UserId)
+            .IsRequired()
+            .HasColumnName("organizer");
     }
 }
