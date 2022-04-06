@@ -33,5 +33,10 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .Property(user => user.Password)
             .IsRequired()
             .HasColumnName("password");
+
+        userEntity
+            .Property(user => user.Role)
+            .IsRequired()
+            .HasColumnName("role");
     }
 }
