@@ -28,7 +28,7 @@ public class GetMeetupsFeature : FeatureBase
             return BadRequest();
         }
 
-        var meetupsQuery = MeetupsFilterHelper.GetMeetupsFilteredByFilterSettings(context.Meetups.AsQueryable(), filterSettings);
+        var meetupsQuery = MeetupsFilterHelper.GetMeetupsFilteredByFilterSettings(context.Meetups, filterSettings);
 
         var meetupInfoDtos = await mapper.ProjectTo<MeetupInfoDto>(meetupsQuery).ToListAsync();
 
