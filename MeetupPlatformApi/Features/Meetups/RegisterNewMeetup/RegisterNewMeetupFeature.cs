@@ -1,9 +1,11 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.RegisterNewMeetup;
 
 using AutoMapper;
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiSection(ApiSections.Meetups)]
@@ -19,6 +21,7 @@ public class RegisterNewMeetupFeature : FeatureBase
     }
     
     [HttpPost("/api/meetups")]
+    [Authorize(Roles = Roles.Organizer)]
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);

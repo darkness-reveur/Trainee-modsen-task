@@ -25,7 +25,7 @@ public class TokenHelper
         try
         {
             var refreshToken = tokenHandler.ValidateToken(encodedRefreshToken, configuration.ValidationParameters, out _);
-            
+
             var tokenIdClaim = refreshToken.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
             var tokenId = Guid.Parse(tokenIdClaim.Value);
 
@@ -52,7 +52,8 @@ public class TokenHelper
         var refreshToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                {ClaimTypes.NameIdentifier, refreshTokenId }
+                {ClaimTypes.NameIdentifier, refreshTokenId },
+                {ClaimTypes.Role, user.Role }
             },
             lifetime: configuration.RefreshTokenLifetime);
 
