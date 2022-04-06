@@ -27,6 +27,7 @@ public class RefreshTokenPairFeature : FeatureBase
     /// Refresh user token pair.
     /// </summary>
     /// <response code="200">Returns the newly created item.</response>
+    /// <response code="204">If the user credentials change was successful.</response>
     /// <response code="400">If the user is null or token is either invalid or fake.</response>
     [HttpPost("/api/users/me/refresh-tokens")]
     [Authorize]

@@ -21,7 +21,7 @@ public class AuthenticateUserFeature : FeatureBase
     }
 
     /// <summary>
-    /// Authenticate user in the system.
+    /// User authentication in the system.
     /// </summary>
     /// <response code="200">Returns the newly created item.</response>
     /// <response code="400">If the user is null or password not valid.</response>

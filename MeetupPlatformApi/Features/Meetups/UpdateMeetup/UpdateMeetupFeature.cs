@@ -23,9 +23,11 @@ public class UpdateMeetupFeature : FeatureBase
     /// </summary>
     /// <response code="204">If updating was successful.</response>
     /// <response code="404">If needed meetup is null.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpPut("/api/meetups/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateMeetup([FromRoute] Guid id, [FromBody] UpdateMeetupDto updateDto)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

@@ -23,9 +23,11 @@ public class GetMeetupFeature : FeatureBase
     /// </summary>
     /// <response code="200">Returns meetup item.</response>
     /// <response code="404">If needed meetup is null.</response>
+    /// <response code="500">If there are database interaction errors.</response>
     [HttpGet("/api/meetups/{id:guid}")]
     [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Swagger;
+﻿namespace MeetupPlatformApi.Swagger.SwaggerDocConfiguration;
 
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -16,3 +16,4 @@ public class SwaggerSwashbuckleOptionsConfiguration : IConfigureOptions<SwaggerG
         });
     }
 }
+
