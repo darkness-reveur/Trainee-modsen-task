@@ -49,6 +49,6 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
         meetupEntity
             .Property(meetup => meetup.UserId)
             .IsRequired()
-            .HasColumnName("organizer");
+            .HasColumnName("organizer_id");
     }
 }
