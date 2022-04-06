@@ -32,7 +32,7 @@ public class UpdateMeetupFeature : FeatureBase
 
         if (meetup.UserId != CurrentUser.UserId)
         {
-            return BadRequest($"You aren't organizer of the meetup.");
+            return Forbid();
         }
 
         mapper.Map(updateDto, meetup);

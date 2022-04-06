@@ -27,7 +27,7 @@ public class DeleteMeetupFeature : FeatureBase
 
         if (meetup.UserId != CurrentUser.UserId)
         {
-            return BadRequest($"You aren't organizer of the meetup.");
+            return Forbid();
         }
 
         context.Meetups.Remove(meetup);
