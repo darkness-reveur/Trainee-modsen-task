@@ -19,7 +19,7 @@ public class UpdateMeetupFeature : FeatureBase
     }
 
     /// <summary>
-    /// Update meetup sample by his id.
+    /// Update meetup by his id.
     /// </summary>
     /// <response code="204">If updating was successful.</response>
     /// <response code="404">If needed meetup is null.</response>
