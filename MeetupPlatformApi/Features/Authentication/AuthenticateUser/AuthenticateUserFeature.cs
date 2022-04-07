@@ -21,7 +21,7 @@ public class AuthenticateUserFeature : FeatureBase
     }
 
     [HttpPost("/api/users/authenticate")]
-    public async Task<IActionResult> AuthenticateOrganizer([FromBody] CredentialsDto credentialsDto)
+    public async Task<IActionResult> Authenticate([FromBody] CredentialsDto credentialsDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == credentialsDto.Username);
         if (user is null || !BCrypt.Verify(credentialsDto.Password, user.Password))

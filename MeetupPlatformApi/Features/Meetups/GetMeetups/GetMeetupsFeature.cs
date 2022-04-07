@@ -21,7 +21,9 @@ public class GetMeetupsFeature : FeatureBase
     [HttpGet("/api/meetups")]
     public async Task<IActionResult> GetMeetups()
     {
-        var meetups = await context.Meetups.ToListAsync();
+        var meetups = await context.Meetups
+            .Include(meetup => meetup.Users)
+            .ToListAsync();
         var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
         return Ok(meetupInfoDtos);
     }
