@@ -2,6 +2,7 @@
 
 using BCrypt.Net;
 using MeetupPlatformApi.Authentication.Helpers;
+using MeetupPlatformApi.Domain;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,14 @@ public class AuthenticateUserFeature : FeatureBase
         this.tokenHelper = tokenHelper;
     }
 
+    /// <summary>
+    /// Authenticate user in the system.
+    /// </summary>
+    /// <response code="200">Returns the newly created item.</response>
+    /// <response code="400">If the user is null or password not valid.</response>
     [HttpPost("/api/users/authenticate")]
+    [ProducesResponseType(typeof(TokenPairDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AuthenticateUser([FromBody] CredentialsDto credentialsDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == credentialsDto.Username);
@@ -28,8 +36,16 @@ public class AuthenticateUserFeature : FeatureBase
             return BadRequest("Username or password is incorrect.");
         }
 
-        var accessToken = tokenHelper.IssueAccessToken(user);
-        var tokenDto = new TokenDto { AccessToken = accessToken };
-        return Ok(tokenDto);
+        var refreshToken = new RefreshToken()
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id
+        };
+        context.RefreshTokens.Add(refreshToken);
+        await context.SaveChangesAsync();
+
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
+        var tokenPairDto = new TokenPairDto { AccessToken = tokenPair.AccessToken, RefreshToken = tokenPair.RefreshToken };
+        return Ok(tokenPairDto);
     }
 }

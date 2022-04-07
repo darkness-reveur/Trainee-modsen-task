@@ -20,6 +20,10 @@ public class GetMeetupsFeature : FeatureBase
         this.mapper = mapper;
     }
 
+    /// <summary>
+    /// Get all meetups.
+    /// </summary>
+    /// <response code="200">Returns meetup items colection.</response>
     [HttpGet("/api/meetups")]
     public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {

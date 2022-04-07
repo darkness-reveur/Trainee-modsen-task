@@ -23,7 +23,14 @@ public class RegisterNewUserFeature : FeatureBase
         this.tokenHelper = tokenHelper;
     }
 
+    /// <summary>
+    /// Register new user.
+    /// </summary>
+    /// <response code="201">Returns registration result data.</response>
+    /// <response code="400">If provided username is already taken.</response>
     [HttpPost("/api/users")]
+    [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewUser([FromBody] RegistrationDto registrationDto)
     {
         var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
@@ -35,12 +42,20 @@ public class RegisterNewUserFeature : FeatureBase
         var user = mapper.Map<User>(registrationDto);
         user.Password = BCrypt.HashPassword(user.Password);
         context.Users.Add(user);
+
+        var refreshToken = new RefreshToken()
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id    
+        };
+        context.RefreshTokens.Add(refreshToken);
         await context.SaveChangesAsync();
 
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
         var registrationResultDto = new RegistrationResultDto
         {
             UserInfo = mapper.Map<RegistrationResultDto.UserInfoDto>(user),
-            AccessToken = tokenHelper.IssueAccessToken(user)
+            TokenPair = mapper.Map<TokenPairDto>(tokenPair)
         };
         return Created(registrationResultDto);
     }

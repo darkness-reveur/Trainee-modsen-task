@@ -19,8 +19,13 @@ public class GetCurrentUserInfoFeature : FeatureBase
         this.mapper = mapper;
     }
 
+    /// <summary>
+    /// Get current user info.
+    /// </summary>
+    /// <response code="200">Returns current user info.</response>
     [HttpGet("/api/users/me")]
     [Authorize]
+    [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCurrentUserInfo()
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);

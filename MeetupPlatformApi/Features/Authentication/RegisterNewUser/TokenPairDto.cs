@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Features.Authentication.AuthenticateUser;
+﻿namespace MeetupPlatformApi.Features.Authentication.RegisterNewUser;
 
 using System.ComponentModel.DataAnnotations;
 

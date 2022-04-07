@@ -1,9 +1,12 @@
 ﻿namespace MeetupPlatformApi.Seedwork.WebApi;
 
+using System.Net.Mime;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
 public abstract class FeatureBase : ControllerBase
 {
     protected CurrentUserInfo CurrentUser => lazyCurrentUserInfo.Value;

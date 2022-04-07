@@ -17,8 +17,15 @@ public class GetUserFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Get user info by id.
+    /// </summary>
+    /// <response code="200">Returns user info.</response>
+    /// <response code="404">If the the user not found.</response>
     [HttpGet("/api/users/{id:guid}")]
+    [ProducesResponseType(typeof(UserInfoDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser([FromRoute] Guid id)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Id == id);
