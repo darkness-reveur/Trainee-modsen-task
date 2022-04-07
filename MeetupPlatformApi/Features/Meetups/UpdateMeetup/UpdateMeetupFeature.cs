@@ -17,8 +17,15 @@ public class UpdateMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Update meetup by his id.
+    /// </summary>
+    /// <response code="204">If updating was successful.</response>
+    /// <response code="404">If needed meetup is null.</response>
     [HttpPut("/api/meetups/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateMeetup([FromRoute] Guid id, [FromBody] UpdateMeetupDto updateDto)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

@@ -20,7 +20,14 @@ public class AuthenticateUserFeature : FeatureBase
         this.tokenHelper = tokenHelper;
     }
 
+    /// <summary>
+    /// Authenticate user in the system.
+    /// </summary>
+    /// <response code="200">Returns the newly created item.</response>
+    /// <response code="400">If the user is null or password not valid.</response>
     [HttpPost("/api/users/authenticate")]
+    [ProducesResponseType(typeof(TokenPairDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AuthenticateUser([FromBody] CredentialsDto credentialsDto)
     {
         var user = await context.Users.SingleOrDefaultAsync(user => user.Username == credentialsDto.Username);

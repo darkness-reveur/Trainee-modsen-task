@@ -23,7 +23,14 @@ public class RegisterNewUserFeature : FeatureBase
         this.tokenHelper = tokenHelper;
     }
 
+    /// <summary>
+    /// Register new user.
+    /// </summary>
+    /// <response code="201">Returns registration result data.</response>
+    /// <response code="400">If provided username is already taken.</response>
     [HttpPost("/api/users")]
+    [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewUser([FromBody] RegistrationDto registrationDto)
     {
         var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
