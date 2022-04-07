@@ -174,6 +174,21 @@ namespace MeetupPlatformApi.Migrations
                 {
                     b.Navigation("Meetups");
                 });
+
+            modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
+                {
+                    b.HasOne("MeetupPlatformApi.Domain.User", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_users_refresh_tokens_user_id");
+                });
+
+            modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
+                });
 #pragma warning restore 612, 618
         }
     }

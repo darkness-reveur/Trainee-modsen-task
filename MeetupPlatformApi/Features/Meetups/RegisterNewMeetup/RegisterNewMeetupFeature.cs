@@ -19,9 +19,14 @@ public class RegisterNewMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Register new meetup.
+    /// </summary>
+    /// <response code="201">Returns the newly created item.</response>
     [HttpPost("/api/meetups")]
     [Authorize(Roles = Roles.Organizer)]
+    [ProducesResponseType(typeof(RegisteredMeetupDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);

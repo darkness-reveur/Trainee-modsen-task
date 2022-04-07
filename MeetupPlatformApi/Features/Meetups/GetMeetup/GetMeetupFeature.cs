@@ -17,8 +17,15 @@ public class GetMeetupFeature : FeatureBase
         this.context = context;
         this.mapper = mapper;
     }
-    
+
+    /// <summary>
+    /// Get meetup by id.
+    /// </summary>
+    /// <response code="200">Returns meetup item.</response>
+    /// <response code="404">If needed meetup is null.</response>
     [HttpGet("/api/meetups/{id:guid}")]
+    [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups

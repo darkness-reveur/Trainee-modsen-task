@@ -14,9 +14,16 @@ public class DeleteMeetupFeature : FeatureBase
 
     public DeleteMeetupFeature(ApplicationContext context) =>
         this.context = context;
-    
+
+    /// <summary>
+    /// Delete meetup by id.
+    /// </summary>
+    /// <response code="204">If deleting was successful.</response>
+    /// <response code="404">If needed meetup is null.</response>
     [HttpDelete("/api/meetups/{id:guid}")]
     [Authorize(Roles = Roles.Organizer)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
