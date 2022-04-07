@@ -20,17 +20,19 @@ public class SignUpForMeetupFeature : FeatureBase
         this.mapper = mapper;
     }
 
-    [HttpPost("/api/meetups/{id:guid}")]
+    [HttpPost("/api/meetups/sign-up/{id:guid}")]
     [Authorize(Roles = Roles.PlainUser)]
     public async Task<IActionResult> SignUpForMeetup([FromRoute] Guid id)
     {
-        var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
+        var meetup = await context.Meetups
+            .Include(meetup => meetup.Users)
+            .SingleOrDefaultAsync(meetup => meetup.Id == id);
         if(meetup is null)
         {
             return NotFound();
         }
 
-        var user = await context.PlainUsers.SingleOrDefaultAsync(user => user.MeetupId == CurrentUser.UserId);
+        var user = await context.PlainUsers.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
             // We can't sign up non-existing user to meetup.
@@ -45,6 +47,8 @@ public class SignUpForMeetupFeature : FeatureBase
 
         user.MeetupId = meetup.Id;
         await context.SaveChangesAsync();
-        return NoContent();
+
+        var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);
+        return Ok(meetupInfoDto);
     }
 }

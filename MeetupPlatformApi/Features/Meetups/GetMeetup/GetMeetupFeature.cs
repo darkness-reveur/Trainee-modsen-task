@@ -21,7 +21,9 @@ public class GetMeetupFeature : FeatureBase
     [HttpGet("/api/meetups/{id:guid}")]
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
-        var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);
+        var meetup = await context.Meetups
+            .Include(meetup => meetup.Users)
+            .SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (meetup is null)
         {
             return NotFound();
