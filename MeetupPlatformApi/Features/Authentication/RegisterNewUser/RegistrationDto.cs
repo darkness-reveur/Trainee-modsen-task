@@ -11,7 +11,4 @@ public class RegistrationDto
     [Required]
     [MaxLength(30)]
     public string Password { get; set; }
-
-    [Required]
-    public string Role { get; set; }
 }

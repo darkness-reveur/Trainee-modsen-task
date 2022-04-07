@@ -3,7 +3,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MeetupPlatformApi.Authentication.Configuration;
-using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 using Microsoft.IdentityModel.Tokens;
 
 public class TokenHelper

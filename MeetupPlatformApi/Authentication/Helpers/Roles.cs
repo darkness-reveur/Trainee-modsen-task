@@ -2,7 +2,7 @@
 
 public static class Roles
 {
-    public const string User = "User";
+    public const string PlainUser = "PlainUser";
 
     public const string Organizer = "Organizer";
 }

@@ -1,6 +1,7 @@
 ﻿namespace MeetupPlatformApi.Persistence.EntitiesConfiguration;
 
 using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -40,14 +41,14 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             .HasColumnName("end_time");
 
         meetupEntity
-            .HasOne<User>()
-            .WithMany(user => user.Meetups)
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasForeignKey(meetup => meetup.UserId)
-            .HasConstraintName("fk_users_meetups_user_id");
+            .HasOne<Organizer>()
+            .WithMany(organizer => organizer.Meetups)
+            .OnDelete(DeleteBehavior.SetNull)
+            .HasForeignKey(meetup => meetup.OrganizerId)
+            .HasConstraintName("fk_users_meetups_organizer_id");
 
         meetupEntity
-            .Property(meetup => meetup.UserId)
+            .Property(meetup => meetup.OrganizerId)
             .IsRequired()
             .HasColumnName("organizer_id");
     }

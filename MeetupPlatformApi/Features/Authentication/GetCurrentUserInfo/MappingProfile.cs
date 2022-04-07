@@ -1,7 +1,7 @@
 ﻿namespace MeetupPlatformApi.Features.Authentication.GetCurrentUserInfo;
 
 using AutoMapper;
-using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 
 public class MappingProfile : Profile
 {

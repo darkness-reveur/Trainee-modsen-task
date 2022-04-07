@@ -1,7 +1,6 @@
 ﻿namespace MeetupPlatformApi.Persistence.EntitiesConfiguration;
 
-using MeetupPlatformApi.Authentication.Helpers;
-using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -36,9 +35,6 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .HasColumnName("password");
 
         userEntity
-            .Property(user => user.Role)
-            .IsRequired()
-            .HasDefaultValue(Roles.User)
-            .HasColumnName("role");
+            .Ignore(user => user.Role);
     }
 }

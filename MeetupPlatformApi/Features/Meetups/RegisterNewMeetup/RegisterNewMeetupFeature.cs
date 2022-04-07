@@ -25,7 +25,7 @@ public class RegisterNewMeetupFeature : FeatureBase
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);
-        meetup.UserId = CurrentUser.UserId;
+        meetup.OrganizerId = CurrentUser.UserId;
         context.Meetups.Add(meetup);
         await context.SaveChangesAsync();
 

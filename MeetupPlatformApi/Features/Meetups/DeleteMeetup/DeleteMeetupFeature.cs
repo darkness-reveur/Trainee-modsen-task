@@ -25,7 +25,7 @@ public class DeleteMeetupFeature : FeatureBase
             return NotFound();
         }
 
-        if (meetup.UserId != CurrentUser.UserId)
+        if (meetup.OrganizerId != CurrentUser.UserId)
         {
             return Forbid();
         }
