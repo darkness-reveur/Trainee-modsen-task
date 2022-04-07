@@ -75,7 +75,7 @@ public class RegisterNewUserFeature : FeatureBase
         context.RefreshTokens.Add(refreshToken);
         await context.SaveChangesAsync();
 
-        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id, Roles.PlainUser);
+        var tokenPair = tokenHelper.IssueTokenPair(user, refreshToken.Id);
         var registrationResultDto = new RegistrationResultDto
         {
             UserInfo = mapper.Map<RegistrationResultDto.UserInfoDto>(user),
