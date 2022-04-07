@@ -24,8 +24,6 @@ public static class SwaggerSwashbuckleConfiguration
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "Standard Authorization header using the Bearer scheme. Enter your token here",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
                 Scheme = "bearer",
                 BearerFormat = "JWT"
