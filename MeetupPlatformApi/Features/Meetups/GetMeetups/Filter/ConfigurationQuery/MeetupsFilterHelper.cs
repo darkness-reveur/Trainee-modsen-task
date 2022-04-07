@@ -11,22 +11,14 @@ public static class MeetupsFilterHelper
         MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
-
-        switch (meetupFilterSettings.SortOptions)
+        try
         {
-            case SortOptions.DescendingDateSort:
+            meetupsQuery = SortSelection(meetupsQuery, meetupFilterSettings.SortOption);
+        } 
+        catch (ArgumentOutOfRangeException)
+        {
 
-                meetupsQuery = meetupsQuery.OrderByDescending(meetups => meetups.StartTime);
-
-                break;
-
-            case SortOptions.AscendingDateSort:
-
-                meetupsQuery = meetupsQuery.OrderBy(meetup => meetup.StartTime);
-
-                break;
         }
-
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 
         return meetupsQuery
@@ -34,14 +26,19 @@ public static class MeetupsFilterHelper
                 .Take(meetupFilterSettings.PageSize);
     }
 
+    private static IQueryable<Meetup> SortSelection(IQueryable<Meetup> meetupsQuery, SortOptions sortOptions) => sortOptions switch
+    {
+        SortOptions.DescendingStartTime => meetupsQuery.OrderByDescending(meetups => meetups.StartTime),
+        SortOptions.AscendingStartTime  => meetupsQuery.OrderBy(meetup => meetup.StartTime),
+        _ => throw new ArgumentOutOfRangeException(nameof(sortOptions), $"Not expected direction value: {sortOptions}")
+    };
+
     private static IQueryable<Meetup> Filter(
        this IQueryable<Meetup> meetupsQuery,
        MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.FilterByDate(meetupFilterSettings);
-
         meetupsQuery = meetupsQuery.FilterByLocation(meetupFilterSettings);
-
         meetupsQuery = meetupsQuery.FilterBySearchString(meetupFilterSettings);
 
         return meetupsQuery;
@@ -51,11 +48,10 @@ public static class MeetupsFilterHelper
         this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {
-        if (meetupFilterSettings.SearchString is null)
+        if (string.IsNullOrEmpty(meetupFilterSettings.SearchString))
         {
             return meetupsQuery;
         }
-
         meetupsQuery = meetupsQuery.Where(meetup =>
         meetup.Title.ToLower().Contains(meetupFilterSettings.SearchString.ToLower())
         || meetup.Description.ToLower().Contains(meetupFilterSettings.SearchString.ToLower()));
@@ -67,11 +63,10 @@ public static class MeetupsFilterHelper
         this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {
-        if (meetupFilterSettings.Location is null)
+        if (string.IsNullOrEmpty(meetupFilterSettings.Location))
         {
             return meetupsQuery;
         }
-
         meetupsQuery = meetupsQuery.Where(meetup => meetup.Location.ToLower().Contains(meetupFilterSettings.Location.ToLower()));
 
         return meetupsQuery;
@@ -81,18 +76,13 @@ public static class MeetupsFilterHelper
         this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {
-        var startDate = meetupFilterSettings.StartTime is not null ? meetupFilterSettings.StartTime?.Date : null;
-
-        var endDate = meetupFilterSettings.EndTime is not null ? meetupFilterSettings.EndTime?.Date.AddDays(1) : null;
-
-        if (startDate is not null)
+        if (meetupFilterSettings.BottomBoundOfStartTime is not null)
         {
-            meetupsQuery = meetupsQuery.Where(meetup => meetup.StartTime >= startDate);
+            meetupsQuery = meetupsQuery.Where(meetup => meetup.StartTime >= meetupFilterSettings.BottomBoundOfStartTime);
         }
-
-        if (endDate is not null)
+        if (meetupFilterSettings.UpperBoundOfStartTime is not null)
         {
-            meetupsQuery = meetupsQuery.Where(meetup => meetup.EndTime < endDate);
+            meetupsQuery = meetupsQuery.Where(meetup => meetup.StartTime <= meetupFilterSettings.UpperBoundOfStartTime);
         }
 
         return meetupsQuery;

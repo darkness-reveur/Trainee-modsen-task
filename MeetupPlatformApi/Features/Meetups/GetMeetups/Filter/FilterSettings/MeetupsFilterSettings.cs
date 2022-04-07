@@ -5,21 +5,21 @@ using System.ComponentModel.DataAnnotations;
 public class MeetupsFilterSettings
 {
     [Required]
-    [Range(1,100000)]
+    [Range(1,int.MaxValue)]
     public int PageNumber { get; set; }
     
     [Required]
-    [Range(1, 100, ErrorMessage = "too much data")]
+    [Range(1, 100)]
     public int PageSize { get; set; }
 
     [Required]
-    public SortOptions SortOptions { get; set; }
+    public SortOptions SortOption { get; set; }
 
     public string SearchString { get; set; }
 
-    public DateTime? StartTime { get; set; }
+    public DateTime? BottomBoundOfStartTime { get; set; }
 
-    public DateTime? EndTime { get; set; }
+    public DateTime? UpperBoundOfStartTime { get; set; }
 
     public string Location { get; set; }
 }

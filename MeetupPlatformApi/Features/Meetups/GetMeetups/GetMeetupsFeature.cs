@@ -23,15 +23,8 @@ public class GetMeetupsFeature : FeatureBase
     [HttpGet("/api/meetups")]
     public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
-        if (filterSettings is null)
-        {
-            return BadRequest();
-        }
-
         var meetupsQuery = MeetupsFilterHelper.GetMeetupsFilteredByFilterSettings(context.Meetups, filterSettings);
-
         var meetupInfoDtos = await mapper.ProjectTo<MeetupInfoDto>(meetupsQuery).ToListAsync();
-
         return Ok(meetupInfoDtos);
     }
 }
