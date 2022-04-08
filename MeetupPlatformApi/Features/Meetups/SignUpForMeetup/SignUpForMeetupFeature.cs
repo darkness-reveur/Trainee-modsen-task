@@ -25,6 +25,7 @@ public class SignUpForMeetupFeature : FeatureBase
     /// </summary>
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="400">If user doesn't exist or the user is trying to sign up for meetup twice.</response>
+    /// <response code="200">If there's not errors after executing method.</response>
     [HttpPost("/api/meetups/sign-up/{id:guid}")]
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
