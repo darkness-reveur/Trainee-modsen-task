@@ -50,6 +50,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
         meetupEntity
             .Property(meetup => meetup.OrganizerId)
             .IsRequired()
+            .HasDefaultValueSql("gen_random_uuid()")
             .HasColumnName("organizer_id");
 
         meetupEntity
@@ -82,6 +83,15 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             join => join
                     .HasIndex("user_id")
                     .HasName("ix_meetups_plain_users_user_id"));
+
+        meetupEntity
+            .HasMany(meetup => meetup.Users)
+            .WithMany(plainUser => plainUser.Meetups)
+            .UsingEntity<Dictionary<string, object>>(
+            "meetups_plain_users",
+            join => join
+                    .HasIndex("meetup_id")
+                    .HasName("ix_meetups_plain_users_meetup_id"));
 
         meetupEntity
             .HasMany(meetup => meetup.Users)
