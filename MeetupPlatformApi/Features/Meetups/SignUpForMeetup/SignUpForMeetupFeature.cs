@@ -40,20 +40,23 @@ public class SignUpForMeetupFeature : FeatureBase
             return NotFound();
         }
 
-        var user = await context.PlainUsers.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
+        var user = await context.PlainUsers
+            .Include(plainUser => plainUser.Meetups)
+            .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
             // We can't sign up non-existing user to meetup.
             return BadRequest();
         }
 
-        if(user?.MeetupId == meetup.Id)
+        var isAlreadySignUp = user.Meetups.Any(userMeetup => userMeetup.Id == meetup.Id);
+        if(isAlreadySignUp)
         {
             // We can't twice sign up the user to meetup.
             return BadRequest();
         }
 
-        user.MeetupId = meetup.Id;
+        user.Meetups.Add(meetup);
         await context.SaveChangesAsync();
 
         var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);

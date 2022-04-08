@@ -36,5 +36,8 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 
         userEntity
             .Ignore(user => user.Role);
+
+        userEntity
+            .HasDiscriminator<string>("role");
     }
 }
