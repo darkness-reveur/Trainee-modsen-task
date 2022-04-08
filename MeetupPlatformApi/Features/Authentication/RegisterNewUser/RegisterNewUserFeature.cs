@@ -34,8 +34,8 @@ public class RegisterNewUserFeature : FeatureBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewOrganizer([FromBody] RegistrationDto registrationDto)
     {
-        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
-        if (usernameAlreadyTaken)
+        var isUsernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
+        if (isUsernameAlreadyTaken)
         {
             return BadRequest("Provided username is already taken");
         }
@@ -71,8 +71,8 @@ public class RegisterNewUserFeature : FeatureBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewPlainUser([FromBody] RegistrationDto registrationDto)
     {
-        var usernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
-        if (usernameAlreadyTaken)
+        var isUsernameAlreadyTaken = await context.Users.AnyAsync(user => user.Username == registrationDto.Username);
+        if (isUsernameAlreadyTaken)
         {
             return BadRequest("Provided username is already taken");
         }

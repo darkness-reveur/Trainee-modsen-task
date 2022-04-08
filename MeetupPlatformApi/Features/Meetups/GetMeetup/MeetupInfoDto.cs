@@ -39,6 +39,10 @@ public class MeetupInfoDto
     [Required]
     public string Description { get; set; }
 
+    /// <summary>
+    /// Meetup users count
+    /// </summary>
+    /// <example>1 or 4 etc</example>
     [Required]
     public int UsersCount { get; set; }
 }

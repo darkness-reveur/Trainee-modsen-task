@@ -10,7 +10,7 @@ namespace MeetupPlatformApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
+                name: "discriminator",
                 table: "users",
                 type: "text",
                 nullable: false,
@@ -29,12 +29,12 @@ namespace MeetupPlatformApi.Migrations
                 nullable: false);
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_meetup_id",
+                name: "ix_users_meetup_id",
                 table: "users",
                 column: "meetup_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_meetups_organizer_id",
+                name: "ix_meetups_organizer_id",
                 table: "meetups",
                 column: "organizer_id");
 
