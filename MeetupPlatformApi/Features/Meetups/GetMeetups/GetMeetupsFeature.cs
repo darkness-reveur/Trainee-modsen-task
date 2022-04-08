@@ -27,7 +27,7 @@ public class GetMeetupsFeature : FeatureBase
     public async Task<IActionResult> GetMeetups()
     {
         var meetups = await context.Meetups
-            .Include(meetup => meetup.Users)
+            .Include(meetup => meetup.SignedUpUsers)
             .ToListAsync();
         var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
         return Ok(meetupInfoDtos);

@@ -9,6 +9,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Meetup, MeetupInfoDto>()
             .ForMember(meetup => meetup.UsersCount, 
-                options => options.MapFrom(meetup => meetup.Users.Count));
+                options => options.MapFrom(meetup => meetup.SignedUpUsers.Count));
     }
 }

@@ -34,7 +34,7 @@ public class SignUpForMeetupFeature : FeatureBase
     public async Task<IActionResult> SignUpForMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.Users)
+            .Include(meetup => meetup.SignedUpUsers)
             .SingleOrDefaultAsync(meetup => meetup.Id == id);
         if(meetup is null)
         {

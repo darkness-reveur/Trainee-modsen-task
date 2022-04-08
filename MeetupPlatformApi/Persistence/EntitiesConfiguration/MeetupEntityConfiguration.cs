@@ -58,7 +58,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             .HasName("ix_meetups_organizer_id");
 
         meetupEntity
-            .HasMany(meetup => meetup.Users)
+            .HasMany(meetup => meetup.SignedUpUsers)
             .WithMany(plainUser => plainUser.Meetups)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
@@ -76,7 +76,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                     .OnDelete(DeleteBehavior.Cascade));
 
         meetupEntity
-            .HasMany(meetup => meetup.Users)
+            .HasMany(meetup => meetup.SignedUpUsers)
             .WithMany(plainUser => plainUser.Meetups)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
@@ -85,7 +85,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                     .HasName("ix_meetups_plain_users_user_id"));
 
         meetupEntity
-            .HasMany(meetup => meetup.Users)
+            .HasMany(meetup => meetup.SignedUpUsers)
             .WithMany(plainUser => plainUser.Meetups)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
@@ -94,7 +94,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                     .HasName("ix_meetups_plain_users_meetup_id"));
 
         meetupEntity
-            .HasMany(meetup => meetup.Users)
+            .HasMany(meetup => meetup.SignedUpUsers)
             .WithMany(plainUser => plainUser.Meetups)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",

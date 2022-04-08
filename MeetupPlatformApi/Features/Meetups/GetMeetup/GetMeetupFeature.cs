@@ -29,7 +29,7 @@ public class GetMeetupFeature : FeatureBase
     public async Task<IActionResult> GetMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.Users)
+            .Include(meetup => meetup.SignedUpUsers)
             .SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (meetup is null)
         {
