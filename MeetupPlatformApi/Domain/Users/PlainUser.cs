@@ -6,5 +6,5 @@ public class PlainUser : User
 {
     public override string Role => Roles.PlainUser;
 
-    public Guid? MeetupId { get; set; }
+    public List<Meetup> Meetups { get; set; }
 }
