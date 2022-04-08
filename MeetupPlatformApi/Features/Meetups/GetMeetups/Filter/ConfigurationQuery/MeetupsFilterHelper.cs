@@ -11,14 +11,7 @@ public static class MeetupsFilterHelper
         MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
-        try
-        {
-            meetupsQuery = SortSelection(meetupsQuery, meetupFilterSettings.SortOption);
-        } 
-        catch (ArgumentOutOfRangeException)
-        {
-
-        }
+        meetupsQuery = SortSelection(meetupsQuery, meetupFilterSettings.SortOption);
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 
         return meetupsQuery
