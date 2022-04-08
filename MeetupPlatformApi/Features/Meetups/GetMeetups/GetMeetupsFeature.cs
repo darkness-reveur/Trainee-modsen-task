@@ -25,6 +25,7 @@ public class GetMeetupsFeature : FeatureBase
     /// </summary>
     /// <response code="200">Returns meetup items colection.</response>
     [HttpGet("/api/meetups")]
+    [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
         var meetupsQuery = MeetupsFilterHelper.GetMeetupsFilteredByFilterSettings(context.Meetups, filterSettings);
