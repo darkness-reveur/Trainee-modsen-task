@@ -20,6 +20,7 @@ public class DeleteMeetupFeature : FeatureBase
     /// </summary>
     /// <response code="204">If deleting was successful.</response>
     /// <response code="404">If needed meetup is null.</response>
+    /// <response code="403">If organizer is trying delete meetup that he didn't create.</response>
     [HttpDelete("/api/meetups/{id:guid}")]
     [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
