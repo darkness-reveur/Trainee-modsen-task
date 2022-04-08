@@ -24,6 +24,7 @@ public class DeleteMeetupFeature : FeatureBase
     [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> DeleteMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == id);

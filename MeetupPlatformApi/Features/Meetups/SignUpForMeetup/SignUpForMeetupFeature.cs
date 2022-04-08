@@ -20,8 +20,16 @@ public class SignUpForMeetupFeature : FeatureBase
         this.mapper = mapper;
     }
 
+    /// <summary>
+    /// Sign up for meetup by its id.
+    /// </summary>
+    /// <response code="404">If needed meetup is null.</response>
+    /// <response code="400">If user doesn't exist or the user is trying to sign up for meetup twice.</response>
     [HttpPost("/api/meetups/sign-up/{id:guid}")]
     [Authorize(Roles = Roles.PlainUser)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> SignUpForMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups
