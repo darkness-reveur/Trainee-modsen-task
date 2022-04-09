@@ -5,7 +5,7 @@ using MeetupPlatformApi.Seedwork.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFiles(builder.Environment);
+builder.OverrideConfigurationSources();
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(Program));
