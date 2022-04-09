@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupPlatformApi", "MeetupPlatformApi\MeetupPlatformApi.csproj", "{C47B8B66-2CEC-4355-B809-6D1454D1124F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupPlatform.Api", "MeetupPlatform.Api\MeetupPlatform.Api.csproj", "{C47B8B66-2CEC-4355-B809-6D1454D1124F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
