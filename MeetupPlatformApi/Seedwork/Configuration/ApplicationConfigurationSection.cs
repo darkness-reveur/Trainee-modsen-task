@@ -23,6 +23,20 @@ public class ApplicationConfigurationSection
 
         return value;
     }
+
+    public bool GetRequiredBool(string parameterName)
+    {
+        var stringValue = GetValue(parameterName, required: true);
+
+        var isValidBool = bool.TryParse(stringValue, out var value);
+        if (!isValidBool)
+        {
+            var path = GetParameterPath(parameterName);
+            throw new InvalidConfigurationException($"Configuration parameter \"{path}\" must be a boolean.");
+        }
+
+        return value;
+    }
     
     private string GetValue(string parameterName, bool required = false)
     {
