@@ -16,17 +16,17 @@ public class AuthenticationConfiguration
 
     public AuthenticationConfiguration(IConfiguration applicationConfiguration)
     {
-        const string authSectionName = "Auth";
+        var authenticationConfiguration = applicationConfiguration.FromSection("Auth");
 
-        var secretKey = applicationConfiguration.GetString($"{authSectionName}:SecretKey");
+        var secretKey = authenticationConfiguration.GetRequiredString("SecretKey");
         var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
         var securityKey = new SymmetricSecurityKey(secretKeyBytes);
         SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
         
-        var accessTokenLifetimeInMinutes = applicationConfiguration.GetInt($"{authSectionName}:AccessTokenLifetimeInMinutes");
+        var accessTokenLifetimeInMinutes = authenticationConfiguration.GetRequiredInt("AccessTokenLifetimeInMinutes");
         AccessTokenLifetime = TimeSpan.FromMinutes(accessTokenLifetimeInMinutes);
 
-        var refreshTokenLifetimeInDays = applicationConfiguration.GetInt($"{authSectionName}:RefreshTokenLifetimeInDays");
+        var refreshTokenLifetimeInDays = authenticationConfiguration.GetRequiredInt("RefreshTokenLifetimeInDays");
         RefreshTokenLifetime = TimeSpan.FromDays(refreshTokenLifetimeInDays);
 
         ValidationParameters = new TokenValidationParameters
