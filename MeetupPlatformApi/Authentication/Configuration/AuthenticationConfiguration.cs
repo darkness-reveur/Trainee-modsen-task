@@ -10,7 +10,7 @@ public class AuthenticationConfiguration
     
     public TimeSpan AccessTokenLifetime { get; }
 
-    public TimeSpan RefreshTokenLifetime { get; set; }
+    public TimeSpan RefreshTokenLifetime { get; }
     
     public TokenValidationParameters ValidationParameters { get; }
 
