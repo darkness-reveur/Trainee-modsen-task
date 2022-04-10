@@ -12,6 +12,7 @@ public static class MeetupsFilterHelper
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
         meetupsQuery = SortSelection(meetupsQuery, meetupFilterSettings.SortOption);
+
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 
         return meetupsQuery
@@ -33,7 +34,6 @@ public static class MeetupsFilterHelper
         meetupsQuery = meetupsQuery.FilterByDate(meetupFilterSettings);
         meetupsQuery = meetupsQuery.FilterByLocation(meetupFilterSettings);
         meetupsQuery = meetupsQuery.FilterBySearchString(meetupFilterSettings);
-
         return meetupsQuery;
     }
 
@@ -45,14 +45,14 @@ public static class MeetupsFilterHelper
         {
             return meetupsQuery;
         }
-        meetupsQuery = meetupsQuery.Where(meetup =>
-        meetup.Title.ToLower().Contains(meetupFilterSettings.SearchString.ToLower())
-        || meetup.Description.ToLower().Contains(meetupFilterSettings.SearchString.ToLower()));
 
+        meetupsQuery = meetupsQuery.Where(meetup =>
+            meetup.Title.ToLower().Contains(meetupFilterSettings.SearchString.ToLower())
+            || meetup.Description.ToLower().Contains(meetupFilterSettings.SearchString.ToLower()));
         return meetupsQuery;
     }
 
-    private static IQueryable<Meetup> FilterByLocation(
+    private static IQueryable<Meetup> FilterByLocation( 
         this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {
@@ -60,8 +60,8 @@ public static class MeetupsFilterHelper
         {
             return meetupsQuery;
         }
-        meetupsQuery = meetupsQuery.Where(meetup => meetup.Location.ToLower().Contains(meetupFilterSettings.Location.ToLower()));
 
+        meetupsQuery = meetupsQuery.Where(meetup => meetup.Location.ToLower().Contains(meetupFilterSettings.Location.ToLower()));
         return meetupsQuery;
     }
 
@@ -73,6 +73,7 @@ public static class MeetupsFilterHelper
         {
             meetupsQuery = meetupsQuery.Where(meetup => meetup.StartTime >= meetupFilterSettings.BottomBoundOfStartTime);
         }
+
         if (meetupFilterSettings.UpperBoundOfStartTime is not null)
         {
             meetupsQuery = meetupsQuery.Where(meetup => meetup.StartTime <= meetupFilterSettings.UpperBoundOfStartTime);
