@@ -4,8 +4,10 @@ using System;
 using System.Threading.Tasks;
 using Dapper;
 using MeetupPlatform.Tests.Seedwork.Persistence;
+using MeetupPlatform.Tests.Seedwork.TestCategories;
 using Xunit;
 
+[TestCategory(TestCategory.MigrationTest)]
 public class MigrationTests : IClassFixture<ApplicationContextFixture>
 {
     private readonly DbMigrator dbMigrator;
