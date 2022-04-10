@@ -22,8 +22,79 @@ public class MigrationTests : IClassFixture<ApplicationContextFixture>
     }
 
     [Fact]
+    public async Task AddFluentApiMigrationTest()
+    {
+        // Common
+        const string migrationUnderTest = "AddFluentApi";
+        var meetupSample = new
+        {
+            Id = 1,
+            Name = "Meetup",
+            Description = "Meetup's Description",
+            StartTime = new DateTime(2022, 04, 10, 10, 23, 54).ToUniversalTime(),
+            EndTime = new DateTime(2022, 04, 10, 10, 23, 55).ToUniversalTime(),
+        };
+        var userSample = new
+        {
+            Id = Guid.NewGuid(),
+            Username = "User",
+            Password = "User's Password",
+        };
+        
+        // Setup 
+        await dbMigrator.InitializeDb();
+        await dbMigrator.MigrateBefore(migrationUnderTest);
+        const string insertMeetupSql = @"
+            INSERT INTO ""Meetups""(""Id"", ""Name"", ""Description"", ""StartTime"", ""EndTime"")
+            VALUES (@Id, @Name, @Description, @StartTime, @EndTime)";
+        await dbMigrator.Connection.ExecuteAsync(insertMeetupSql, meetupSample);
+        const string insertUserSql = @"
+            INSERT INTO ""Users""(""Id"", ""Username"", ""Password"")
+            VALUES (@Id, @Username, @Password)";
+        await dbMigrator.Connection.ExecuteAsync(insertUserSql, userSample);
+        
+        // Check if the seed data is preserved after migration is applied
+        await dbMigrator.MigrateOneStepUp();
+        const string selectMeetupAfterMigrationSql = @"
+            SELECT id AS ""Id"", name AS ""Name"", description AS ""Description"", start_time AS ""StartTime"", end_time AS ""EndTime""
+            FROM meetups";
+        var meetupAfterMigration = await dbMigrator.Connection.QuerySingleAsync(selectMeetupAfterMigrationSql);
+        Assert.Equal(meetupSample.Id, (int) meetupAfterMigration.Id);
+        Assert.Equal(meetupSample.Name, (string) meetupAfterMigration.Name);
+        Assert.Equal(meetupSample.Description, (string) meetupAfterMigration.Description);
+        Assert.Equal(meetupSample.StartTime, (DateTime) meetupAfterMigration.StartTime);
+        Assert.Equal(meetupSample.EndTime, (DateTime) meetupAfterMigration.EndTime);
+        const string selectUserAfterMigrationSql = @"
+            SELECT id AS ""Id"", username AS ""Username"", password AS ""Password""
+            FROM users";
+        var userAfterMigration = await dbMigrator.Connection.QuerySingleAsync(selectUserAfterMigrationSql);
+        Assert.Equal(userSample.Id, (Guid) userAfterMigration.Id);
+        Assert.Equal(userSample.Username, (string) userAfterMigration.Username);
+        Assert.Equal(userSample.Password, (string) userAfterMigration.Password);
+        
+        // Check if the seed data is preserved after migration is rolled back
+        await dbMigrator.MigrateOneStepDown();
+        const string selectMeetupAfterMigrationRollbackSql = @"
+            SELECT ""Id"", ""Name"", ""Description"", ""StartTime"", ""EndTime""
+            FROM ""Meetups""";
+        var meetupAfterMigrationRollback = await dbMigrator.Connection.QuerySingleAsync(selectMeetupAfterMigrationRollbackSql);
+        Assert.Equal(meetupSample.Id, (int) meetupAfterMigrationRollback.Id);
+        Assert.Equal(meetupSample.Name, (string) meetupAfterMigrationRollback.Name);
+        Assert.Equal(meetupSample.Description, (string) meetupAfterMigrationRollback.Description);
+        Assert.Equal(meetupSample.StartTime, (DateTime) meetupAfterMigrationRollback.StartTime);
+        Assert.Equal(meetupSample.EndTime, (DateTime) meetupAfterMigrationRollback.EndTime);
+        const string selectUserAfterMigrationRollbackSql = @"
+            SELECT ""Id"", ""Username"", ""Password""
+            FROM ""Users""";
+        var userAfterMigrationRollback = await dbMigrator.Connection.QuerySingleAsync(selectUserAfterMigrationRollbackSql);
+        Assert.Equal(userSample.Id, (Guid) userAfterMigrationRollback.Id);
+        Assert.Equal(userSample.Username, (string) userAfterMigrationRollback.Username);
+        Assert.Equal(userSample.Password, (string) userAfterMigrationRollback.Password);
+    }
+
+    [Fact]
     // ReSharper disable once InconsistentNaming
-    public async Task MeetupPKFromIntToGuid()
+    public async Task MeetupPKFromIntToGuidMigrationTest()
     {
         // Common
         const string migrationUnderTest = "MeetupPKFromIntToGuid";
