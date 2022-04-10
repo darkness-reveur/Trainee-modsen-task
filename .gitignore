@@ -2,8 +2,9 @@
 .vs/
 /.idea
 
-# Environment-specific configuration
-/**/appSettings.*.json
+# "Development" configuration for project and "Local" configuration for testing
+MeetupPlatform.Api/Properties/appSettings.Development.json
+MeetupPlatform.Tests/Properties/appSettings.Local.json
 
 # Build artifacts
 /**/bin/
