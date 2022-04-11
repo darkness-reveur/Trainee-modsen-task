@@ -29,7 +29,7 @@ public class RegisterNewUserFeature : FeatureBase
     /// </summary>
     /// <response code="201">Returns registration result data.</response>
     /// <response code="400">If provided username is already taken.</response>
-    [HttpPost("/api/users/organizer")]
+    [HttpPost("/api/meetup-organizers")]
     [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewOrganizer([FromBody] RegistrationDto registrationDto)
@@ -66,7 +66,7 @@ public class RegisterNewUserFeature : FeatureBase
     /// </summary>
     /// <response code="201">Returns registration result data.</response>
     /// <response code="400">If provided username is already taken.</response>
-    [HttpPost("/api/users/plain-user")]
+    [HttpPost("/api/plain-users")]
     [ProducesResponseType(typeof(RegistrationResultDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterNewPlainUser([FromBody] RegistrationDto registrationDto)

@@ -38,12 +38,6 @@ namespace MeetupPlatformApi.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_time");
 
-                    b.Property<Guid>("OrganizerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("organizer_id")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_time");
@@ -55,9 +49,6 @@ namespace MeetupPlatformApi.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_meetups");
-
-                    b.HasIndex("OrganizerId")
-                        .HasDatabaseName("ix_meetups_organizer_id");
 
                     b.ToTable("meetups", (string)null);
                 });
@@ -81,7 +72,7 @@ namespace MeetupPlatformApi.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.User", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,10 +89,6 @@ namespace MeetupPlatformApi.Migrations
                         .HasColumnType("text")
                         .HasColumnName("username");
 
-                    b.Property<string>("role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id")
                         .HasName("pk_users");
 
@@ -110,57 +97,11 @@ namespace MeetupPlatformApi.Migrations
                         .HasDatabaseName("ux_users_username");
 
                     b.ToTable("users", (string)null);
-
-                    b.HasDiscriminator<string>("role").HasValue("User");
-                });
-
-            modelBuilder.Entity("meetups_plain_users", b =>
-                {
-                    b.Property<Guid>("user_id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("meetup_id")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("user_id", "meetup_id")
-                        .HasName("pk_meetups_plain_users");
-
-                    b.HasIndex("meetup_id")
-                        .HasDatabaseName("ix_meetups_plain_users_meetup_id");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_meetups_plain_users_user_id");
-
-                    b.ToTable("meetups_plain_users");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.Organizer", b =>
-                {
-                    b.HasBaseType("MeetupPlatformApi.Domain.Users.User");
-
-                    b.HasDiscriminator().HasValue("Organizer");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.PlainUser", b =>
-                {
-                    b.HasBaseType("MeetupPlatformApi.Domain.Users.User");
-
-                    b.HasDiscriminator().HasValue("PlainUser");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Meetup", b =>
-                {
-                    b.HasOne("MeetupPlatformApi.Domain.Users.Organizer", null)
-                        .WithMany("Meetups")
-                        .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_meetups_organizer_id");
                 });
 
             modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
                 {
-                    b.HasOne("MeetupPlatformApi.Domain.Users.User", null)
+                    b.HasOne("MeetupPlatformApi.Domain.User", null)
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -168,31 +109,9 @@ namespace MeetupPlatformApi.Migrations
                         .HasConstraintName("fk_users_refresh_tokens_user_id");
                 });
 
-            modelBuilder.Entity("meetups_plain_users", b =>
-                {
-                    b.HasOne("MeetupPlatformApi.Domain.Meetup", null)
-                        .WithMany()
-                        .HasForeignKey("meetup_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_meetups_plain_users_meetups_meetup_id");
-
-                    b.HasOne("MeetupPlatformApi.Domain.Users.PlainUser", null)
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_meetups_plain_users_plain_users_user_id");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.User", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.User", b =>
                 {
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.Organizer", b =>
-                {
-                    b.Navigation("Meetups");
                 });
 #pragma warning restore 612, 618
         }

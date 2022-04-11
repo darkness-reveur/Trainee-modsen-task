@@ -42,7 +42,7 @@ public class MeetupInfoDto
     /// <summary>
     /// Meetup users count
     /// </summary>
-    /// <example>1 or 4 etc</example>
+    /// <example>1</example>
     [Required]
-    public int UsersCount { get; set; }
+    public int SignedUpUsersCount { get; set; }
 }

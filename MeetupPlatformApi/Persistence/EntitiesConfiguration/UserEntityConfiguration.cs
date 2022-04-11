@@ -1,5 +1,6 @@
 ﻿namespace MeetupPlatformApi.Persistence.EntitiesConfiguration;
 
+using MeetupPlatformApi.Authentication.Helpers;
 using MeetupPlatformApi.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -38,6 +39,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .Ignore(user => user.Role);
 
         userEntity
-            .HasDiscriminator<string>("role");
+            .HasDiscriminator<string>("role")
+            .HasValue(Roles.PlainUser);
     }
 }
