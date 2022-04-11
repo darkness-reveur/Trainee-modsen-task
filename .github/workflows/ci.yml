@@ -1,0 +1,35 @@
+﻿name: CI Testing action
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-migrations:
+    runs-on: ubuntu-latest
+    services: 
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tests_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build solution
+        run: dotnet build --no-restore
+      - name: Run migration tests
+        run: dotnet test .\MeetupPlatform.Tests --filter Category=MigrationTest
