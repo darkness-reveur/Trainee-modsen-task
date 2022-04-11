@@ -33,8 +33,15 @@ public class GetMeetupFeature : FeatureBase
         {
             return NotFound();
         }
-        
+
+        var contacts = await context.Contacts.Include(c => c.Meetups).ToListAsync();
+        var meetupContacts = contacts.SelectMany(u => u.Meetups,
+            (u, l) => new { Contact = u, Meetup = l })
+            .Where(u => u.Meetup.Id == id )
+            .Select(u => u.Contact).ToList();
+
         var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);
+        meetupInfoDto.ContactInfo = mapper.Map<IList<ContactInfoDto>>(meetupContacts);
         return Ok(meetupInfoDto);
     }
 }
