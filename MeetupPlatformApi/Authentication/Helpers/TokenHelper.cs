@@ -53,8 +53,7 @@ public class TokenHelper
         var refreshToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                {ClaimTypes.NameIdentifier, refreshTokenId },
-                {ClaimTypes.Role, user.Role }
+                {ClaimTypes.NameIdentifier, refreshTokenId }
             },
             lifetime: configuration.RefreshTokenLifetime);
 
