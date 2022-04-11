@@ -47,21 +47,21 @@ public static class ConfigurationExtensions
         configuration.AddJsonFile(jsonFilePath, optional: true);
     }
 
-    public static string GetString(this IConfiguration configuration, string path)
+    public static void AddJsonFiles(this IConfigurationBuilder configuration, IHostEnvironment environment)
     {
-        var value = configuration[path];
-        return string.IsNullOrWhiteSpace(value)
-            ? throw new InvalidConfigurationException($"Configuration parameter \"{path}\" is required.")
-            : value.Trim();
-    }
-    
-    public static int GetInt(this IConfiguration configuration, string path)
-    {
-        var stringValue = configuration.GetString(path);
-        if (!int.TryParse(stringValue, out var value))
+        var jsonFileNames = new[]
         {
-            throw new InvalidConfigurationException("Configuration parameter \"{path}\" must be an integer number.");
+            "appSettings.json",
+            $"appSettings.{environment.EnvironmentName}.json"
+        };
+
+        foreach (var jsonFileName in jsonFileNames)
+        {
+            var jsonFilePath = Path.Combine("Properties", jsonFileName);
+            configuration.AddJsonFile(jsonFilePath, optional: true);
         }
-        return value;
     }
+
+    public static ApplicationConfigurationSection FromSection(this IConfiguration configuration, string sectionName) =>
+        new(configuration, sectionName);
 }

@@ -1,6 +1,6 @@
-﻿namespace MeetupPlatformApi.Swagger;
+﻿namespace MeetupPlatform.Api.Swagger;
 
-using MeetupPlatformApi.Seedwork.Configuration;
+using MeetupPlatform.Api.Seedwork.Configuration;
 
 public class SwaggerConfiguration
 {

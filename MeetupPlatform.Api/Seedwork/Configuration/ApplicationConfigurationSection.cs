@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Seedwork.Configuration;
+﻿namespace MeetupPlatform.Api.Seedwork.Configuration;
 
 public class ApplicationConfigurationSection
 {

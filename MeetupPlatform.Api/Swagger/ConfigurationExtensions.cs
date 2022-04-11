@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Swagger;
+﻿namespace MeetupPlatform.Api.Swagger;
 
 using System.Reflection;
 using Microsoft.OpenApi.Models;
