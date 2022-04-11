@@ -31,4 +31,4 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore
       - name: Run migration tests
-        run: dotnet test .\MeetupPlatform.Tests --filter Category=MigrationTest
+        run: dotnet test ./MeetupPlatform.Tests --filter Category=MigrationTest
