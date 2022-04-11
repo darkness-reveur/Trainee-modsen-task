@@ -42,7 +42,7 @@ public class SignUpForMeetupFeature : FeatureBase
         }
 
         var user = await context.PlainUsers
-            .Include(plainUser => plainUser.Meetups)
+            .Include(plainUser => plainUser.MeetupsSignedUpFor)
             .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
@@ -50,14 +50,14 @@ public class SignUpForMeetupFeature : FeatureBase
             return BadRequest();
         }
 
-        var isAlreadySignUp = user.Meetups.Any(userMeetup => userMeetup.Id == meetup.Id);
+        var isAlreadySignUp = user.MeetupsSignedUpFor.Any(userMeetup => userMeetup.Id == meetup.Id);
         if(isAlreadySignUp)
         {
             // We can't twice sign up the user to meetup.
             return BadRequest();
         }
 
-        user.Meetups.Add(meetup);
+        user.MeetupsSignedUpFor.Add(meetup);
         await context.SaveChangesAsync();
 
         var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);

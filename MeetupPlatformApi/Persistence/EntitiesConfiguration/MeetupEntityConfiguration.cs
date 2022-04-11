@@ -42,7 +42,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasOne<Organizer>()
-            .WithMany(organizer => organizer.Meetups)
+            .WithMany(organizer => organizer.OrganizedMeetups)
             .OnDelete(DeleteBehavior.SetNull)
             .HasForeignKey(meetup => meetup.OrganizerId)
             .HasConstraintName("fk_users_meetups_organizer_id");
@@ -59,7 +59,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.Meetups)
+            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
             join => join
@@ -77,7 +77,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.Meetups)
+            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
             join => join
@@ -86,7 +86,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.Meetups)
+            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
             join => join
@@ -95,7 +95,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.Meetups)
+            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
             .UsingEntity<Dictionary<string, object>>(
             "meetups_plain_users",
             join => join
