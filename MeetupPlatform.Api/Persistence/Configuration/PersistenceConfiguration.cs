@@ -8,12 +8,13 @@ public class PersistenceConfiguration
 
     public PersistenceConfiguration(IConfiguration applicationConfiguration)
     {
-        const string persistenceSectionName = "Persistence";
-        var host = applicationConfiguration.GetString($"{persistenceSectionName}:Host");
-        var port = applicationConfiguration.GetString($"{persistenceSectionName}:Port");
-        var database = applicationConfiguration.GetString($"{persistenceSectionName}:Database");
-        var username = applicationConfiguration.GetString($"{persistenceSectionName}:Username");
-        var password = applicationConfiguration.GetString($"{persistenceSectionName}:Password");
+        var persistenceConfiguration = applicationConfiguration.FromSection("Persistence");
+        
+        var host = persistenceConfiguration.GetRequiredString("Host");
+        var port = persistenceConfiguration.GetRequiredString("Port");
+        var database = persistenceConfiguration.GetRequiredString("Database");
+        var username = persistenceConfiguration.GetRequiredString("Username");
+        var password = persistenceConfiguration.GetRequiredString("Password");
         
         ConnectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password}";
     }
