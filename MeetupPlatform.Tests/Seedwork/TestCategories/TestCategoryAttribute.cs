@@ -3,7 +3,7 @@
 using System;
 using Xunit.Sdk;
 
-[TraitDiscoverer("MeetupPlatform.Tests.Seedwork.TestCategoryDiscoverer", "MeetupPlatform.Tests")]
+[TraitDiscoverer("MeetupPlatform.Tests.Seedwork.TestCategories.TestCategoryDiscoverer", "MeetupPlatform.Tests")]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class TestCategoryAttribute : Attribute, ITraitAttribute
 {
