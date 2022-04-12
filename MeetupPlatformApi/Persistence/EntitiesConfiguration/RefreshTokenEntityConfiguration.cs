@@ -27,6 +27,10 @@ public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshT
             .HasConstraintName("fk_users_refresh_tokens_user_id");
 
         refreshTokenEntity
+            .HasIndex(refreshToken => refreshToken.UserId)
+            .HasName("ix_refresh_tokens_user_id");
+
+        refreshTokenEntity
             .Property(refreshToken => refreshToken.UserId)
             .IsRequired()
             .HasColumnName("user_id");
