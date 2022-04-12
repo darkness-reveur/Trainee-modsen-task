@@ -18,6 +18,10 @@ public class UserInfoDto
     [Required]
     public string Username { get; set; }
 
+    /// <summary>
+    /// User role
+    /// </summary>
+    /// <example>Organizer</example>
     [Required]
     public string Role { get; set; }
 }

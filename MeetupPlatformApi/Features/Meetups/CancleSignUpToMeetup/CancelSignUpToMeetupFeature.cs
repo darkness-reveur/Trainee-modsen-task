@@ -27,6 +27,7 @@ public class CancelSignUpToMeetupFeature : FeatureBase
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> CancelSignUpToMeetup([FromRoute] Guid id)
     {
         var meetup = await context.Meetups
