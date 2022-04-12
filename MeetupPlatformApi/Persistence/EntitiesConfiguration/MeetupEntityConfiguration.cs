@@ -50,8 +50,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
         meetupEntity
             .Property(meetup => meetup.OrganizerId)
             .IsRequired()
-            .HasColumnName("organizer_id")
-            .HasDefaultValue(null);
+            .HasColumnName("organizer_id");
 
         meetupEntity
             .HasIndex(meetup => meetup.OrganizerId)
