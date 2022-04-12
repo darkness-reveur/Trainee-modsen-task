@@ -39,7 +39,11 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
             .Ignore(user => user.Role);
 
         userEntity
-            .HasDiscriminator<string>("role")
-            .HasValue(Roles.PlainUser);
+            .HasDiscriminator<string>("role");
+
+        userEntity
+            .Property("role")
+            .HasDefaultValue(Roles.PlainUser)
+            .IsRequired(true);
     }
 }

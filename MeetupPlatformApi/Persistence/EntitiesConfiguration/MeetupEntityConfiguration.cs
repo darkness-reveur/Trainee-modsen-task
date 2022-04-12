@@ -50,7 +50,8 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
         meetupEntity
             .Property(meetup => meetup.OrganizerId)
             .IsRequired()
-            .HasColumnName("organizer_id");
+            .HasColumnName("organizer_id")
+            .HasDefaultValue(null);
 
         meetupEntity
             .HasIndex(meetup => meetup.OrganizerId)
@@ -73,27 +74,11 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                         .HasForeignKey("meetup_id")
                         .HasConstraintName("fk_meetups_users_signups_meetups_meetup_id")
                         .OnDelete(DeleteBehavior.Cascade),
-                join => join
-                        .HasKey("user_id", "meetup_id")
-                        .HasName("pk_meetups_users_signups"))
-            .HasIndex("user_id", "meetup_id");
-
-        meetupEntity
-            .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
-            .UsingEntity<Dictionary<string, object>>(
-            "meetups_users_signups",
-            join => join
-                    .HasIndex("user_id")
-                    .HasName("ix_meetups_users_signups_user_id"));
-
-        meetupEntity
-            .HasMany(meetup => meetup.SignedUpUsers)
-            .WithMany(plainUser => plainUser.MeetupsSignedUpFor)
-            .UsingEntity<Dictionary<string, object>>(
-            "meetups_users_signups",
-            join => join
-                    .HasIndex("meetup_id")
-                    .HasName("ix_meetups_users_signups_meetup_id"));
+                join =>
+                {
+                    join.HasKey("user_id", "meetup_id").HasName("pk_meetups_users_signup");
+                    join.HasIndex("user_id").HasName("ix_meetups_users_signups_user_id");
+                    join.HasIndex("meetup_id").HasName("ix_meetups_users_signups_meetup_id");
+                });
     }
 }
