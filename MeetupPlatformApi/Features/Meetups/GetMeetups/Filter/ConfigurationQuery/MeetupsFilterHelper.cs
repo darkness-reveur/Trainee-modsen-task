@@ -7,11 +7,21 @@ using System.Linq;
 public static class MeetupsFilterHelper
 {
     public static IQueryable<Meetup> GetMeetupsFilteredByFilterSettings(
-        IQueryable<Meetup> meetupsQuery,
+        this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
-        meetupsQuery = SortSelection(meetupsQuery, meetupFilterSettings.SortOption);
+
+        SortOptions sortOptions;
+
+        if(Enum.TryParse(meetupFilterSettings.SortOption, out sortOptions))
+        {
+            meetupsQuery = SortSelection(meetupsQuery, sortOptions);
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
 
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 

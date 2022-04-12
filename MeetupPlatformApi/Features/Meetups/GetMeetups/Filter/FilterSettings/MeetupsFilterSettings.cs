@@ -9,7 +9,7 @@ public class MeetupsFilterSettings
     /// </summary>
     /// <example>2</example>
     [Required]
-    [Range(1,int.MaxValue)]
+    [Range(1, int.MaxValue)]
     public int PageNumber { get; set; }
 
     /// <summary>
@@ -23,9 +23,9 @@ public class MeetupsFilterSettings
     /// <summary>
     /// Parameter by which to sort meetups
     /// </summary>
-    /// <example>1</example>
+    /// <example>AscendingStartTime</example>
     [Required]
-    public SortOptions SortOption { get; set; }
+    public string SortOption { get; set; }
 
     /// <summary>
     /// Parameter by which meetups are filtered by searching for similar words in the name and description
