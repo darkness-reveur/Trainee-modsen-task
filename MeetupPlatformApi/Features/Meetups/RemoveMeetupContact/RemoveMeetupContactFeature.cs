@@ -24,6 +24,8 @@ public class RemoveMeetupContactFeature : FeatureBase
     /// <response code="404">If needed meetup or contact are nulls.</response>
     [HttpDelete("/api/meetups/{meetupId:guid}/remove-contact/{contactId:guid}")]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RemoveMeetupContact([FromRoute] Guid meetupId, [FromRoute] Guid contactId)
     {
         var meetup = await context.Meetups.Include(items => items.Contacts).SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
