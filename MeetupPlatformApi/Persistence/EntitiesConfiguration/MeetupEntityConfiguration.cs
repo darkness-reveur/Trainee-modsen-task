@@ -56,17 +56,12 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                     .HasForeignKey("meetup_id")
                     .HasConstraintName("fk_meetups_contacts_meetups_meetup_id")
                     .OnDelete(DeleteBehavior.Cascade),
-                j => j
-                    .HasIndex("meetup_id")
-                    .HasName(name: "ix_meetups_contacts_meetup_id"));
-
-        meetupEntity
-            .HasMany(p => p.Contacts)
-            .WithMany(p => p.Meetups)
-            .UsingEntity(
-                j => j
-                    .ToTable("meetups_contacts")
-                    .HasKey("contact_id", "meetup_id")
-                    .HasName("pk_meetups_contacts"));
+                j =>
+                {
+                    j.HasKey("contact_id", "meetup_id")
+                     .HasName("pk_meetups_contacts");
+                    j.HasIndex("meetup_id")
+                     .HasName("ix_meetups_contacts_meetup_id");
+                });
     }
 }

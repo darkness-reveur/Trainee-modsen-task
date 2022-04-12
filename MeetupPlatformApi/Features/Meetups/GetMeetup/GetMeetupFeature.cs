@@ -35,10 +35,10 @@ public class GetMeetupFeature : FeatureBase
         }
 
         var contacts = await context.Contacts.Include(meetups => meetups.Meetups).ToListAsync();
-        var meetupContacts = contacts.SelectMany(u => u.Meetups,
-            (u, l) => new { Contact = u, Meetup = l })
-            .Where(u => u.Meetup.Id == id )
-            .Select(u => u.Contact).ToList();
+        var meetupContacts = contacts.SelectMany(item => item.Meetups,
+                                        (item, relatedItem) => new { Contact = item, Meetup = relatedItem })
+                                        .Where(item => item.Meetup.Id == id )
+                                        .Select(item => item.Contact).ToList();
 
         var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);
         meetupInfoDto.ContactInfo = mapper.Map<IList<ContactInfoDto>>(meetupContacts);

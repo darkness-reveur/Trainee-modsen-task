@@ -1,30 +1,30 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.DeleteMeetupContact;
+﻿namespace MeetupPlatformApi.Features.Meetups.RemoveMeetupContact;
 
 using AutoMapper;
 using MeetupPlatformApi.Persistence.Context;
 using MeetupPlatformApi.Seedwork.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
-public class DeleteMeetupContactFeature : FeatureBase
+public class RemoveMeetupContactFeature : FeatureBase
 {
     private readonly ApplicationContext context;
-    private readonly IMapper mapper;
 
-    public DeleteMeetupContactFeature(ApplicationContext context, IMapper mapper)
+    public RemoveMeetupContactFeature(ApplicationContext context)
     {
         this.context = context;
-        this.mapper = mapper;
     }
 
     /// <summary>
-    /// Delete meetup contact.
+    /// Remove contact from meetup.
     /// </summary>
     /// <response code="204">Returns if deleting was seccussful.</response>
     /// <response code="404">If needed meetup or contact are nulls.</response>
-    [HttpDelete("/api/meetups/{meetupId:guid}/delete-contact/{contactId:guid}")]
-    public async Task<IActionResult> GetMeetup([FromRoute] Guid meetupId, [FromRoute] Guid contactId)
+    [HttpDelete("/api/meetups/{meetupId:guid}/remove-contact/{contactId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> RemoveMeetupContact([FromRoute] Guid meetupId, [FromRoute] Guid contactId)
     {
         var meetup = await context.Meetups.Include(items => items.Contacts).SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
         if (meetup is null)
@@ -42,4 +42,3 @@ public class DeleteMeetupContactFeature : FeatureBase
         return NoContent();
     }
 }
-
