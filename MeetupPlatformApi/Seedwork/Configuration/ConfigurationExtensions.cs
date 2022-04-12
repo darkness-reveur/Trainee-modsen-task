@@ -17,21 +17,6 @@ public static class ConfigurationExtensions
         }
     }
 
-    public static string GetString(this IConfiguration configuration, string path)
-    {
-        var value = configuration[path];
-        return string.IsNullOrWhiteSpace(value)
-            ? throw new InvalidConfigurationException($"Configuration parameter \"{path}\" is required.")
-            : value.Trim();
-    }
-    
-    public static int GetInt(this IConfiguration configuration, string path)
-    {
-        var stringValue = configuration.GetString(path);
-        if (!int.TryParse(stringValue, out var value))
-        {
-            throw new InvalidConfigurationException("Configuration parameter \"{path}\" must be an integer number.");
-        }
-        return value;
-    }
+    public static ApplicationConfigurationSection FromSection(this IConfiguration configuration, string sectionName) =>
+        new(configuration, sectionName);
 }

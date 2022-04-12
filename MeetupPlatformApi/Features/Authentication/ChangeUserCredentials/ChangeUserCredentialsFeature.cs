@@ -30,24 +30,29 @@ public class ChangeUserCredentialsFeature : FeatureBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ChangeCredentials([FromBody] UserCredentialsChangeDto credentialsChangeDto)
     {
-        var user = await context.Users
+        var currentUser = await context.Users
             .Include(user => user.RefreshTokens)
             .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
-        if(user is null)
+        if(currentUser is null)
         {
             return NotFound("User doesn't exist.");
         }
 
-        var allowedUsername = credentialsChangeDto.Username == user.Username ? true
-            : !await context.Users.AnyAsync(user => user.Username == credentialsChangeDto.Username);
-        if (!BCrypt.Verify(credentialsChangeDto.OldPassword, user.Password) || !allowedUsername)
+        if (!BCrypt.Verify(credentialsChangeDto.OldPassword, currentUser.Password))
         {
-            return BadRequest();
+            return BadRequest("Incorrect old password was provided.");
+        }
+        
+        var allowedUsername = credentialsChangeDto.Username == currentUser.Username ||
+                              await context.Users.AllAsync(user => user.Username != credentialsChangeDto.Username);
+        if (!allowedUsername)
+        {
+            return BadRequest("This username is already taken by some other user.");
         }
 
-        user.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
-        user.Username = credentialsChangeDto.Username;
-        user.RefreshTokens.Clear();
+        currentUser.Password = BCrypt.HashPassword(credentialsChangeDto.NewPassword);
+        currentUser.Username = credentialsChangeDto.Username;
+        currentUser.RefreshTokens.Clear();
         await context.SaveChangesAsync();
         return NoContent();
     }
