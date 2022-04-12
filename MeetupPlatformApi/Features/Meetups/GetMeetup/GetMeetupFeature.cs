@@ -34,7 +34,7 @@ public class GetMeetupFeature : FeatureBase
             return NotFound();
         }
 
-        var contacts = await context.Contacts.Include(c => c.Meetups).ToListAsync();
+        var contacts = await context.Contacts.Include(meetups => meetups.Meetups).ToListAsync();
         var meetupContacts = contacts.SelectMany(u => u.Meetups,
             (u, l) => new { Contact = u, Meetup = l })
             .Where(u => u.Meetup.Id == id )
