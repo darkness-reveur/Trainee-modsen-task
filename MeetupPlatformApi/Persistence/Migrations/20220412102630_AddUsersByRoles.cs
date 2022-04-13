@@ -16,7 +16,7 @@ namespace MeetupPlatformApi.Migrations
                 nullable: false,
                 defaultValue: "PlainUser");
 
-            migrationBuilder.Sql("DELETE FROM public.\"meetups\"");
+            migrationBuilder.Sql("DELETE FROM meetups");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "organizer_id",

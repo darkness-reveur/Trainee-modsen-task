@@ -42,16 +42,14 @@ public class SignUpForMeetupFeature : FeatureBase
         }
 
         var user = await context.PlainUsers
-            .Include(plainUser => plainUser.MeetupsSignedUpFor)
             .SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
             // We can't sign up non-existing user to meetup.
             return Unauthorized();
         }
-
-        var isAlreadySignUp = user.MeetupsSignedUpFor.Any(userMeetup => userMeetup.Id == meetup.Id);
-        if(isAlreadySignUp)
+        var isAlreadySignedUp = meetup.SignedUpUsers.Any(signedUpUser => signedUpUser.Id == user.Id);
+        if(isAlreadySignedUp)
         {
             // We can't twice sign up the user to meetup.
             return BadRequest();

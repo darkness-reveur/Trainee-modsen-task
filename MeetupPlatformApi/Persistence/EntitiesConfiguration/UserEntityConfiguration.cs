@@ -44,6 +44,6 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         userEntity
             .Property("role")
             .HasDefaultValue(Roles.PlainUser)
-            .IsRequired(true);
+            .IsRequired();
     }
 }
