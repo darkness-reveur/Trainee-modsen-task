@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetup;
+﻿namespace MeetupPlatformApi.Features.Meetups.SignUpForMeetup;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -40,11 +40,6 @@ public class MeetupInfoDto
     public string Description { get; set; }
 
     /// <summary>
-    /// Meetup location 
-    /// </summary>
-    /// <example>Belarus, Mogilev, Lenina 29-40</example>
-    [Required]
-    public string Location { get; set; }
     /// Meetup users count
     /// </summary>
     /// <example>1</example>

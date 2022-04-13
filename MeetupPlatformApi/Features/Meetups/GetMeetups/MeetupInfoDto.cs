@@ -40,6 +40,11 @@ public class MeetupInfoDto
     public string Description { get; set; }
 
     /// <summary>
+    /// Meetup users count
+    /// </summary>
+    /// <example>1</example>
+    [Required]
+    public int SignedUpUsersCount { get; set; }
     /// Meetup location 
     /// </summary>
     /// <example>Belarus, Mogilev, Lenina 29-40</example>

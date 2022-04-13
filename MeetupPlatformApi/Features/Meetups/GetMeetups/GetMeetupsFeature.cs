@@ -28,6 +28,11 @@ public class GetMeetupsFeature : FeatureBase
     [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
+        var meetups = await context.Meetups
+            .Include(meetup => meetup.SignedUpUsers)
+            .ToListAsync();
+        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
+        return Ok(meetupInfoDtos);
         try
         {
             var meetupsQuery = context.Meetups.GetMeetupsFilteredByFilterSettings(filterSettings);

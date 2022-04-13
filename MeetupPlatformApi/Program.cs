@@ -11,20 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext();
 builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddSwaggerSwashbuckleConfiguration();
+builder.Services.AddSwashbuckleSwagger(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        //Hides Schemas section from Swagger UI.
-        options.DefaultModelsExpandDepth(-1);
-    });
-}
-
+app.UseSwashbuckleSwagger();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
