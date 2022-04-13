@@ -1,8 +1,11 @@
 ﻿namespace MeetupPlatform.Tests.MigrationTesting;
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using MeetupPlatform.Api.Domain.Users;
 using MeetupPlatform.Tests.Seedwork.Persistence;
 using MeetupPlatform.Tests.Seedwork.TestCategories;
 using Xunit;
@@ -179,5 +182,49 @@ public class MigrationTests : IClassFixture<ApplicationContextFixture>
         Assert.Equal(meetupSample.Description, (string) meetupAfterMigrationRollback.Description);
         Assert.Equal(meetupSample.StartTime, (DateTime) meetupAfterMigrationRollback.StartTime);
         Assert.Equal(meetupSample.EndTime, (DateTime) meetupAfterMigrationRollback.EndTime);
+    }
+
+    [Fact]
+    public async Task AddUsersByRolesMigrationTest()
+    {
+        // Common
+        const string migrationUnderTest = "AddUsersByRoles";
+        var meetupSample = new
+        {
+            Title = "Meetup",
+            Description = "Meetup's Description",
+            StartTime = new DateTime(2022, 04, 10, 10, 23, 54).ToUniversalTime(),
+            EndTime = new DateTime(2022, 04, 10, 10, 23, 55).ToUniversalTime(),
+        };
+        var userSample = new
+        {
+            Id = Guid.Parse("07450745-0745-0745-0745-074507450745"),
+            Username = "User's username",
+            Password = "User's password"
+        };
+        
+        // Setup 
+        await dbMigrator.InitializeDb();
+        await dbMigrator.MigrateBefore(migrationUnderTest);
+        const string insertMeetupSql = @"
+            INSERT INTO meetups(title, description, start_time, end_time)
+            VALUES (@Title, @Description, @StartTime, @EndTime)";
+        await dbMigrator.Connection.ExecuteAsync(insertMeetupSql, meetupSample);
+        const string insertUserSql = @"
+            INSERT INTO users(id, username, password)
+            VALUES (@Id, @Username, @Password)";
+        await dbMigrator.Connection.ExecuteAsync(insertUserSql, userSample);
+        
+        // Check if the seed data is preserved after migration is applied
+        await dbMigrator.MigrateOneStepUp();
+        const string getMeetupsCountSql = @"SELECT COUNT(1) FROM meetups";
+        var meetupsCount = await dbMigrator.Connection.ExecuteScalarAsync<int>(getMeetupsCountSql);
+        Assert.Equal(0, meetupsCount);
+        const string getUserRolesSql = @"SELECT DISTINCT role FROM users";
+        var userRoles = await dbMigrator.Connection.QueryAsync<string>(getUserRolesSql);
+        Assert.Equal(new[] {"PlainUser"}, userRoles);
+        
+        // Check if the migration can be rolled back without issues
+        await dbMigrator.MigrateOneStepDown();
     }
 }
