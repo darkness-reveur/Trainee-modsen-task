@@ -43,4 +43,11 @@ public class MeetupInfoDto
     /// Contact info for meetup
     /// </summary>
     public IList<ContactInfoDto> ContactInfo { get; set; }
+
+    /// <summary>
+    /// Meetup users count
+    /// </summary>
+    /// <example>1</example>
+    [Required]
+    public int SignedUpUsersCount { get; set; }
 }

@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 
 public class ApplicationContext : DbContext
 {
@@ -14,6 +15,10 @@ public class ApplicationContext : DbContext
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    public DbSet<PlainUser> PlainUsers { get; set; }
+
+    public DbSet<Organizer> Organizers { get; set; }
+    
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     { }

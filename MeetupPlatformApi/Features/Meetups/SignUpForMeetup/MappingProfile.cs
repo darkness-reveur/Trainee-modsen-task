@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetup;
+﻿namespace MeetupPlatformApi.Features.Meetups.SignUpForMeetup;
 
 using AutoMapper;
 using MeetupPlatformApi.Domain;
@@ -7,10 +7,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Meetup, MeetupInfoDto>();
-        CreateMap<Contact,ContactInfoDto>();
         CreateMap<Meetup, MeetupInfoDto>()
-            .ForMember(meetup => meetup.SignedUpUsersCount, 
+            .ForMember(meetup => meetup.SignedUpUsersCount,
                 options => options.MapFrom(meetup => meetup.SignedUpUsers.Count));
     }
 }
