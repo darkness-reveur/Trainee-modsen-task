@@ -3,7 +3,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MeetupPlatformApi.Authentication.Configuration;
-using MeetupPlatformApi.Domain;
+using MeetupPlatformApi.Domain.Users;
 using Microsoft.IdentityModel.Tokens;
 
 public class TokenHelper
@@ -25,7 +25,7 @@ public class TokenHelper
         try
         {
             var refreshToken = tokenHandler.ValidateToken(encodedRefreshToken, configuration.ValidationParameters, out _);
-            
+
             var tokenIdClaim = refreshToken.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
             var tokenId = Guid.Parse(tokenIdClaim.Value);
 
@@ -45,7 +45,8 @@ public class TokenHelper
         var accessToken = IssueToken(
             payload: new Dictionary<string, object>
             {
-                {ClaimTypes.NameIdentifier, user.Id}
+                {ClaimTypes.NameIdentifier, user.Id},
+                {ClaimTypes.Role, user.Role }
             },
             lifetime: configuration.AccessTokenLifetime);
 
