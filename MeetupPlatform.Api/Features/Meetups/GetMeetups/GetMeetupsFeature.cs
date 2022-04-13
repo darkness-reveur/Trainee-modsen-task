@@ -26,7 +26,9 @@ public class GetMeetupsFeature : FeatureBase
     [ProducesResponseType(typeof(IEnumerable<MeetupInfoDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMeetups()
     {
-        var meetups = await context.Meetups.ToListAsync();
+        var meetups = await context.Meetups
+            .Include(meetup => meetup.SignedUpUsers)
+            .ToListAsync();
         var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
         return Ok(meetupInfoDtos);
     }

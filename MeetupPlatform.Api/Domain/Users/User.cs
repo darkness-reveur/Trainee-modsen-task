@@ -1,6 +1,6 @@
-﻿namespace MeetupPlatform.Api.Domain;
+namespace MeetupPlatform.Api.Domain.Users;
 
-public class User
+public abstract class User
 {
     public Guid Id { get; set; }
 
@@ -9,4 +9,6 @@ public class User
     public string Password { get; set; }
 
     public List<RefreshToken> RefreshTokens { get; set; }
+
+    public abstract string Role { get; }
 }

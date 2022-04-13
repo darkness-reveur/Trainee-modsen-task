@@ -38,4 +38,11 @@ public class MeetupInfoDto
     /// <example>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</example>
     [Required]
     public string Description { get; set; }
+
+    /// <summary>
+    /// Meetup users count
+    /// </summary>
+    /// <example>1</example>
+    [Required]
+    public int SignedUpUsersCount { get; set; }
 }

@@ -1,9 +1,11 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.RegisterNewMeetup;
 
 using AutoMapper;
+using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Domain;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiSection(ApiSections.Meetups)]
@@ -23,10 +25,12 @@ public class RegisterNewMeetupFeature : FeatureBase
     /// </summary>
     /// <response code="201">Returns the newly created item.</response>
     [HttpPost("/api/meetups")]
+    [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(typeof(RegisteredMeetupDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> RegisterNewMeetup([FromBody] RegistrationDto registrationDto)
     {
         var meetup = mapper.Map<Meetup>(registrationDto);
+        meetup.OrganizerId = CurrentUser.UserId;
         context.Meetups.Add(meetup);
         await context.SaveChangesAsync();
 

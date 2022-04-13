@@ -1,6 +1,7 @@
 ﻿namespace MeetupPlatform.Api.Persistence.EntitiesConfiguration;
 
 using MeetupPlatform.Api.Domain;
+using MeetupPlatform.Api.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

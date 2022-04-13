@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetups;
+﻿namespace MeetupPlatform.Api.Features.Meetups.SignUpForMeetup;
 
 using System.ComponentModel.DataAnnotations;
 
