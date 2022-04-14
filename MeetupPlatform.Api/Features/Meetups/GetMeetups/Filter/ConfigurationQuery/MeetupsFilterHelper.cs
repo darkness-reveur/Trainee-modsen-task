@@ -1,7 +1,7 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
+﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
 
-using MeetupPlatformApi.Domain;
-using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
+using MeetupPlatform.Api.Domain;
+using MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.FilterSettings;
 using System.Linq;
 
 public static class MeetupsFilterHelper

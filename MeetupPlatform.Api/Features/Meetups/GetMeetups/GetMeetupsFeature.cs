@@ -1,12 +1,10 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetups;
 
 using AutoMapper;
+using MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
+using MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.FilterSettings;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
-using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
-using MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
-using MeetupPlatformApi.Persistence.Context;
-using MeetupPlatformApi.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
