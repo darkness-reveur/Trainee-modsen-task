@@ -46,6 +46,7 @@ public class MeetupInfoDto
     [Required]
     public string Location { get; set; }
 
+    /// <summary>
     /// Meetup users count
     /// </summary>
     /// <example>1</example>
