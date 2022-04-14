@@ -84,6 +84,5 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
             .Property(meetup => meetup.Location)
             .IsRequired()
             .HasColumnName("location");
-
     }
 }

@@ -41,6 +41,7 @@ namespace MeetupPlatform.Api.Migrations
                     b.Property<Guid>("OrganizerId")
                         .HasColumnType("uuid")
                         .HasColumnName("organizer_id");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text")
