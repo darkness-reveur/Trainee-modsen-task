@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.OverrideConfigurationSources();
 
 builder.Services.AddControllers()
-    .AddNewtonsoftJson()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

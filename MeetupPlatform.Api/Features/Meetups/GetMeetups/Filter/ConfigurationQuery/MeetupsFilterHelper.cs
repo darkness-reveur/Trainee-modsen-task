@@ -11,9 +11,7 @@ public static class MeetupsFilterHelper
         MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
-
         meetupsQuery = meetupsQuery.SortSelection(meetupFilterSettings.SortOption);
-
         return meetupsQuery.GetDataByPaginationSettings(meetupFilterSettings);
     }
 
@@ -22,7 +20,6 @@ public static class MeetupsFilterHelper
         MeetupsFilterSettings meetupFilterSettings)
     {
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
-
         return meetupsQuery
                 .Skip(skippedMeetups)
                 .Take(meetupFilterSettings.PageSize);
@@ -34,7 +31,7 @@ public static class MeetupsFilterHelper
         SortOptions.DescendingSignedUpUsersCount => meetupsQuery.OrderByDescending(meetups => meetups.SignedUpUsers.Count),
         SortOptions.AscendingStartTime           => meetupsQuery.OrderBy(meetups => meetups.StartTime),
         SortOptions.AscendingSignedUpUsersCount  => meetupsQuery.OrderBy(meetups => meetups.SignedUpUsers.Count),
-        _ => throw new ArgumentOutOfRangeException(nameof(sortOptions), $"Not expected direction value: {sortOptions}")
+        _ => throw new ArgumentOutOfRangeException(nameof(sortOptions), $"Not expected value: {sortOptions}")
     };
 
     private static IQueryable<Meetup> Filter(
