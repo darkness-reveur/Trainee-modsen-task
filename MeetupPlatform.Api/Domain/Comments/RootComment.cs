@@ -1,8 +1,8 @@
 ﻿namespace MeetupPlatform.Api.Domain.Comments;
 
+using MeetupPlatform.Api.Authentication.Helpers;
+
 public class RootComment : Comment
 {
-    public Guid MeetupId { get; set; }
-
-    public List<ReplyComment> ReplyComments { get; set; }
+    public override string CommentType => Comments.Root;
 }

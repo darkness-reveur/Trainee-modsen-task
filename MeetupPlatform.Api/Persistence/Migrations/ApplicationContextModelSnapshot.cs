@@ -22,7 +22,7 @@ namespace MeetupPlatform.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Meetup", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace MeetupPlatform.Api.Migrations
                     b.ToTable("meetups", (string)null);
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.RefreshToken", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace MeetupPlatform.Api.Migrations
                     b.ToTable("refresh_tokens", (string)null);
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.User", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,24 +131,24 @@ namespace MeetupPlatform.Api.Migrations
                     b.HasIndex("user_id")
                         .HasDatabaseName("ix_meetups_users_signups_user_id");
 
-                    b.ToTable("meetups_users_signups");
+                    b.ToTable("meetups_users_signups", (string)null);
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.Organizer", b =>
                 {
-                    b.HasBaseType("MeetupPlatform.Api.Domain.Users.User");
+                    b.HasBaseType("MeetupPlatformApi.Domain.Users.User");
 
                     b.HasDiscriminator().HasValue("Organizer");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.PlainUser", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.PlainUser", b =>
                 {
-                    b.HasBaseType("MeetupPlatform.Api.Domain.Users.User");
+                    b.HasBaseType("MeetupPlatformApi.Domain.Users.User");
 
                     b.HasDiscriminator().HasValue("PlainUser");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Meetup", b =>
                 {
                     b.HasOne("MeetupPlatformApi.Domain.Users.Organizer", null)
                         .WithMany("OrganizedMeetups")
@@ -158,9 +158,9 @@ namespace MeetupPlatform.Api.Migrations
                         .HasConstraintName("fk_users_meetups_organizer_id");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.RefreshToken", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.RefreshToken", b =>
                 {
-                    b.HasOne("MeetupPlatform.Api.Domain.Users.User", null)
+                    b.HasOne("MeetupPlatformApi.Domain.Users.User", null)
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -185,7 +185,7 @@ namespace MeetupPlatform.Api.Migrations
                         .HasConstraintName("fk_meetups_users_signups_plain_users_user_id");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.User", b =>
+            modelBuilder.Entity("MeetupPlatformApi.Domain.Users.User", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });

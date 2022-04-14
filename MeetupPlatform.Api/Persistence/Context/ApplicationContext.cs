@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using MeetupPlatform.Api.Domain;
+using MeetupPlatform.Api.Domain.Comments;
 using MeetupPlatform.Api.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,12 @@ public class ApplicationContext : DbContext
     public DbSet<PlainUser> PlainUsers { get; set; }
 
     public DbSet<Organizer> Organizers { get; set; }
+
+    public DbSet<Comment> Comments { get; set; }
+
+    public DbSet<ReplyComment> ReplyComments { get; set; }
+
+    public DbSet<RootComment> RootComments { get; set; }
     
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)

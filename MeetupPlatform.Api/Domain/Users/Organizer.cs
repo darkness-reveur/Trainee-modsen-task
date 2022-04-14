@@ -7,5 +7,5 @@ public class Organizer : User
 {
     public override string Role => Roles.Organizer;
 
-    public List<Meetup> OrganizedMeetups { get; set; }
+    public List<Meetup> OrganizedMeetups { get;  }
 }
