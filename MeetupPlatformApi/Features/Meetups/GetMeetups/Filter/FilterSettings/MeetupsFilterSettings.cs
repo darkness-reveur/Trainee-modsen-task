@@ -1,5 +1,5 @@
 ﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetups.Filter.FilterSettings;
-
+    
 using System.ComponentModel.DataAnnotations;
 
 public class MeetupsFilterSettings
@@ -25,7 +25,7 @@ public class MeetupsFilterSettings
     /// </summary>
     /// <example>AscendingStartTime</example>
     [Required]
-    public string SortOption { get; set; }
+    public SortOptions SortOption { get; set; }
 
     /// <summary>
     /// Parameter by which meetups are filtered by searching for similar words in the name and description

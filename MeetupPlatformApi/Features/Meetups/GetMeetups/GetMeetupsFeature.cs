@@ -28,22 +28,16 @@ public class GetMeetupsFeature : FeatureBase
     [ProducesResponseType(typeof(MeetupInfoDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
-        var meetups = await context.Meetups
-            .Include(meetup => meetup.SignedUpUsers)
-            .ToListAsync();
-        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
-        return Ok(meetupInfoDtos);
         try
         {
-            var meetupsQuery = context.Meetups.GetMeetupsFilteredByFilterSettings(filterSettings);
+            var meetupsQuery = context.Meetups
+                .Include(meetup => meetup.SignedUpUsers)
+                    .GetMeetupsFilteredByFilterSettings(filterSettings);
+
             var meetupInfoDtos = await mapper.ProjectTo<MeetupInfoDto>(meetupsQuery).ToListAsync();
             return Ok(meetupInfoDtos);
         }
         catch (ArgumentOutOfRangeException)
-        {
-            return BadRequest();
-        }
-        catch (ArgumentException)
         {
             return BadRequest();
         }

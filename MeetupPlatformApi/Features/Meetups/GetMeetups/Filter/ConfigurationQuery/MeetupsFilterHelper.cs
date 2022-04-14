@@ -12,17 +12,15 @@ public static class MeetupsFilterHelper
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
 
-        SortOptions sortOptions;
+        meetupsQuery = meetupsQuery.SortSelection(meetupFilterSettings.SortOption);
 
-        if(Enum.TryParse(meetupFilterSettings.SortOption, out sortOptions))
-        {
-            meetupsQuery = SortSelection(meetupsQuery, sortOptions);
-        }
-        else
-        {
-            throw new ArgumentException();
-        }
+        return meetupsQuery.GetDataByPaginationSettings(meetupFilterSettings);
+    }
 
+    private static IQueryable<Meetup> GetDataByPaginationSettings(
+        this IQueryable<Meetup> meetupsQuery,
+        MeetupsFilterSettings meetupFilterSettings)
+    {
         var skippedMeetups = (meetupFilterSettings.PageNumber - 1) * meetupFilterSettings.PageSize;
 
         return meetupsQuery
@@ -30,10 +28,12 @@ public static class MeetupsFilterHelper
                 .Take(meetupFilterSettings.PageSize);
     }
 
-    private static IQueryable<Meetup> SortSelection(IQueryable<Meetup> meetupsQuery, SortOptions sortOptions) => sortOptions switch
+    private static IQueryable<Meetup> SortSelection(this IQueryable<Meetup> meetupsQuery, SortOptions sortOptions) => sortOptions switch
     {
-        SortOptions.DescendingStartTime => meetupsQuery.OrderByDescending(meetups => meetups.StartTime),
-        SortOptions.AscendingStartTime  => meetupsQuery.OrderBy(meetup => meetup.StartTime),
+        SortOptions.DescendingStartTime          => meetupsQuery.OrderByDescending(meetups => meetups.StartTime),
+        SortOptions.DescendingSignedUpUsersCount => meetupsQuery.OrderByDescending(meetups => meetups.SignedUpUsers.Count),
+        SortOptions.AscendingStartTime           => meetupsQuery.OrderBy(meetups => meetups.StartTime),
+        SortOptions.AscendingSignedUpUsersCount  => meetupsQuery.OrderBy(meetups => meetups.SignedUpUsers.Count),
         _ => throw new ArgumentOutOfRangeException(nameof(sortOptions), $"Not expected direction value: {sortOptions}")
     };
 
@@ -62,7 +62,7 @@ public static class MeetupsFilterHelper
         return meetupsQuery;
     }
 
-    private static IQueryable<Meetup> FilterByLocation( 
+    private static IQueryable<Meetup> FilterByLocation(
         this IQueryable<Meetup> meetupsQuery,
         MeetupsFilterSettings meetupFilterSettings)
     {

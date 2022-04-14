@@ -79,9 +79,11 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                     join.HasIndex("user_id").HasName("ix_meetups_users_signups_user_id");
                     join.HasIndex("meetup_id").HasName("ix_meetups_users_signups_meetup_id");
                 });
+
+        meetupEntity
             .Property(meetup => meetup.Location)
             .IsRequired()
             .HasColumnName("location");
-            
+
     }
 }

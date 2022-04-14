@@ -3,5 +3,7 @@
 public enum SortOptions
 {
     DescendingStartTime,
-    AscendingStartTime
+    AscendingStartTime,
+    DescendingSignedUpUsersCount,
+    AscendingSignedUpUsersCount 
 }
