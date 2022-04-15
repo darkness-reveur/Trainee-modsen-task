@@ -67,7 +67,8 @@ public class LeftReplyCommentFeature : FeatureBase
         {
             Text = creationReplyDto.Text,
             PlainUserId = user.Id,
-            RootCommentId = commentId
+            RootCommentId = commentId,
+            Posted = creationReplyDto.Posted
         };
         context.ReplyComments.Add(replyComment);
         await context.SaveChangesAsync();

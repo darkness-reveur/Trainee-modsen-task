@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
-public class LeftCommentFeature : FeatureBase
+public class LeftRootCommentFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;
 
-    public LeftCommentFeature(ApplicationContext context, IMapper mapper)
+    public LeftRootCommentFeature(ApplicationContext context, IMapper mapper)
     {
         this.context = context;
         this.mapper = mapper;

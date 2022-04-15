@@ -17,4 +17,11 @@ public class ReplyCommentInfoDto
     /// <example>You're gorgeous!</example>
     [Required]
     public string Text { get; set; }
+
+    /// <summary>
+    /// Post's datetime.
+    /// </summary>
+    /// <example>2022-04-04T21:49:33.985Z</example>
+    [Required]
+    public DateTime Posted { get; set; }
 }

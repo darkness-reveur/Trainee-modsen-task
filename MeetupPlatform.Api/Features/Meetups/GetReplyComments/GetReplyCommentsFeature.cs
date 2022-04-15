@@ -3,6 +3,8 @@
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Domain.Comments;
+using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.ConfigurationQuery;
+using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.FilterSettings;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +32,8 @@ public class GetReplyCommentsFeature : FeatureBase
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ReplyCommentInfoDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetReplyComments([FromRoute] Guid meetupId, [FromRoute] Guid commentId)
+    public async Task<IActionResult> GetReplyComments([FromRoute] Guid meetupId, [FromRoute] Guid commentId,
+        [FromQuery] ReplyCommentFilterSettings filterSettings)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
@@ -48,7 +51,6 @@ public class GetReplyCommentsFeature : FeatureBase
         }
 
         var rootComment = await context.RootComments
-            .Include(rootComment => rootComment.ReplyComments)
             .Where(rootComment => rootComment.Id == commentId)
             .SingleOrDefaultAsync();
         if(rootComment is null)
@@ -56,7 +58,10 @@ public class GetReplyCommentsFeature : FeatureBase
             return NotFound();
         }
 
-        var replyCommentInfoDtos = mapper.Map<List<ReplyCommentInfoDto>>(rootComment.ReplyComments);
+        var replyComments = await context.ReplyComments
+            .GetReplyCommentsFilteredByFilterSettings(filterSettings)
+            .ToListAsync();
+        var replyCommentInfoDtos = mapper.Map<List<ReplyCommentInfoDto>>(replyComments);
         return Ok(replyCommentInfoDtos);
     }
 }
