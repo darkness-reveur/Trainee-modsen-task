@@ -15,7 +15,8 @@ namespace MeetupPlatformApi.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
-                    meetup_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    meetup_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,6 +27,12 @@ namespace MeetupPlatformApi.Migrations
                         principalTable: "meetups",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_root_comments_users_plain_user_id",
+                        column: x => x.plain_user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,7 +41,8 @@ namespace MeetupPlatformApi.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
-                    root_comment_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    root_comment_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +53,18 @@ namespace MeetupPlatformApi.Migrations
                         principalTable: "root_comments",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_reply_comments_users_plain_user_id",
+                        column: x => x.plain_user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_reply_comments_plain_user_id",
+                table: "reply_comments",
+                column: "plain_user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_reply_comments_root_comment_id",
@@ -56,6 +75,11 @@ namespace MeetupPlatformApi.Migrations
                 name: "ix_root_comments_meetup_id",
                 table: "root_comments",
                 column: "meetup_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_root_comments_plain_user_id",
+                table: "root_comments",
+                column: "plain_user_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

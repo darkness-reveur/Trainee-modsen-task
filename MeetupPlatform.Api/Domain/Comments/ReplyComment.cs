@@ -7,4 +7,6 @@ public class ReplyComment
     public string Text { get; set; }
 
     public Guid RootCommentId { get; set; }
+
+    public Guid PlainUserId { get; set; }
 }

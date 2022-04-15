@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220414114904_AddComments")]
+    [Migration("20220414151428_AddComments")]
     partial class AddComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,10 @@ namespace MeetupPlatformApi.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<Guid>("PlainUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("plain_user_id");
+
                     b.Property<Guid>("RootCommentId")
                         .HasColumnType("uuid")
                         .HasColumnName("root_comment_id");
@@ -42,6 +46,9 @@ namespace MeetupPlatformApi.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_reply_comments");
+
+                    b.HasIndex("PlainUserId")
+                        .HasDatabaseName("ix_reply_comments_plain_user_id");
 
                     b.HasIndex("RootCommentId")
                         .HasDatabaseName("ix_reply_comments_root_comment_id");
@@ -60,6 +67,10 @@ namespace MeetupPlatformApi.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("meetup_id");
 
+                    b.Property<Guid>("PlainUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("plain_user_id");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text")
@@ -70,6 +81,9 @@ namespace MeetupPlatformApi.Migrations
 
                     b.HasIndex("MeetupId")
                         .HasDatabaseName("ix_root_comments_meetup_id");
+
+                    b.HasIndex("PlainUserId")
+                        .HasDatabaseName("ix_root_comments_plain_user_id");
 
                     b.ToTable("root_comments", (string)null);
                 });
@@ -202,6 +216,13 @@ namespace MeetupPlatformApi.Migrations
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.ReplyComment", b =>
                 {
+                    b.HasOne("MeetupPlatform.Api.Domain.Users.PlainUser", null)
+                        .WithMany("ReplyComments")
+                        .HasForeignKey("PlainUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_reply_comments_users_plain_user_id");
+
                     b.HasOne("MeetupPlatform.Api.Domain.Comments.RootComment", null)
                         .WithMany("ReplyComments")
                         .HasForeignKey("RootCommentId")
@@ -218,6 +239,13 @@ namespace MeetupPlatformApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_root_comments_meetups_meetup_id");
+
+                    b.HasOne("MeetupPlatform.Api.Domain.Users.PlainUser", null)
+                        .WithMany("RootComments")
+                        .HasForeignKey("PlainUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_root_comments_users_plain_user_id");
                 });
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
@@ -275,6 +303,13 @@ namespace MeetupPlatformApi.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
                 {
                     b.Navigation("OrganizedMeetups");
+                });
+
+            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.PlainUser", b =>
+                {
+                    b.Navigation("ReplyComments");
+
+                    b.Navigation("RootComments");
                 });
 #pragma warning restore 612, 618
         }

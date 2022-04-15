@@ -2,6 +2,7 @@
 
 using MeetupPlatform.Api.Domain;
 using MeetupPlatform.Api.Domain.Comments;
+using MeetupPlatform.Api.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -39,5 +40,20 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
         rootCommentEntity
             .HasIndex(rootComment => rootComment.MeetupId)
             .HasName("ix_root_comments_meetup_id");
+
+        rootCommentEntity
+            .HasOne<PlainUser>()
+            .WithMany(plainUser => plainUser.RootComments)
+            .HasForeignKey(rootComment => rootComment.PlainUserId)
+            .HasConstraintName("fk_root_comments_users_plain_user_id");
+
+        rootCommentEntity
+            .Property(rootComment => rootComment.PlainUserId)
+            .IsRequired()
+            .HasColumnName("plain_user_id");
+
+        rootCommentEntity
+            .HasIndex(rootComment => rootComment.PlainUserId)
+            .HasName("ix_root_comments_plain_user_id");
     }
 }
