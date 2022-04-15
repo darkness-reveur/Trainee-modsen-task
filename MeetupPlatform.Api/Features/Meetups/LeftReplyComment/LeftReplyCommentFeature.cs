@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatform.Api.Features.Meetups.LeftRootComment;
+﻿namespace MeetupPlatform.Api.Features.Meetups.LeftReplyComment;
 
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
@@ -10,33 +10,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
-public class LeftCommentFeature : FeatureBase
+public class LeftReplyCommentFeature : FeatureBase
 {
     private readonly ApplicationContext context;
     private readonly IMapper mapper;
 
-    public LeftCommentFeature(ApplicationContext context, IMapper mapper)
+    public LeftReplyCommentFeature(ApplicationContext context, IMapper mapper)
     {
         this.context = context;
         this.mapper = mapper;
     }
 
     /// <summary>
-    /// Left comment to meetup.
+    /// Left reply comment to root comment.
     /// </summary>
-    /// <response code="404">If needed meetup is null.</response>
+    /// <response code="404">If needed meetup is null or needed comment doesn't exist.</response>
     /// <response code="201">Returns the new created item.</response>
-    [HttpPost("/api/meetups/{id:guid}/comments")]
+    [HttpPost("/api/meetups/{meetupId:guid}/comments/{commentId:guid}/replies")]
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
-    public async Task<IActionResult> LeftRootComment([FromRoute] Guid id, [FromBody] CreationCommentDto creationCommentDto)
+    [ProducesResponseType(typeof(CreatedReplyDto), StatusCodes.Status201Created)]
+    public async Task<IActionResult> LeftReplyComment([FromRoute] Guid meetupId, 
+        [FromRoute] Guid commentId, 
+        [FromBody] CreationReplyDto creationReplyDto)
     {
         var meetup = await context.Meetups
+            .Include(meetup => meetup.RootComments)
             .Include(meetup => meetup.SignedUpUsers)
-            .Where(meetup => meetup.Id == id)
+            .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
+        {
+            return NotFound();
+        }
+
+        bool isCommentExistInMeetup = meetup.RootComments.Any(rootComment => rootComment.Id == commentId);
+        if(!isCommentExistInMeetup)
         {
             return NotFound();
         }
@@ -50,20 +59,20 @@ public class LeftCommentFeature : FeatureBase
         bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == user.Id);
         if(!isUserSignedUpForMeetup)
         {
-            // User can't to left comment to meetup that hasn't had he as signed up.
+            // User can't to left reply to comment to meetup that hasn't had he as signed up.
             return Forbid();
         }
 
-        var rootComment = new RootComment
+        var replyComment = new ReplyComment
         {
-            Text = creationCommentDto.Text,
-            MeetupId = id,
-            PlainUserId = user.Id
+            Text = creationReplyDto.Text,
+            PlainUserId = user.Id,
+            RootCommentId = commentId
         };
-        context.RootComments.Add(rootComment);
+        context.ReplyComments.Add(replyComment);
         await context.SaveChangesAsync();
 
-        var createdCommentDto = mapper.Map<CreatedCommentDto>(rootComment);
-        return Created(createdCommentDto);
+        var createdReplyDto = mapper.Map<CreatedReplyDto>(replyComment);
+        return Created(createdReplyDto);
     }
 }
