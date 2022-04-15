@@ -21,7 +21,7 @@ public class GetRootCommentsFeature : FeatureBase
     }
 
     /// <summary>
-    /// Get all comments of meetup
+    /// Get all comments of meetup.
     /// </summary>
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="200">Returns meetup's list of comments.</response>

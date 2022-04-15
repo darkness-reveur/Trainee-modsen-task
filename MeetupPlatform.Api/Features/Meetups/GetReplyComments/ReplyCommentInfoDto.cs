@@ -1,8 +1,8 @@
-﻿namespace MeetupPlatform.Api.Features.Meetups.LeftReplyComment;
+﻿namespace MeetupPlatform.Api.Features.Meetups.GetReplyComments;
 
 using System.ComponentModel.DataAnnotations;
 
-public class CreatedReplyDto
+public class ReplyCommentInfoDto
 {
     /// <summary>
     /// Reply id value.
