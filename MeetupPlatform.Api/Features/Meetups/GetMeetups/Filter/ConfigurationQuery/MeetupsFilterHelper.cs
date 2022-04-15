@@ -11,7 +11,7 @@ public static class MeetupsFilterHelper
         MeetupsFilterSettings meetupFilterSettings)
     {
         meetupsQuery = meetupsQuery.Filter(meetupFilterSettings);
-        meetupsQuery = meetupsQuery.SortSelection(meetupFilterSettings.SortOption);
+        meetupsQuery = meetupsQuery.SortByOption(meetupFilterSettings.SortOption);
         return meetupsQuery.GetDataByPaginationSettings(meetupFilterSettings);
     }
 
@@ -25,7 +25,7 @@ public static class MeetupsFilterHelper
                 .Take(meetupFilterSettings.PageSize);
     }
 
-    private static IQueryable<Meetup> SortSelection(this IQueryable<Meetup> meetupsQuery, SortOptions sortOption) => sortOption switch
+    private static IQueryable<Meetup> SortByOption(this IQueryable<Meetup> meetupsQuery, SortOptions sortOption) => sortOption switch
     {
         SortOptions.DescendingStartTime          => meetupsQuery.OrderByDescending(meetups => meetups.StartTime),
         SortOptions.DescendingSignedUpUsersCount => meetupsQuery.OrderByDescending(meetups => meetups.SignedUpUsers.Count),
