@@ -26,15 +26,15 @@ public class LeftRootCommentFeature : FeatureBase
     /// </summary>
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="201">Returns the new created item.</response>
-    [HttpPost("/api/meetups/{id:guid}/comments")]
+    [HttpPost("/api/meetups/{meetupId:guid}/comments")]
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
-    public async Task<IActionResult> LeftRootComment([FromRoute] Guid id, [FromBody] CreationCommentDto creationCommentDto)
+    public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CreationCommentDto creationCommentDto)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
-            .Where(meetup => meetup.Id == id)
+            .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
         {
@@ -57,8 +57,8 @@ public class LeftRootCommentFeature : FeatureBase
         var rootComment = new RootComment
         {
             Text = creationCommentDto.Text,
-            MeetupId = id,
-            PlainUserId = user.Id,
+            MeetupId = meetupId,
+            AuthorId = user.Id,
             Posted = creationCommentDto.Posted
         };
         context.RootComments.Add(rootComment);

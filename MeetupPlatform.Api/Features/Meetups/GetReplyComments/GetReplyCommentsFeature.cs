@@ -24,10 +24,10 @@ public class GetReplyCommentsFeature : FeatureBase
     }
 
     /// <summary>
-    /// Get all reply comments of comment.
+    /// Get all reply of comment.
     /// </summary>
     /// <response code="404">If needed meetup or comment is null.</response>
-    /// <response code="200">Returns root comment's list of replies.</response>>
+    /// <response code="200">Returns root comment's list of replies.</response>
     [HttpGet("/api/meetups/{meetupId:guid}/comments/{commentId:guid}/replies")]
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +37,7 @@ public class GetReplyCommentsFeature : FeatureBase
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
+            .Include(meetup => meetup.RootComments)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
@@ -50,15 +51,16 @@ public class GetReplyCommentsFeature : FeatureBase
             return Forbid();
         }
 
-        var rootComment = await context.RootComments
+        var rootComment = meetup.RootComments
             .Where(rootComment => rootComment.Id == commentId)
-            .SingleOrDefaultAsync();
+            .SingleOrDefault();
         if(rootComment is null)
         {
             return NotFound();
         }
 
         var replyComments = await context.ReplyComments
+            .Where(replyComment => replyComment.RootCommentId == commentId)
             .GetReplyCommentsFilteredByFilterSettings(filterSettings)
             .ToListAsync();
         var replyCommentInfoDtos = mapper.Map<List<ReplyCommentInfoDto>>(replyComments);

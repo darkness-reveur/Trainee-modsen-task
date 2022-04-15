@@ -43,17 +43,17 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
         replyCommentEntity
             .HasOne<PlainUser>()
             .WithMany(plainUser => plainUser.ReplyComments)
-            .HasForeignKey(replyComment => replyComment.PlainUserId)
-            .HasConstraintName("fk_reply_comments_users_plain_user_id");
+            .HasForeignKey(replyComment => replyComment.AuthorId)
+            .HasConstraintName("fk_reply_comments_users_author_id");
 
         replyCommentEntity
-            .Property(replyComment => replyComment.PlainUserId)
+            .Property(replyComment => replyComment.AuthorId)
             .IsRequired()
-            .HasColumnName("plain_user_id");
+            .HasColumnName("author_id");
 
         replyCommentEntity
-            .HasIndex(replyComment => replyComment.PlainUserId)
-            .HasName("ix_reply_comments_plain_user_id");
+            .HasIndex(replyComment => replyComment.AuthorId)
+            .HasName("ix_reply_comments_author_id");
 
         replyCommentEntity
             .Property(replyComment => replyComment.Posted)

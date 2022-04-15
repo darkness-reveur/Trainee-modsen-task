@@ -22,7 +22,7 @@ public class LeftReplyCommentFeature : FeatureBase
     }
 
     /// <summary>
-    /// Left reply comment to root comment.
+    /// Left reply to root comment.
     /// </summary>
     /// <response code="404">If needed meetup is null or needed comment doesn't exist.</response>
     /// <response code="201">Returns the new created item.</response>
@@ -66,7 +66,7 @@ public class LeftReplyCommentFeature : FeatureBase
         var replyComment = new ReplyComment
         {
             Text = creationReplyDto.Text,
-            PlainUserId = user.Id,
+            AuthorId = user.Id,
             RootCommentId = commentId,
             Posted = creationReplyDto.Posted
         };

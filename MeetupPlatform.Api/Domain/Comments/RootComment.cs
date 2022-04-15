@@ -8,7 +8,7 @@ public class RootComment
 
     public Guid MeetupId { get; set; }
 
-    public Guid PlainUserId { get; set; }
+    public Guid AuthorId { get; set; }
 
     public List<ReplyComment> ReplyComments { get; }
 

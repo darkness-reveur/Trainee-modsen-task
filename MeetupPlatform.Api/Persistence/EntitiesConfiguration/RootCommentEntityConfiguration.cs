@@ -44,17 +44,17 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
         rootCommentEntity
             .HasOne<PlainUser>()
             .WithMany(plainUser => plainUser.RootComments)
-            .HasForeignKey(rootComment => rootComment.PlainUserId)
-            .HasConstraintName("fk_root_comments_users_plain_user_id");
+            .HasForeignKey(rootComment => rootComment.AuthorId)
+            .HasConstraintName("fk_root_comments_users_author_id");
 
         rootCommentEntity
-            .Property(rootComment => rootComment.PlainUserId)
+            .Property(rootComment => rootComment.AuthorId)
             .IsRequired()
-            .HasColumnName("plain_user_id");
+            .HasColumnName("author_id");
 
         rootCommentEntity
-            .HasIndex(rootComment => rootComment.PlainUserId)
-            .HasName("ix_root_comments_plain_user_id");
+            .HasIndex(rootComment => rootComment.AuthorId)
+            .HasName("ix_root_comments_author_id");
 
         rootCommentEntity
             .Property(rootComment => rootComment.Posted)

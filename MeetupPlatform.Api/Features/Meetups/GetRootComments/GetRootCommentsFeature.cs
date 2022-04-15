@@ -27,16 +27,16 @@ public class GetRootCommentsFeature : FeatureBase
     /// </summary>
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="200">Returns meetup's list of comments.</response>
-    [HttpGet("/api/meetups/{id:guid}/comments")]
+    [HttpGet("/api/meetups/{meetupId:guid}/comments")]
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(RootCommentInfoDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRootComments([FromRoute] Guid id, 
+    public async Task<IActionResult> GetRootComments([FromRoute] Guid meetupId, 
         [FromQuery] RootCommentFilterSettings filterSettings)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
-            .Where(meetup => meetup.Id == id)
+            .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
         {
@@ -50,6 +50,7 @@ public class GetRootCommentsFeature : FeatureBase
         }
 
         var rootComments = await context.RootComments
+            .Where(rootComment => rootComment.MeetupId == meetupId)
             .GetRootCommentsFilteredByFilterSettings(filterSettings)
             .ToListAsync();
         var rootCommentInfoDtos = mapper.Map<List<RootCommentInfoDto>>(rootComments);
