@@ -25,13 +25,13 @@ public static class MeetupsFilterHelper
                 .Take(meetupFilterSettings.PageSize);
     }
 
-    private static IQueryable<Meetup> SortSelection(this IQueryable<Meetup> meetupsQuery, SortOptions sortOptions) => sortOptions switch
+    private static IQueryable<Meetup> SortSelection(this IQueryable<Meetup> meetupsQuery, SortOptions sortOption) => sortOption switch
     {
         SortOptions.DescendingStartTime          => meetupsQuery.OrderByDescending(meetups => meetups.StartTime),
         SortOptions.DescendingSignedUpUsersCount => meetupsQuery.OrderByDescending(meetups => meetups.SignedUpUsers.Count),
         SortOptions.AscendingStartTime           => meetupsQuery.OrderBy(meetups => meetups.StartTime),
         SortOptions.AscendingSignedUpUsersCount  => meetupsQuery.OrderBy(meetups => meetups.SignedUpUsers.Count),
-        _ => throw new ArgumentOutOfRangeException(nameof(sortOptions), $"Not expected value: {sortOptions}")
+        _ => throw new ArgumentOutOfRangeException(nameof(sortOption), $"Not expected value: {sortOption}")
     };
 
     private static IQueryable<Meetup> Filter(

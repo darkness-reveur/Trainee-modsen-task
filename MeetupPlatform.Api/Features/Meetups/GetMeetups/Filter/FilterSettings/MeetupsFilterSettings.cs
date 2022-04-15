@@ -25,6 +25,7 @@ public class MeetupsFilterSettings
     /// </summary>
     /// <example>AscendingStartTime</example>
     [Required]
+    [EnumDataType(typeof(SortOptions))]
     public SortOptions SortOption { get; set; }
 
     /// <summary>
