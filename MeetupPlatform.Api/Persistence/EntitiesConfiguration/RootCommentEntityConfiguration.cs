@@ -55,5 +55,10 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
         rootCommentEntity
             .HasIndex(rootComment => rootComment.PlainUserId)
             .HasName("ix_root_comments_plain_user_id");
+
+        rootCommentEntity
+            .Property(rootComment => rootComment.Posted)
+            .IsRequired()
+            .HasColumnName("posted");
     }
 }

@@ -16,7 +16,8 @@ namespace MeetupPlatformApi.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
                     meetup_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    posted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +43,8 @@ namespace MeetupPlatformApi.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
                     root_comment_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    plain_user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    posted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

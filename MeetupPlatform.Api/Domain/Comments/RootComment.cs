@@ -11,4 +11,6 @@ public class RootComment
     public Guid PlainUserId { get; set; }
 
     public List<ReplyComment> ReplyComments { get; }
+
+    public DateTime Posted { get; set; }
 }

@@ -54,5 +54,10 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
         replyCommentEntity
             .HasIndex(replyComment => replyComment.PlainUserId)
             .HasName("ix_reply_comments_plain_user_id");
+
+        replyCommentEntity
+            .Property(replyComment => replyComment.Posted)
+            .IsRequired()
+            .HasColumnName("posted");
     }
 }

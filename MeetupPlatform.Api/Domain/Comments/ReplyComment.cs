@@ -9,4 +9,6 @@ public class ReplyComment
     public Guid RootCommentId { get; set; }
 
     public Guid PlainUserId { get; set; }
+
+    public DateTime Posted { get; set; }
 }

@@ -58,7 +58,8 @@ public class LeftCommentFeature : FeatureBase
         {
             Text = creationCommentDto.Text,
             MeetupId = id,
-            PlainUserId = user.Id
+            PlainUserId = user.Id,
+            Posted = creationCommentDto.Posted
         };
         context.RootComments.Add(rootComment);
         await context.SaveChangesAsync();

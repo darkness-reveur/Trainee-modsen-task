@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220414151428_AddComments")]
+    [Migration("20220415114517_AddComments")]
     partial class AddComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,10 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<Guid>("PlainUserId")
                         .HasColumnType("uuid")
                         .HasColumnName("plain_user_id");
+
+                    b.Property<DateTime>("Posted")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("posted");
 
                     b.Property<Guid>("RootCommentId")
                         .HasColumnType("uuid")
@@ -70,6 +74,10 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<Guid>("PlainUserId")
                         .HasColumnType("uuid")
                         .HasColumnName("plain_user_id");
+
+                    b.Property<DateTime>("Posted")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("posted");
 
                     b.Property<string>("Text")
                         .IsRequired()

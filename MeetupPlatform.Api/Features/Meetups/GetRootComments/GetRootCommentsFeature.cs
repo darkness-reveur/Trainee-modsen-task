@@ -2,6 +2,8 @@
 
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
+using MeetupPlatform.Api.Features.Meetups.GetRootComments.Filter.FilterSettings;
+using MeetupPlatform.Api.Features.Meetups.GetRootComments.Filter.ConfigurationQuery;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
 using Microsoft.AspNetCore.Authorization;
@@ -29,10 +31,10 @@ public class GetRootCommentsFeature : FeatureBase
     [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(RootCommentInfoDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRootComments([FromRoute] Guid id)
+    public async Task<IActionResult> GetRootComments([FromRoute] Guid id, 
+        [FromQuery] RootCommentFilterSettings filterSettings)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.RootComments)
             .Include(meetup => meetup.SignedUpUsers)
             .Where(meetup => meetup.Id == id)
             .SingleOrDefaultAsync();
@@ -47,7 +49,10 @@ public class GetRootCommentsFeature : FeatureBase
             return Forbid();
         }
 
-        var rootCommentInfoDtos = mapper.Map<List<RootCommentInfoDto>>(meetup.RootComments);
+        var rootComments = await context.RootComments
+            .GetRootCommentsFilteredByFilterSettings(filterSettings)
+            .ToListAsync();
+        var rootCommentInfoDtos = mapper.Map<List<RootCommentInfoDto>>(rootComments);
         return Ok(rootCommentInfoDtos);
     }
 }
