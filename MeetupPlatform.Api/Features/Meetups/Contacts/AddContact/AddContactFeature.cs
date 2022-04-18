@@ -38,7 +38,13 @@ public class AddContactFeature : FeatureBase
             return NotFound();
         }
 
+        if(meetup.OrganizerId != CurrentUser.UserId)
+        {
+            return Forbid();
+        }
+
         var contact = mapper.Map<Contact>(additionContactDto);
+        contact.MeetupId = id;
         context.Contacts.Add(contact);
         await context.SaveChangesAsync();
 

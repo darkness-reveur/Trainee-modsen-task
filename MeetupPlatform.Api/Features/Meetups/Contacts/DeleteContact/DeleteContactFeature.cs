@@ -1,6 +1,5 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.Contacts.DeleteContact;
 
-using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
@@ -36,6 +35,11 @@ public class DeleteContactFeature : FeatureBase
         if (meetup is null)
         {
             return NotFound();
+        }
+
+        if(meetup.OrganizerId != CurrentUser.UserId)
+        {
+            return Forbid();
         }
 
         var contact = meetup.Contacts.Where(contact => contact.Id == contactId).SingleOrDefault();

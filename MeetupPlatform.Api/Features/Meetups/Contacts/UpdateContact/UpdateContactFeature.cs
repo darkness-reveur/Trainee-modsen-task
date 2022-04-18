@@ -41,6 +41,11 @@ public class UpdateContactFeature : FeatureBase
             return NotFound();
         }
 
+        if(meetup.OrganizerId != CurrentUser.UserId)
+        {
+            return Forbid();
+        }
+
         var contact = meetup.Contacts.Where(contact => contact.Id == contactId).SingleOrDefault();
         if(contact is null)
         {
