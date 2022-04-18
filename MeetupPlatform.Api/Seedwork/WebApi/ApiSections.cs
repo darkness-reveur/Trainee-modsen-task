@@ -3,6 +3,5 @@
 public enum ApiSections
 {
     Authentication,
-    Meetups,
-    Contacts
+    Meetups
 }
