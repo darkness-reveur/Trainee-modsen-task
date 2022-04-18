@@ -26,7 +26,7 @@ public class AddContactFeature : FeatureBase
     /// </summary>
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="201">Returns information about added contact.</response>
-    [HttpPost("/api/meetups/{id:guid}")]
+    [HttpPost("/api/meetups/{id:guid}/contacts")]
     [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(AddedContactDto), StatusCodes.Status201Created)]
