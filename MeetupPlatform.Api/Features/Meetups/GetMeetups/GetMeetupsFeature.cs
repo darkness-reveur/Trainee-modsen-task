@@ -1,6 +1,8 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetups;
 
 using AutoMapper;
+using MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.ConfigurationQuery;
+using MeetupPlatform.Api.Features.Meetups.GetMeetups.Filter.FilterSettings;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +26,13 @@ public class GetMeetupsFeature : FeatureBase
     /// <response code="200">Returns meetup items colection.</response>
     [HttpGet("/api/meetups")]
     [ProducesResponseType(typeof(IEnumerable<MeetupInfoDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetMeetups()
+    public async Task<IActionResult> GetMeetups([FromQuery] MeetupsFilterSettings filterSettings)
     {
-        var meetups = await context.Meetups
+        var meetupsQuery = context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
-            .ToListAsync();
-        var meetupInfoDtos = mapper.Map<IEnumerable<MeetupInfoDto>>(meetups);
+            .GetMeetupsFilteredByFilterSettings(filterSettings);
+
+        var meetupInfoDtos = await mapper.ProjectTo<MeetupInfoDto>(meetupsQuery).ToListAsync();
         return Ok(meetupInfoDtos);
     }
 }
