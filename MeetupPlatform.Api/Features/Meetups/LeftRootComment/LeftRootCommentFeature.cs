@@ -50,7 +50,6 @@ public class LeftRootCommentFeature : FeatureBase
         bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == user.Id);
         if(!isUserSignedUpForMeetup)
         {
-            // User can't to left comment to meetup that hasn't had he as signed up.
             return Forbid();
         }
 
