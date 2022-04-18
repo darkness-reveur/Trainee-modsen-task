@@ -38,7 +38,7 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
 
         replyCommentEntity
             .HasIndex(replyComment => replyComment.RootCommentId)
-            .HasName("ix_reply_comments_root_comment_id");
+            .HasDatabaseName("ix_reply_comments_root_comment_id");
 
         replyCommentEntity
             .HasOne<PlainUser>()
@@ -53,7 +53,7 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
 
         replyCommentEntity
             .HasIndex(replyComment => replyComment.AuthorId)
-            .HasName("ix_reply_comments_author_id");
+            .HasDatabaseName("ix_reply_comments_author_id");
 
         replyCommentEntity
             .Property(replyComment => replyComment.Posted)

@@ -39,7 +39,7 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
 
         rootCommentEntity
             .HasIndex(rootComment => rootComment.MeetupId)
-            .HasName("ix_root_comments_meetup_id");
+            .HasDatabaseName("ix_root_comments_meetup_id");
 
         rootCommentEntity
             .HasOne<PlainUser>()
@@ -54,7 +54,7 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
 
         rootCommentEntity
             .HasIndex(rootComment => rootComment.AuthorId)
-            .HasName("ix_root_comments_author_id");
+            .HasDatabaseName("ix_root_comments_author_id");
 
         rootCommentEntity
             .Property(rootComment => rootComment.Posted)

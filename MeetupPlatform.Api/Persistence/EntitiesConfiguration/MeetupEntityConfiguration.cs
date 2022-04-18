@@ -54,7 +54,7 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
 
         meetupEntity
             .HasIndex(meetup => meetup.OrganizerId)
-            .HasName("ix_meetups_organizer_id");
+            .HasDatabaseName("ix_meetups_organizer_id");
 
         meetupEntity
             .HasMany(meetup => meetup.SignedUpUsers)
@@ -76,8 +76,8 @@ public class MeetupEntityConfiguration : IEntityTypeConfiguration<Meetup>
                 join =>
                 {
                     join.HasKey("user_id", "meetup_id").HasName("pk_meetups_users_signup");
-                    join.HasIndex("user_id").HasName("ix_meetups_users_signups_user_id");
-                    join.HasIndex("meetup_id").HasName("ix_meetups_users_signups_meetup_id");
+                    join.HasIndex("user_id").HasDatabaseName("ix_meetups_users_signups_user_id");
+                    join.HasIndex("meetup_id").HasDatabaseName("ix_meetups_users_signups_meetup_id");
                 });
     }
 }

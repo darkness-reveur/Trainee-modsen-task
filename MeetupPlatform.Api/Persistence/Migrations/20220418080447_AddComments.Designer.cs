@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatformApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220415151210_AddComments")]
+    [Migration("20220418080447_AddComments")]
     partial class AddComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
