@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatform.Api.Features.Meetups.Contacts.UpdateContact;
+﻿namespace MeetupPlatform.Api.Features.Meetups.Contacts.DeleteContact;
 
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
@@ -9,45 +9,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [ApiSection(ApiSections.Meetups)]
-public class UpdateContactFeature : FeatureBase
+public class DeleteContactFeature : FeatureBase
 {
     private readonly ApplicationContext context;
-    private readonly IMapper mapper;
 
-    public UpdateContactFeature(ApplicationContext context, IMapper mapper)
+    public DeleteContactFeature(ApplicationContext context)
     {
         this.context = context;
-        this.mapper = mapper;
     }
 
     /// <summary>
-    /// Update contact information for a meetup.
+    /// Delete contact information from meetup.
     /// </summary>
     /// <response code="404">If needed meetup or contact is null.</response>
-    /// <response code="204">Returns when contact was updated successfully.</response>
-    [HttpPut("/api/meetups/{meetupId:guid}/contacts/{contactId:guid}")]
+    /// <response code="204">Returns when contact was deleted successfully.</response>
+    [HttpDelete("/api/meetups/{meetupId:guid}/contacts/{contactId:guid}")]
     [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> UpdateContact([FromRoute] Guid meetupId, [FromRoute] Guid contactId,
-        [FromBody] UpdateContactDto updateContactDto)
+    public async Task<IActionResult> DeleteContact([FromRoute] Guid meetupId, [FromRoute] Guid contactId)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.Contacts)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
-        if(meetup is null)
+        if (meetup is null)
         {
             return NotFound();
         }
 
         var contact = meetup.Contacts.Where(contact => contact.Id == contactId).SingleOrDefault();
-        if(contact is null)
+        if (contact is null)
         {
             return NotFound();
         }
 
-        mapper.Map(updateContactDto, contact);
+        context.Contacts.Remove(contact);
         await context.SaveChangesAsync();
         return NoContent();
     }
