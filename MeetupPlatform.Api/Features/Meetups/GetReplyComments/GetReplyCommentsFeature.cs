@@ -2,7 +2,6 @@
 
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
-using MeetupPlatform.Api.Domain.Comments;
 using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.ConfigurationQuery;
 using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.FilterSettings;
 using MeetupPlatform.Api.Persistence.Context;
@@ -24,7 +23,7 @@ public class GetReplyCommentsFeature : FeatureBase
     }
 
     /// <summary>
-    /// Get all reply of comment.
+    /// Get all replies of comment.
     /// </summary>
     /// <response code="404">If needed meetup or comment is null.</response>
     /// <response code="200">Returns root comment's list of replies.</response>
