@@ -1,8 +1,8 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.RemoveMeetupContact;
+﻿namespace MeetupPlatform.Api.Features.Meetups.RemoveMeetupContact;
 
 using AutoMapper;
-using MeetupPlatformApi.Persistence.Context;
-using MeetupPlatformApi.Seedwork.WebApi;
+using MeetupPlatform.Api.Persistence.Context;
+using MeetupPlatform.Api.Seedwork.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

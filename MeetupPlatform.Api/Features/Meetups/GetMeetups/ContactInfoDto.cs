@@ -1,4 +1,4 @@
-﻿namespace MeetupPlatformApi.Features.Meetups.GetMeetup;
+﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetups;
 
 public class ContactInfoDto
 {

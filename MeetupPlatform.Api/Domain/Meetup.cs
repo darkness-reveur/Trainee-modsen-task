@@ -20,5 +20,5 @@ public class Meetup
 
     public List<PlainUser> SignedUpUsers { get; set; }
 
-    public List<Contact> Contacts { get; set; } = new List<Contact>();
+    public List<Contact> Contacts { get; set; }
 }

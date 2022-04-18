@@ -8,5 +8,5 @@ public class Contact
 
     public string Value { get; set; }
 
-    public List<Meetup> Meetups { get; set; } = new List<Meetup>();
+    public Guid MeetupId { get; set; }
 }
