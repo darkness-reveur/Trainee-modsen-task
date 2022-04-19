@@ -16,7 +16,9 @@ public class ApplicationContext : DbContext
     public DbSet<PlainUser> PlainUsers { get; set; }
 
     public DbSet<Organizer> Organizers { get; set; }
-    
+
+    public DbSet<Contact> Contacts { get; set; }
+
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     { }

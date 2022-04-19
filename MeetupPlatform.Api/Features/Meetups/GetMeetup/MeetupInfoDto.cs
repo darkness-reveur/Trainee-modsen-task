@@ -1,5 +1,6 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.GetMeetup;
 
+using MeetupPlatform.Api.Domain;
 using System.ComponentModel.DataAnnotations;
 
 public class MeetupInfoDto
@@ -52,4 +53,14 @@ public class MeetupInfoDto
     /// <example>1</example>
     [Required]
     public int SignedUpUsersCount { get; set; }
+
+    /// <summary>
+    /// List of contact informations for a meetup.
+    /// </summary>
+    /// <example>
+    /// Title: Phone number
+    /// Value: 80(33)-345-12-13
+    /// </example>
+    [Required]
+    public List<Contact> Contacts { get; set; }
 }

@@ -30,12 +30,13 @@ public class GetMeetupFeature : FeatureBase
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
+            .Include(meetup => meetup.Contacts)
             .SingleOrDefaultAsync(meetup => meetup.Id == id);
         if (meetup is null)
         {
             return NotFound();
         }
-        
+
         var meetupInfoDto = mapper.Map<MeetupInfoDto>(meetup);
         return Ok(meetupInfoDto);
     }

@@ -19,4 +19,6 @@ public class Meetup
     public Guid OrganizerId { get; set; }
 
     public List<PlainUser> SignedUpUsers { get; set; }
+
+    public List<Contact> Contacts { get; set; }
 }
