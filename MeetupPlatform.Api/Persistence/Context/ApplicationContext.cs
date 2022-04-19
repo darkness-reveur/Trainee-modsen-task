@@ -18,6 +18,8 @@ public class ApplicationContext : DbContext
 
     public DbSet<Organizer> Organizers { get; set; }
 
+    public DbSet<Comment> Comments { get; set; }
+
     public DbSet<ReplyComment> ReplyComments { get; set; }
 
     public DbSet<RootComment> RootComments { get; set; }

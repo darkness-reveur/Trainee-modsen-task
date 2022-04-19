@@ -9,7 +9,5 @@ public class PlainUser : User
 
     public List<Meetup> MeetupsSignedUpFor { get; set; }
 
-    public List<RootComment> RootComments { get; set; }
-
-    public List<ReplyComment> ReplyComments { get; set; }
+    public List<Comment> Comments { get; set; }
 }

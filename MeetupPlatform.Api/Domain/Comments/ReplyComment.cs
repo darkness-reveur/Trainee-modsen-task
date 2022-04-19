@@ -1,14 +1,6 @@
 ﻿namespace MeetupPlatform.Api.Domain.Comments;
 
-public class ReplyComment
+public class ReplyComment : Comment
 {
-    public Guid Id { get; set; }
-
-    public string Text { get; set; }
-
-    public Guid RootCommentId { get; set; }
-
-    public Guid AuthorId { get; set; }
-
-    public DateTime Posted { get; set; }
+    public Guid? RootCommentId { get; set; }
 }
