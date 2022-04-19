@@ -33,4 +33,12 @@ public class UpdateMeetupDto
     [Required]
     [MaxLength(4000)]
     public string Description { get; set; }
+
+    /// <summary>
+    /// Meetup location 
+    /// </summary>
+    /// <example>Belarus, Mogilev, Lenina 29-40</example>
+    [Required]
+    [MaxLength(400)]
+    public string Location { get; set; }
 }

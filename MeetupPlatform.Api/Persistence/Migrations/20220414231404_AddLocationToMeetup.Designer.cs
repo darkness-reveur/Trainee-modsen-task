@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MeetupPlatformApi.Migrations
+namespace MeetupPlatform.Api.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220419074157_AddComments")]
-    partial class AddComments
+    [Migration("20220414231404_AddLocationToMeetup")]
+    partial class AddLocationToMeetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,41 +23,6 @@ namespace MeetupPlatformApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("author_id");
-
-                    b.Property<DateTime>("Posted")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("posted");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("text");
-
-                    b.Property<string>("comment_type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id")
-                        .HasName("pk_comments");
-
-                    b.HasIndex("AuthorId")
-                        .HasDatabaseName("ix_comments_author_id");
-
-                    b.ToTable("comments", (string)null);
-
-                    b.HasDiscriminator<string>("comment_type").HasValue("Comment");
-                });
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
                 {
@@ -74,6 +39,11 @@ namespace MeetupPlatformApi.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_time");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("location");
 
                     b.Property<Guid>("OrganizerId")
                         .HasColumnType("uuid")
@@ -171,34 +141,6 @@ namespace MeetupPlatformApi.Migrations
                     b.ToTable("meetups_users_signups");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.ReplyComment", b =>
-                {
-                    b.HasBaseType("MeetupPlatform.Api.Domain.Comments.Comment");
-
-                    b.Property<Guid?>("RootCommentId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("root_comment_id");
-
-                    b.HasIndex("RootCommentId")
-                        .HasDatabaseName("ix_reply_comments_root_comment_id");
-
-                    b.HasDiscriminator().HasValue("ReplyComment");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.RootComment", b =>
-                {
-                    b.HasBaseType("MeetupPlatform.Api.Domain.Comments.Comment");
-
-                    b.Property<Guid?>("MeetupId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("meetup_id");
-
-                    b.HasIndex("MeetupId")
-                        .HasDatabaseName("ix_root_comments_meetup_id");
-
-                    b.HasDiscriminator().HasValue("RootComment");
-                });
-
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
                 {
                     b.HasBaseType("MeetupPlatform.Api.Domain.Users.User");
@@ -211,16 +153,6 @@ namespace MeetupPlatformApi.Migrations
                     b.HasBaseType("MeetupPlatform.Api.Domain.Users.User");
 
                     b.HasDiscriminator().HasValue("PlainUser");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.Comment", b =>
-                {
-                    b.HasOne("MeetupPlatform.Api.Domain.Users.PlainUser", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_comments_users_author_id");
                 });
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
@@ -260,45 +192,14 @@ namespace MeetupPlatformApi.Migrations
                         .HasConstraintName("fk_meetups_users_signups_plain_users_user_id");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.ReplyComment", b =>
-                {
-                    b.HasOne("MeetupPlatform.Api.Domain.Comments.RootComment", null)
-                        .WithMany("ReplyComments")
-                        .HasForeignKey("RootCommentId")
-                        .HasConstraintName("fk_reply_comments_root_comments_root_comment_id");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.RootComment", b =>
-                {
-                    b.HasOne("MeetupPlatform.Api.Domain.Meetup", null)
-                        .WithMany("RootComments")
-                        .HasForeignKey("MeetupId")
-                        .HasConstraintName("fk_root_comments_meetups_meetup_id");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Meetup", b =>
-                {
-                    b.Navigation("RootComments");
-                });
-
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.User", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.RootComment", b =>
-                {
-                    b.Navigation("ReplyComments");
-                });
-
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
                 {
                     b.Navigation("OrganizedMeetups");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.PlainUser", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

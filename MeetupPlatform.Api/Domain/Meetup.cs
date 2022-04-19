@@ -15,6 +15,8 @@ public class Meetup
 
     public string Description { get; set; }
 
+    public string Location { get; set; }
+
     public Guid OrganizerId { get; set; }
 
     public List<PlainUser> SignedUpUsers { get; }

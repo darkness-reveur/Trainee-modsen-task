@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MeetupPlatformApi.Migrations
+namespace MeetupPlatform.Api.Migrations
 {
     public partial class AddComments : Migration
     {
