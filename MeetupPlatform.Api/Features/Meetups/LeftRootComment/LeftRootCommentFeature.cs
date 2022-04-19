@@ -1,7 +1,6 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.LeftRootComment;
 
 using AutoMapper;
-using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Domain.Comments;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
@@ -27,6 +26,7 @@ public class LeftRootCommentFeature : FeatureBase
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="201">Returns the new created item.</response>
     [HttpPost("/api/meetups/{meetupId:guid}/comments")]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CreationCommentDto creationCommentDto)

@@ -1,10 +1,8 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.GetReplyComments;
 
 using AutoMapper;
-using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

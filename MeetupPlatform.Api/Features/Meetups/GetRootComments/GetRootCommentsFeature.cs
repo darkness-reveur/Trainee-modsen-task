@@ -1,12 +1,10 @@
 ﻿namespace MeetupPlatform.Api.Features.Meetups.GetRootComments;
 
 using AutoMapper;
-using MeetupPlatform.Api.Authentication.Helpers;
 using MeetupPlatform.Api.Features.Meetups.GetRootComments.Filter.FilterSettings;
 using MeetupPlatform.Api.Features.Meetups.GetRootComments.Filter.ConfigurationQuery;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
