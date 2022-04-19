@@ -50,7 +50,9 @@ public class LeftReplyCommentFeature : FeatureBase
             return NotFound();
         }
 
-        var user = await context.PlainUsers.Where(plainUser => plainUser.Id == CurrentUser.UserId).SingleOrDefaultAsync();
+        var user = await context.Users
+            .Where(user => user.Id == CurrentUser.UserId)
+            .SingleOrDefaultAsync();
         if(user is null)
         {
             return Unauthorized();

@@ -41,12 +41,6 @@ public class GetRootCommentsFeature : FeatureBase
             return NotFound();
         }
 
-        bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == CurrentUser.UserId);
-        if(!isUserSignedUpForMeetup)
-        {
-            return Forbid();
-        }
-
         var rootComments = await context.RootComments
             .Where(rootComment => rootComment.MeetupId == meetupId)
             .GetRootCommentsFilteredByFilterSettings(filterSettings)

@@ -38,12 +38,6 @@ public class GetReplyCommentsFeature : FeatureBase
             return NotFound();
         }
 
-        bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == CurrentUser.UserId);
-        if (!isUserSignedUpForMeetup)
-        {
-            return Forbid();
-        }
-
         var rootComment = meetup.Comments
             .Where(rootComment => rootComment.Id == commentId)
             .SingleOrDefault();
