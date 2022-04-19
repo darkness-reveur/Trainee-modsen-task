@@ -29,7 +29,9 @@ public class UpdateContactFeature : FeatureBase
     [Authorize(Roles = Roles.Organizer)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> UpdateContact([FromRoute] Guid meetupId, [FromRoute] Guid contactId,
+    public async Task<IActionResult> UpdateContact(
+        [FromRoute] Guid meetupId, 
+        [FromRoute] Guid contactId,
         [FromBody] UpdateContactDto updateContactDto)
     {
         var meetup = await context.Meetups
@@ -46,7 +48,9 @@ public class UpdateContactFeature : FeatureBase
             return Forbid();
         }
 
-        var contact = meetup.Contacts.Where(contact => contact.Id == contactId).SingleOrDefault();
+        var contact = meetup.Contacts
+            .Where(contact => contact.Id == contactId)
+            .SingleOrDefault();
         if(contact is null)
         {
             return NotFound();

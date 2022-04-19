@@ -32,7 +32,9 @@ public class AddContactFeature : FeatureBase
     [ProducesResponseType(typeof(AddedContactDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> AddContact([FromRoute] Guid id, [FromBody] AdditionContactDto additionContactDto)
     {
-        var meetup = await context.Meetups.Where(meetup => meetup.Id == id).SingleOrDefaultAsync();
+        var meetup = await context.Meetups
+            .Where(meetup => meetup.Id == id)
+            .SingleOrDefaultAsync();
         if(meetup is null)
         {
             return NotFound();

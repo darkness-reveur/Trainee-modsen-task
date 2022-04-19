@@ -42,7 +42,9 @@ public class DeleteContactFeature : FeatureBase
             return Forbid();
         }
 
-        var contact = meetup.Contacts.Where(contact => contact.Id == contactId).SingleOrDefault();
+        var contact = meetup.Contacts
+            .Where(contact => contact.Id == contactId)
+            .SingleOrDefault();
         if (contact is null)
         {
             return NotFound();
