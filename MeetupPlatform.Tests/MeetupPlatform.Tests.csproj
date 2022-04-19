@@ -31,8 +31,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Properties\appSettings.Local.json" />
-  </ItemGroup>
-
 </Project>

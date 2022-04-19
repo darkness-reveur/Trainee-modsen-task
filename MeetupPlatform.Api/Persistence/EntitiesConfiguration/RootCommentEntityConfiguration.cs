@@ -11,7 +11,7 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
     {
         rootCommentEntity
             .HasOne<Meetup>()
-            .WithMany(meetup => meetup.RootComments)
+            .WithMany(meetup => meetup.Comments)
             .HasForeignKey(rootComment => rootComment.MeetupId)
             .HasConstraintName("fk_root_comments_meetups_meetup_id");
 

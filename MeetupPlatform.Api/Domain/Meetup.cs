@@ -19,5 +19,5 @@ public class Meetup
 
     public List<PlainUser> SignedUpUsers { get; }
 
-    public List<RootComment> RootComments { get; }
+    public List<RootComment> Comments { get; }
 }

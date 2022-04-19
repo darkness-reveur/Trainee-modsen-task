@@ -28,10 +28,10 @@ public class GetRootCommentsFeature : FeatureBase
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="200">Returns meetup's list of comments.</response>
     [HttpGet("/api/meetups/{meetupId:guid}/comments")]
-    [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(RootCommentInfoDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRootComments([FromRoute] Guid meetupId, 
+    public async Task<IActionResult> GetRootComments(
+        [FromRoute] Guid meetupId, 
         [FromQuery] RootCommentFilterSettings filterSettings)
     {
         var meetup = await context.Meetups

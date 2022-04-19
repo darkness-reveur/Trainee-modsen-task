@@ -11,11 +11,4 @@ public class CreationReplyDto
     [Required]
     [MaxLength(4000)]
     public string Text { get; set; }
-
-    /// <summary>
-    /// Post's datetime.
-    /// </summary>
-    /// <example>2022-04-04T21:49:33.985Z</example>
-    [Required]
-    public DateTime Posted { get; set; }
 }

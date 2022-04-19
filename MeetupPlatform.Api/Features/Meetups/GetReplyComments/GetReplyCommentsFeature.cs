@@ -2,8 +2,6 @@
 
 using AutoMapper;
 using MeetupPlatform.Api.Authentication.Helpers;
-using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.ConfigurationQuery;
-using MeetupPlatform.Api.Features.Meetups.GetReplyComments.Filter.FilterSettings;
 using MeetupPlatform.Api.Persistence.Context;
 using MeetupPlatform.Api.Seedwork.WebApi;
 using Microsoft.AspNetCore.Authorization;
@@ -28,15 +26,13 @@ public class GetReplyCommentsFeature : FeatureBase
     /// <response code="404">If needed meetup or comment is null.</response>
     /// <response code="200">Returns root comment's list of replies.</response>
     [HttpGet("/api/meetups/{meetupId:guid}/comments/{commentId:guid}/replies")]
-    [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ReplyCommentInfoDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetReplyComments([FromRoute] Guid meetupId, [FromRoute] Guid commentId,
-        [FromQuery] ReplyCommentFilterSettings filterSettings)
+    public async Task<IActionResult> GetReplyComments([FromRoute] Guid meetupId, [FromRoute] Guid commentId)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
-            .Include(meetup => meetup.RootComments)
+            .Include(meetup => meetup.Comments)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
@@ -50,7 +46,7 @@ public class GetReplyCommentsFeature : FeatureBase
             return Forbid();
         }
 
-        var rootComment = meetup.RootComments
+        var rootComment = meetup.Comments
             .Where(rootComment => rootComment.Id == commentId)
             .SingleOrDefault();
         if(rootComment is null)
@@ -60,7 +56,6 @@ public class GetReplyCommentsFeature : FeatureBase
 
         var replyComments = await context.ReplyComments
             .Where(replyComment => replyComment.RootCommentId == commentId)
-            .GetReplyCommentsFilteredByFilterSettings(filterSettings)
             .ToListAsync();
         var replyCommentInfoDtos = mapper.Map<List<ReplyCommentInfoDto>>(replyComments);
         return Ok(replyCommentInfoDtos);

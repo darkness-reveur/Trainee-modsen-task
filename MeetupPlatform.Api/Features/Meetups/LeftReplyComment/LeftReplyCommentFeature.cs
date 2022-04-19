@@ -27,15 +27,15 @@ public class LeftReplyCommentFeature : FeatureBase
     /// <response code="404">If needed meetup is null or needed comment doesn't exist.</response>
     /// <response code="201">Returns the new created item.</response>
     [HttpPost("/api/meetups/{meetupId:guid}/comments/{commentId:guid}/replies")]
-    [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(CreatedReplyDto), StatusCodes.Status201Created)]
-    public async Task<IActionResult> LeftReplyComment([FromRoute] Guid meetupId, 
+    public async Task<IActionResult> LeftReplyComment(
+        [FromRoute] Guid meetupId, 
         [FromRoute] Guid commentId, 
         [FromBody] CreationReplyDto creationReplyDto)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.RootComments)
+            .Include(meetup => meetup.Comments)
             .Include(meetup => meetup.SignedUpUsers)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
@@ -44,7 +44,7 @@ public class LeftReplyCommentFeature : FeatureBase
             return NotFound();
         }
 
-        bool isCommentExistInMeetup = meetup.RootComments.Any(rootComment => rootComment.Id == commentId);
+        bool isCommentExistInMeetup = meetup.Comments.Any(rootComment => rootComment.Id == commentId);
         if(!isCommentExistInMeetup)
         {
             return NotFound();
@@ -56,18 +56,12 @@ public class LeftReplyCommentFeature : FeatureBase
             return Unauthorized();
         }
 
-        bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == user.Id);
-        if(!isUserSignedUpForMeetup)
-        {
-            return Forbid();
-        }
-
         var replyComment = new ReplyComment
         {
             Text = creationReplyDto.Text,
             AuthorId = user.Id,
             RootCommentId = commentId,
-            Posted = creationReplyDto.Posted
+            Posted = DateTime.UtcNow
         };
         context.ReplyComments.Add(replyComment);
         await context.SaveChangesAsync();

@@ -27,7 +27,6 @@ public class LeftRootCommentFeature : FeatureBase
     /// <response code="404">If needed meetup is null.</response>
     /// <response code="201">Returns the new created item.</response>
     [HttpPost("/api/meetups/{meetupId:guid}/comments")]
-    [Authorize(Roles = Roles.PlainUser)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CreationCommentDto creationCommentDto)
@@ -41,16 +40,12 @@ public class LeftRootCommentFeature : FeatureBase
             return NotFound();
         }
 
-        var user = await context.PlainUsers.Where(plainUser => plainUser.Id == CurrentUser.UserId).SingleOrDefaultAsync();
+        var user = await context.PlainUsers
+            .Where(plainUser => plainUser.Id == CurrentUser.UserId)
+            .SingleOrDefaultAsync();
         if(user is null)
         {
             return Unauthorized();
-        }
-
-        bool isUserSignedUpForMeetup = meetup.SignedUpUsers.Any(plainUser => plainUser.Id == user.Id);
-        if(!isUserSignedUpForMeetup)
-        {
-            return Forbid();
         }
 
         var rootComment = new RootComment
@@ -58,7 +53,7 @@ public class LeftRootCommentFeature : FeatureBase
             Text = creationCommentDto.Text,
             MeetupId = meetupId,
             AuthorId = user.Id,
-            Posted = creationCommentDto.Posted
+            Posted = DateTime.UtcNow
         };
         context.RootComments.Add(rootComment);
         await context.SaveChangesAsync();
