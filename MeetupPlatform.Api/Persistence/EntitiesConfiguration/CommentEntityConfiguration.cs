@@ -27,7 +27,7 @@ public class CommentEntityConfiguration : IEntityTypeConfiguration<Comment>
 
         commentEntity
             .HasOne<PlainUser>()
-            .WithMany(plainUser => plainUser.Comments)
+            .WithMany()
             .HasForeignKey(comment => comment.AuthorId)
             .HasConstraintName("fk_comments_users_author_id");
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeetupPlatform.Api.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220419112814_AddComments")]
+    [Migration("20220419144907_AddComments")]
     partial class AddComments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,7 +221,7 @@ namespace MeetupPlatform.Api.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.Comment", b =>
                 {
                     b.HasOne("MeetupPlatform.Api.Domain.Users.PlainUser", null)
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -299,11 +299,6 @@ namespace MeetupPlatform.Api.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
                 {
                     b.Navigation("OrganizedMeetups");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.PlainUser", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -219,7 +219,7 @@ namespace MeetupPlatform.Api.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.Comment", b =>
                 {
                     b.HasOne("MeetupPlatform.Api.Domain.Users.PlainUser", null)
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -297,11 +297,6 @@ namespace MeetupPlatform.Api.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>
                 {
                     b.Navigation("OrganizedMeetups");
-                });
-
-            modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.PlainUser", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
