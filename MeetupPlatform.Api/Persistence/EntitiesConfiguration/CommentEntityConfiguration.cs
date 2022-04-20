@@ -41,7 +41,7 @@ public class CommentEntityConfiguration : IEntityTypeConfiguration<Comment>
             .HasDatabaseName("ix_comments_author_id");
 
         commentEntity
-            .Property(comment => comment.Posted)
+            .Property(comment => comment.PostedAt)
             .IsRequired()
             .HasColumnName("posted");
 

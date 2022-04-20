@@ -63,7 +63,7 @@ public class LeftReplyCommentFeature : FeatureBase
             Text = creationReplyDto.Text,
             AuthorId = user.Id,
             RootCommentId = commentId,
-            Posted = DateTime.UtcNow
+            PostedAt = DateTime.UtcNow
         };
         context.ReplyComments.Add(replyComment);
         await context.SaveChangesAsync();

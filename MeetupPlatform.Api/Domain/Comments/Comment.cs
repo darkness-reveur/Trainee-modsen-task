@@ -8,5 +8,5 @@ public abstract class Comment
 
     public Guid AuthorId { get; set; }
 
-    public DateTime Posted { get; set; }
+    public DateTime PostedAt { get; set; }
 }

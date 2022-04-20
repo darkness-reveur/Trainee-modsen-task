@@ -14,7 +14,7 @@ public static class RootCommentFilterHelper
             .GetPaginatedRootCommentsBySettings(rootCommentFilterSettings);
 
     private static IQueryable<RootComment> SortRootCommentsByDescending(this IQueryable<RootComment> rootCommentsQuery)
-        => rootCommentsQuery.OrderByDescending(rootComment => rootComment.Posted);
+        => rootCommentsQuery.OrderByDescending(rootComment => rootComment.PostedAt);
 
     private static IQueryable<RootComment> GetPaginatedRootCommentsBySettings(
         this IQueryable<RootComment> rootCommentsQuery,

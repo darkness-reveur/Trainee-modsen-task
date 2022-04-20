@@ -53,7 +53,7 @@ public class LeftRootCommentFeature : FeatureBase
             Text = creationCommentDto.Text,
             MeetupId = meetupId,
             AuthorId = user.Id,
-            Posted = DateTime.UtcNow
+            PostedAt = DateTime.UtcNow
         };
         context.RootComments.Add(rootComment);
         await context.SaveChangesAsync();
