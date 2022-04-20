@@ -1,5 +1,6 @@
 ﻿namespace MeetupPlatform.Api.Domain;
 
+using MeetupPlatform.Api.Domain.Comments;
 using MeetupPlatform.Api.Domain.Users;
 
 public class Meetup
@@ -18,5 +19,7 @@ public class Meetup
 
     public Guid OrganizerId { get; set; }
 
-    public List<PlainUser> SignedUpUsers { get; set; }
+    public List<PlainUser> SignedUpUsers { get; }
+
+    public List<RootComment> Comments { get; }
 }
