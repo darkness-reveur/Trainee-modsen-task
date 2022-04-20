@@ -34,12 +34,14 @@ namespace MeetupPlatform.Api.Migrations
                         name: "fk_reply_comments_root_comments_root_comment_id",
                         column: x => x.root_comment_id,
                         principalTable: "comments",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_root_comments_meetups_meetup_id",
                         column: x => x.meetup_id,
                         principalTable: "meetups",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

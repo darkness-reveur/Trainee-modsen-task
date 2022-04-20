@@ -33,7 +33,7 @@ namespace MeetupPlatform.Api.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("author_id");
 
-                    b.Property<DateTime>("Posted")
+                    b.Property<DateTime>("PostedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("posted");
 
@@ -266,8 +266,9 @@ namespace MeetupPlatform.Api.Migrations
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.ReplyComment", b =>
                 {
                     b.HasOne("MeetupPlatform.Api.Domain.Comments.RootComment", null)
-                        .WithMany("ReplyComments")
+                        .WithMany("Replies")
                         .HasForeignKey("RootCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_reply_comments_root_comments_root_comment_id");
                 });
 
@@ -276,6 +277,7 @@ namespace MeetupPlatform.Api.Migrations
                     b.HasOne("MeetupPlatform.Api.Domain.Meetup", null)
                         .WithMany("Comments")
                         .HasForeignKey("MeetupId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_root_comments_meetups_meetup_id");
                 });
 
@@ -291,7 +293,7 @@ namespace MeetupPlatform.Api.Migrations
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Comments.RootComment", b =>
                 {
-                    b.Navigation("ReplyComments");
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("MeetupPlatform.Api.Domain.Users.Organizer", b =>

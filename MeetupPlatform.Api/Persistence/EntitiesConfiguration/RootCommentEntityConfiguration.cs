@@ -13,6 +13,7 @@ public class RootCommentEntityConfiguration : IEntityTypeConfiguration<RootComme
             .HasOne<Meetup>()
             .WithMany(meetup => meetup.Comments)
             .HasForeignKey(rootComment => rootComment.MeetupId)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("fk_root_comments_meetups_meetup_id");
 
         rootCommentEntity

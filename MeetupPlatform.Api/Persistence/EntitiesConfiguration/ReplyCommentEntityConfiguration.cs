@@ -12,6 +12,7 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
             .HasOne<RootComment>()
             .WithMany(rootComment => rootComment.Replies)
             .HasForeignKey(replyComment => replyComment.RootCommentId)
+            .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("fk_reply_comments_root_comments_root_comment_id");
 
         replyCommentEntity
