@@ -30,6 +30,7 @@ public class GetReplyCommentsFeature : FeatureBase
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.Comments)
+            .ThenInclude(rootComment => rootComment.Replies)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
@@ -43,9 +44,7 @@ public class GetReplyCommentsFeature : FeatureBase
             return NotFound();
         }
 
-        var replyComments = await context.ReplyComments
-            .Where(replyComment => replyComment.RootCommentId == commentId)
-            .ToListAsync();
+        var replyComments = rootComment.Replies;
         var replyCommentInfoDtos = mapper.Map<List<ReplyCommentInfoDto>>(replyComments);
         return Ok(replyCommentInfoDtos);
     }
