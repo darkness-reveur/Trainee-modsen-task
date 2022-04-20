@@ -32,7 +32,6 @@ public class LeftRootCommentFeature : FeatureBase
     public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CommentCreationDto creationCommentDto)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.SignedUpUsers)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
