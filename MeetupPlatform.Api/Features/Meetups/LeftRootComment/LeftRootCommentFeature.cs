@@ -29,7 +29,7 @@ public class LeftRootCommentFeature : FeatureBase
     [Authorize]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
-    public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CreationCommentDto creationCommentDto)
+    public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CommentCreationDto creationCommentDto)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.SignedUpUsers)
