@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public class CreationReplyDto
+public class ReplyCreationDto
 {
     /// <summary>
     /// Text of comment.

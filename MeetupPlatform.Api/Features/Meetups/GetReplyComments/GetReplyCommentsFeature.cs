@@ -29,7 +29,6 @@ public class GetReplyCommentsFeature : FeatureBase
     public async Task<IActionResult> GetReplyComments([FromRoute] Guid meetupId, [FromRoute] Guid commentId)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.SignedUpUsers)
             .Include(meetup => meetup.Comments)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
@@ -38,9 +37,7 @@ public class GetReplyCommentsFeature : FeatureBase
             return NotFound();
         }
 
-        var rootComment = meetup.Comments
-            .Where(rootComment => rootComment.Id == commentId)
-            .SingleOrDefault();
+        var rootComment = meetup.Comments.SingleOrDefault(rootComment => rootComment.Id == commentId);
         if(rootComment is null)
         {
             return NotFound();

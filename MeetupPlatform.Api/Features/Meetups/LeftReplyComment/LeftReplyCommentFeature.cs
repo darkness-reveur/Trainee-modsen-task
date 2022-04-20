@@ -32,11 +32,10 @@ public class LeftReplyCommentFeature : FeatureBase
     public async Task<IActionResult> LeftReplyComment(
         [FromRoute] Guid meetupId, 
         [FromRoute] Guid commentId, 
-        [FromBody] CreationReplyDto creationReplyDto)
+        [FromBody] ReplyCreationDto creationReplyDto)
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.Comments)
-            .Include(meetup => meetup.SignedUpUsers)
             .Where(meetup => meetup.Id == meetupId)
             .SingleOrDefaultAsync();
         if(meetup is null)
