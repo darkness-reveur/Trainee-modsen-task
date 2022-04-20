@@ -31,10 +31,8 @@ public class LeftRootCommentFeature : FeatureBase
     [ProducesResponseType(typeof(CreatedCommentDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> LeftRootComment([FromRoute] Guid meetupId, [FromBody] CommentCreationDto creationCommentDto)
     {
-        var meetup = await context.Meetups
-            .Where(meetup => meetup.Id == meetupId)
-            .SingleOrDefaultAsync();
-        if(meetup is null)
+        var isMeetupExist = await context.Meetups.AnyAsync(meetup => meetup.Id == meetupId);
+        if(!isMeetupExist)
         {
             return NotFound();
         }
