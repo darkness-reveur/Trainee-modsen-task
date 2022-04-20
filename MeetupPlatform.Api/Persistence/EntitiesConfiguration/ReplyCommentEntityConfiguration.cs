@@ -10,7 +10,7 @@ public class ReplyCommentEntityConfiguration : IEntityTypeConfiguration<ReplyCom
     {
         replyCommentEntity
             .HasOne<RootComment>()
-            .WithMany(rootComment => rootComment.ReplyComments)
+            .WithMany(rootComment => rootComment.Replies)
             .HasForeignKey(replyComment => replyComment.RootCommentId)
             .HasConstraintName("fk_reply_comments_root_comments_root_comment_id");
 

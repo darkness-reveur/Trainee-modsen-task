@@ -4,5 +4,5 @@ public class RootComment : Comment
 {
     public Guid? MeetupId { get; set; }
 
-    public List<ReplyComment> ReplyComments { get; }
+    public List<ReplyComment> Replies { get; }
 }
