@@ -33,9 +33,7 @@ public class GetRootCommentsFeature : FeatureBase
         [FromQuery] RootCommentFilterSettings filterSettings)
     {
         var meetup = await context.Meetups
-            .Include(meetup => meetup.SignedUpUsers)
-            .Where(meetup => meetup.Id == meetupId)
-            .SingleOrDefaultAsync();
+            .SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
         if(meetup is null)
         {
             return NotFound();

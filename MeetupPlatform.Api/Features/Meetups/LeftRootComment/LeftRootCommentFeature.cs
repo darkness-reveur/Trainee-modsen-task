@@ -37,9 +37,7 @@ public class LeftRootCommentFeature : FeatureBase
             return NotFound();
         }
 
-        var user = await context.Users
-            .Where(user => user.Id == CurrentUser.UserId)
-            .SingleOrDefaultAsync();
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
             return Unauthorized();

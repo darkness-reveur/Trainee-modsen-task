@@ -31,8 +31,7 @@ public class GetReplyCommentsFeature : FeatureBase
         var meetup = await context.Meetups
             .Include(meetup => meetup.Comments)
             .ThenInclude(rootComment => rootComment.Replies)
-            .Where(meetup => meetup.Id == meetupId)
-            .SingleOrDefaultAsync();
+            .SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
         if(meetup is null)
         {
             return NotFound();

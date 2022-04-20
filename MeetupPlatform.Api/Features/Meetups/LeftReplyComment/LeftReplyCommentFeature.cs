@@ -36,8 +36,7 @@ public class LeftReplyCommentFeature : FeatureBase
     {
         var meetup = await context.Meetups
             .Include(meetup => meetup.Comments)
-            .Where(meetup => meetup.Id == meetupId)
-            .SingleOrDefaultAsync();
+            .SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
         if(meetup is null)
         {
             return NotFound();
@@ -49,9 +48,7 @@ public class LeftReplyCommentFeature : FeatureBase
             return NotFound();
         }
 
-        var user = await context.Users
-            .Where(user => user.Id == CurrentUser.UserId)
-            .SingleOrDefaultAsync();
+        var user = await context.Users.SingleOrDefaultAsync(user => user.Id == CurrentUser.UserId);
         if(user is null)
         {
             return Unauthorized();
