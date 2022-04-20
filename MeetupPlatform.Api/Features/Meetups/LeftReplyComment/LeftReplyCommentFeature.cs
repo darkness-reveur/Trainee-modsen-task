@@ -34,15 +34,14 @@ public class LeftReplyCommentFeature : FeatureBase
         [FromRoute] Guid commentId, 
         [FromBody] ReplyCreationDto creationReplyDto)
     {
-        var meetup = await context.Meetups
-            .Include(meetup => meetup.Comments)
-            .SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
+        var meetup = await context.Meetups.SingleOrDefaultAsync(meetup => meetup.Id == meetupId);
         if(meetup is null)
         {
             return NotFound();
         }
 
-        bool isCommentExistInMeetup = meetup.Comments.Any(rootComment => rootComment.Id == commentId);
+        bool isCommentExistInMeetup = context.RootComments
+            .Any(rootComment => rootComment.Id == commentId && rootComment.MeetupId == meetupId);
         if(!isCommentExistInMeetup)
         {
             return NotFound();
